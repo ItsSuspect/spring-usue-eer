@@ -1,106 +1,113 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-
-
-html, body {
-  margin: 0;
-  padding: 0;
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
 }
 
 body {
-  background-color: #f2f2f3;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #000;
+  background-color: #fff;
+}
+
+div.container {
+  height: 100%;
+  width: 100%;
+  padding: 0 10%;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+section.registration {
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: 'Roboto';
 }
 
-p {
-  margin: 0;
+div.registration-block {
+  display: block;
+  min-width: 230px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
 }
 
-.main-container {
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 30px;
-  border-radius: 35px;
-  box-shadow: 2px 2px 5px 0 gray;
-}
-
-.form-container {
+div.registration-block form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  row-gap: 10px;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: space-evenly;
 }
 
-.user-block {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+div.registration-block form input, div.registration-block form select {
+  margin-bottom: 6px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 6px;
+}
+
+div.registration-block form #username-input {
 
 }
 
-.user-info {
-  border-radius: 5px;
-  border: 1px solid gray;
-  padding: 5px;
-  
+div.registration-block form #password-input {
 
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: 5px;
-  padding-left: 30px;
 }
 
-.form-container>button {
-  padding: 10px;
-  border: 1px solid gray;
-  border-radius: 7px;
-  margin-bottom: 10px;
-  position: relative;
-  cursor: pointer;
+div.registration-block form hr {
+  width: 100%;
+  margin: 4px 0 10px;
+  border-width: 0 0 1px 0;
+  border-color: #bbb;
 }
 
-.form-container>button:hover {
-  background-color: lightgray;
+div.registration-block form #roles-list {
+  padding: 4px 8px;
+  outline: none;
 }
 
+div.registration-block form #email-input {
 
-.button-link {
-  display: flex;
-  gap: 20px;
 }
 
-.button-link>button {
-  height: 30px;
-  width: 30px;
-  padding: 0px;
-  display: flex;
+div.registration-block form #fullName-input {
+
+}
+
+div.registration-block form #group-input {
+  display: none;
+}
+
+div.registration-block form #submit-btn {
+  margin-bottom: 0;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  background-color: #d9d6f3;
+}
+
+div#error-message {
+  display: none;
+/*  display: flex;*/
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  border: 1px solid gray;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button-link>button:hover {
-  background-color: #fff;
-}
-
-.button-link>button>img {
-  height: 70%;
-  width: 70%;
-}
-
-.text-link {
-  text-decoration: none;
-}
-
-.register {
-  display: none;
-  transition: display 1s linear
+  min-width: 230px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
 }

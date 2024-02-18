@@ -1,53 +1,86 @@
 <!DOCTYPE html>
 <html lang="en"
-	  xmlns:th="http://www.thymeleaf.org">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" th:href="@{/css/index.css}"/>
+		<script th:src="@{/js/script.js}"></script>
 		<title>Главная</title>
 	</head>
 	<body>
 		<header>
-			<div class="header-top">
+			<div id="header-top">
 				<p id="logo">УрГЭУ</p>
 				<div>
-					<a id="theme-change" href=""></a>
-					<a id="user" href="/auth/logout"></a>
+					<span id="theme-change" class="light-theme" onclick="changeState('theme-change', 'light-theme', 'dark-theme')"></span>
+					<div style="position: relative;">
+						<span id="user" onclick="changeState('user-menu', 'visible', 'hidden')"></span>
+						<nav id="user-menu" class="hidden">
+							<ul>
+								<li>
+									<a href="">Личный кабинет</a>
+								</li>
+								<li sec:authorize="hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')">
+									<a href="/teacher/new-discipline">Создать дисциплину</a>
+								</li>
+								<li sec:authorize="hasAnyRole('ROLE_ADMIN')">
+									<a href="/admin/signUp">Создать пользователя</a>
+								</li>
+								<li>
+									<a href="">Настройки</a>
+								</li>
+								<li>
+									<a href="/auth/logout">Выход</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
-			<div class="header-bottom">
+			<div id="header-bottom" class="unfolded">
 				<div>
 					<span th:each="discipline : ${disciplines}">
 						<a th:href="@{'/discipline/' + ${discipline.getId()}}" th:title="${discipline.getName()}" th:text="${discipline.getName()}"></a>
 					</span>
 				</div>
 			</div>
+			<button id="folding-agent" onclick="changeState('header-bottom', 'unfolded', 'folded')"></button>
 		</header>
+		<sidebar>
+			<nav>
+				<ul>
+					<li>
+						<a href="">Главная</a>
+					</li>
+					<li>
+						<a href="">Ресурсы</a>
+					</li>
+					<li>
+						<a href="assignments/assignments.html">Задания</a>
+					</li>
+					<li>
+						<a href="">Тесты</a>
+					</li>
+					<li>
+						<a href="">Обмен файлов</a>
+					</li>
+				</ul>
+			</nav>
+		</sidebar>
 		<main>
-			<aside>
-				<nav>
-					<ul>
-						<li>
-							<a href="">Главная</a>
-						</li>
-						<li>
-							<a href="">Ресурсы</a>
-						</li>
-						<li>
-							<a href="">Задания</a>
-						</li>
-						<li>
-							<a href="">Тесты</a>
-						</li>
-						<li>
-							<a href="">Обмен файлов</a>
-						</li>
-					</ul>
-				</nav>
-			</aside>
 			<div id="content">
+				<div>
+					<h2>Главная</h2>
+					<div>
+						<p>Строка 1</p>
+						<p>Строка 2</p>
+						<p>Строка 3</p>
+					</div>
+				</div>
 			</div>
 		</main>
+		<footer></footer>
 	</body>
 </html>

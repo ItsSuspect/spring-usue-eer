@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" th:href="@{/css/index.css}"/>
+		<title>Главная</title>
+	</head>
+	<body>
+		<header>
+			<div class="header-top">
+				<p id="logo">УрГЭУ</p>
+				<div>
+					<a id="theme-change" href=""></a>
+					<a id="user" href="/auth/logout"></a>
+				</div>
+			</div>
+			<div class="header-bottom">
+				<div>
+					<span th:each="discipline : ${disciplines}">
+						<a th:href="@{'/discipline/' + ${discipline.getId()}}" th:title="${discipline.getName()}" th:text="${discipline.getName()}"></a>
+					</span>
+				</div>
+			</div>
+		</header>
+		<main>
+			<aside>
+				<nav>
+					<ul>
+						<li>
+							<a href="">Главная</a>
+						</li>
+						<li>
+							<a href="">Ресурсы</a>
+						</li>
+						<li>
+							<a href="">Задания</a>
+						</li>
+						<li>
+							<a href="">Тесты</a>
+						</li>
+						<li>
+							<a href="">Обмен файлов</a>
+						</li>
+					</ul>
+				</nav>
+			</aside>
+			<div id="content">
+			</div>
+		</main>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" th:href="@{/css/registration.css}"/>
+  <script th:src="@{/js/auth.js}"></script>
+  <title>Электронный образовательный ресурс</title>
+</head>
+<body>
+<div class="registration">
+  <div class="main-container">
+    <form class="form-container">
+      <p>Регистрация через никнейм или email</p>
+      <div class="user-block">
+        <input type="text" id="username_register" placeholder="Логин" class="user-info"/>
+        <input type="password" id="password_register" placeholder="Пароль" class="user-info"/>
+        <input type="text" id="fullName_register" placeholder="ФИО" class="user-info"/>
+        <input type="email" id="email_register" placeholder="Электронная почта" class="user-info"/>
+      </div>
+      <button type="button" onclick="signUp()">Зарегистрироваться</button>
+      <p>У вас уже есть аккаунт? <a href="/auth/signIn" class="text-link"> Авторизоваться</a></p>
+    </form>
+  </div>
+</div>
+</body>
+</html>

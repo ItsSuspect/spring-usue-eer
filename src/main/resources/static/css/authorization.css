@@ -1,0 +1,93 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	font-size: 1em;
+	font-weight: 400;
+	line-height: 1.5em;
+	color: #000;
+	background-color: #fff;
+}
+
+div.container {
+	height: 100%;
+	width: 100%;
+	padding: 0 10%;
+	margin: 0 auto;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+section.authorization {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+div.authorization-block {
+	display: block;
+	min-width: 230px;
+	padding: 20px;
+	border-radius: 20px;
+	background-color: #f0f0f0;
+}
+
+div.authorization-block form {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	justify-content: space-evenly;
+}
+
+div.authorization-block form input {
+	margin-bottom: 6px;
+	padding: 4px 12px;
+	border: none;
+	border-radius: 6px;
+}
+
+div.authorization-block form a {
+	font-size: 0.8em;
+	line-height: 1.2em;
+}
+
+div.authorization-block form #username-input {
+
+}
+
+div.authorization-block form #password-input {
+
+}
+
+div.authorization-block form #submit-btn {
+	border: none;
+	border-radius: 6px;
+	font-weight: 600;
+	background-color: #d9d6f3;
+}
+
+div#error-message {
+	display: none;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	min-width: 230px;
+	margin-top: 12px;
+	padding: 12px;
+	border-radius: 20px;
+	background-color: #f0f0f0;
+	color: #f00;
+}

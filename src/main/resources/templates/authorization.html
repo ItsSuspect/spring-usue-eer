@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" th:href="@{/css/authorization.css}"/>
+		<script th:src="@{/js/auth.js}"></script>
+		<title>Электронный образовательный ресурс</title>
+	</head>
+	<body>
+		<div class="container">
+			<section class="authorization">
+				<div class="authorization-block">
+					<form method="post">
+						<input id="username-input" name="username" type="text" placeholder="Имя пользователя">
+						<input id="password-input" name="password" type="password" placeholder="Пароль">
+						<input id="submit-btn" type="button" onclick="signIn()" value="Авторизоваться">
+					</form>
+				</div>
+				<div id="error-message"></div>
+			</section>
+		</div>
+		<footer></footer>
+	</body>
+</html>

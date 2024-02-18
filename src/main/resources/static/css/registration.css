@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f2f2f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Roboto';
+}
+
+p {
+  margin: 0;
+}
+
+.main-container {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: 35px;
+  box-shadow: 2px 2px 5px 0 gray;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.user-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.user-info {
+  border-radius: 5px;
+  border: 1px solid gray;
+  padding: 5px;
+  
+
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: 5px;
+  padding-left: 30px;
+}
+
+.form-container>button {
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.form-container>button:hover {
+  background-color: lightgray;
+}
+
+
+.button-link {
+  display: flex;
+  gap: 20px;
+}
+
+.button-link>button {
+  height: 30px;
+  width: 30px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-link>button:hover {
+  background-color: #fff;
+}
+
+.button-link>button>img {
+  height: 70%;
+  width: 70%;
+}
+
+.text-link {
+  text-decoration: none;
+}
+
+.register {
+  display: none;
+  transition: display 1s linear
+}

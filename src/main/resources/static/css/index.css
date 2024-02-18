@@ -1,0 +1,168 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	font-size: 1em;
+	font-weight: 400;
+	line-height: 1.5em;
+	color: #000;
+	background-color: #fff;
+}
+
+div.container {
+	height: 100%;
+	width: 100%;
+	padding: 0 10%;
+	margin: 0 auto;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+header {
+	display: block;
+	background: #e5e5e5;
+}
+
+header div.header-top {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 16px;
+}
+
+p#logo {
+	margin: 0;
+	font-family: serif;
+	font-size: 2.5em;
+	font-weight: 600;
+	line-height: 1em;
+	color: #423ada;
+}
+
+header div.header-top div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+a#theme-change {
+	position: relative;
+	width: 32px;
+	height: 16px;
+	margin-right: 16px;
+	background-color: #fff;
+	border-radius: 8px;
+}
+
+a#theme-change:after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 16px;
+	border: 1px solid #b8b8b8;
+	border-radius: 8px;
+	background-color: #ccc;
+}
+
+a#user {
+	width: 32px;
+	height: 32px;
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+/*header div.header-bottom {
+
+}
+
+div.header-bottom nav {
+
+}
+
+div.header-bottom nav ul {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: center;
+	justify-content: space-evenly;
+}
+
+div.header-bottom nav ul li {
+	max-width: 220px;
+	list-style: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-wrap: nowrap;
+}
+
+div.header-bottom nav ul li a {
+	padding: 4px 12px;
+}*/
+
+header div.header-bottom {
+	padding: 12px 16px;
+}
+
+header div.header-bottom div {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+div.header-bottom div a {
+	display: inline-block;
+	width: 240px;
+	margin: 4px 10px;
+	padding: 4px 12px;
+	border-radius: 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-wrap: nowrap;
+	text-align: center;
+	background-color: #fff;
+}
+
+main {
+	display: grid;
+	justify-content: space-between;
+}
+
+main aside {
+	height: 100%;
+	background-color: #999;
+}
+
+main aside nav {
+
+}
+
+main aside nav ul {
+	list-style: none;
+	padding: 12px 20px;
+}
+
+main aside nav ul li {
+	margin: 20px 0;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+main aside nav ul li a {
+	display: inline-block;
+	width: 100%;
+	padding: 4px 6px;
+}

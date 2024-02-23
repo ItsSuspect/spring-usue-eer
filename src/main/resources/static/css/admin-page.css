@@ -91,7 +91,7 @@ div.registration-block form #group-input {
   display: none;
 }
 
-div.registration-block form #submit-btn {
+div.registration-block form .submit-btn {
   margin-bottom: 0;
   border: none;
   border-radius: 6px;
@@ -109,5 +109,20 @@ div#error-message {
   margin-top: 12px;
   padding: 12px;
   border-radius: 20px;
+  color: #9a4a46;
+  background-color: #f0f0f0;
+}
+
+div#success-message {
+  display: none;
+  /*  display: flex;*/
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  min-width: 230px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 20px;
+  color: #57863d;
   background-color: #f0f0f0;
 }

@@ -17,4 +17,12 @@ public class GroupService {
     public Group findGroupByName (String name) {
         return groupRepository.findByName(name).orElseThrow(() -> new RuntimeException("Ошибка: Группа не найдена"));
     }
+
+    public boolean existsByName (String name) {
+        return groupRepository.existsByName(name);
+    }
+
+    public void saveGroup(Group group) {
+        groupRepository.save(group);
+    }
 }

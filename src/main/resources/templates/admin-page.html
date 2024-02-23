@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/admin-page.css}"/>
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+    <title>Регистрация</title>
+  </head>
+  <body>
+    <div class="container">
+      <section class="registration">
+        <div class="registration-block">
+          <form method="POST">
+            <h4>Создание нового пользователя</h4>
+            <select id="roles-list" name="roles" onchange="checkOptionalInput()">
+              <option selected disabled hidden>Выберите должность</option>
+              <option value="ROLE_STUDENT">Студент</option>
+              <option value="ROLE_TEACHER">Преподаватель</option>
+              <option value="ROLE_ADMIN">Администратор</option>
+            </select>
+            <input id="email-input" name="email" type="email" placeholder="Электронная почта" autocomplete="off">
+            <input id="group-input" name="group" type="text" placeholder="Группа">
+            <input id="name-input" name="name" type="text" placeholder="Имя" onchange="generateUsername()">
+            <input id="surname-input" name="surname" type="text" placeholder="Фамилия" onchange="generateUsername()">
+            <input id="middleName-input" name="middleName" type="text" placeholder="Отчество" onchange="generateUsername()">
+            <hr>
+            <input id="username-input" name="username" type="text" placeholder="Логин" autocomplete="off" disabled>
+            <input id="password-input" name="password" type="password" placeholder="Пароль" autocomplete="off">
+            <input class="submit-btn" type="button" onclick="createNewUser()" value="Зарегистрировать">
+          </form>
+          <br>
+          <form method="POST">
+            <h4>Создание новой группы</h4>
+            <input id="groupName-input" name="groupName-input" type="text" placeholder="Название группы">
+            <input class="submit-btn" type="button" onclick="createNewGroup()" value="Создать">
+          </form>
+        </div>
+        <div id="success-message"></div>
+        <div id="error-message"></div>
+      </section>
+    </div>
+    <footer></footer>
+  </body>
+</html>

@@ -7,20 +7,19 @@ import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 public class SignUpRequest {
-    @NotBlank
     private String username;
 
-    @NotBlank
     private String password;
 
-    @NotBlank
     @Email
     private String email;
 
-    @NotBlank
-    private String fullName;
+    private String name;
 
-    @NotBlank
+    private String surname;
+
+    private String middleName;
+
     private String role;
     private String group;
 
@@ -48,12 +47,28 @@ public class SignUpRequest {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getRole() {

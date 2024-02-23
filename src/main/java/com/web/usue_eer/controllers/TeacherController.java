@@ -41,6 +41,7 @@ public class TeacherController {
         disciplineService.saveDiscipline(discipline);
 
         user.addDiscipline(discipline);
+        userDetailsService.saveUser(user);
         return ResponseEntity.ok().body(new MessageResponse("Новая дисциплина создана"));
     }
 }

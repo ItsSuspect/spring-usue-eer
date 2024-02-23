@@ -15,18 +15,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String username;
 
-    @NotBlank
     private String password;
 
-    @NotBlank
     @Email
     private String email;
 
-    @NotBlank
-    private String fullName;
+    private String name;
+
+    private String surname;
+
+    private String middleName;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -49,11 +49,13 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, String fullName) {
+    public User(String username, String password, String email, String name, String surname, String middleName) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.fullName = fullName;
+        this.name = name;
+        this.surname = surname;
+        this.middleName = middleName;
     }
 
     public Long getId() {
@@ -88,12 +90,28 @@ public class User {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public Set<Role> getRoles() {

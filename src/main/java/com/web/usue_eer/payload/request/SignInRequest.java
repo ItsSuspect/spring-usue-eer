@@ -3,10 +3,10 @@ package com.web.usue_eer.payload.request;
 import jakarta.validation.constraints.NotBlank;
 
 public class SignInRequest {
-    @NotBlank
+    @NotBlank(message = "Логин не должен быть пустым")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Пароль не должен быть пустым")
     private String password;
 
     public String getUsername() {

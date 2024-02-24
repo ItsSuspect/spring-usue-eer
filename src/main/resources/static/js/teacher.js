@@ -16,7 +16,11 @@ function createNewDiscipline() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status}`);
+                return response.text().then(errorData => {
+                    let error = new Error("Ошибка на сервере");
+                    error.errorData = "Ошибка: " + errorData;
+                    throw error;
+                });
             }
             return response.json();
         })

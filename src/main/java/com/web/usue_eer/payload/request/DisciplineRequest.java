@@ -4,10 +4,10 @@ package com.web.usue_eer.payload.request;
 import jakarta.validation.constraints.NotBlank;
 
 public class DisciplineRequest {
-    @NotBlank
+    @NotBlank(message = "Название не должно быть пустым")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Группа не должна быть пустой")
     private String group;
 
     public String getName() {

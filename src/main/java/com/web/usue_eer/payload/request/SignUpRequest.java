@@ -2,20 +2,25 @@ package com.web.usue_eer.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
 public class SignUpRequest {
+    @NotBlank(message = "Логин не должен быть пустым")
     private String username;
 
+    @NotBlank(message = "Пароль не должен быть пустым")
     private String password;
 
-    @Email
+    @Email(message = "Электронная почта не имеет необходимый формат")
     private String email;
 
+    @NotBlank(message = "Имя не должно быть пустым")
     private String name;
 
+    @NotBlank(message = "Фамилия не должна быть пустой")
     private String surname;
 
     private String middleName;

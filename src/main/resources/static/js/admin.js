@@ -30,7 +30,7 @@ function generateUsername() { //Todo: если существует пользо
 }
 
 function transliterate(text) {
-    var trans = {
+    const trans = {
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
     };
 
@@ -76,8 +76,10 @@ function createNewUser() {
     })
         .then(response => {
             if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(`Ошибка: ${errorData.message}`);
+                return response.text().then(errorData => {
+                    let error = new Error("Ошибка на сервере");
+                    error.errorData = "Ошибка: " + errorData;
+                    throw error;
                 });
             }
             return response.json();
@@ -89,7 +91,7 @@ function createNewUser() {
         })
         .catch(error => {
             document.getElementById("success-message").style.display = "none";
-            document.getElementById("error-message").textContent = error.message;
+            document.getElementById("error-message").textContent = error.errorData;
             document.getElementById("error-message").style.display = "flex";
         });
 }
@@ -110,8 +112,10 @@ function createNewGroup() {
     })
         .then(response => {
             if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(`Ошибка: ${errorData.message}`);
+                return response.text().then(errorData => {
+                    let error = new Error("Ошибка на сервере");
+                    error.errorData = "Ошибка: " + errorData;
+                    throw error;
                 });
             }
             return response.json();
@@ -123,7 +127,7 @@ function createNewGroup() {
         })
         .catch(error => {
             document.getElementById("success-message").style.display = "none";
-            document.getElementById("error-message").textContent = error.message;
+            document.getElementById("error-message").textContent = error.errorData;
             document.getElementById("error-message").style.display = "flex";
         });
 }

@@ -11,15 +11,17 @@ import com.web.usue_eer.security.services.RoleService;
 import com.web.usue_eer.security.services.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -46,27 +48,19 @@ public class AdminController {
     @PostMapping("/create-user")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (signUpRequest.getRole().equals("Выберите должность")) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Роль не выбрана"));
-        }
-
-        if (signUpRequest.getUsername().isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Логин не должен быть пустым. Заполните для этого ФИО."));
-        }
-
-        if (signUpRequest.getName().isEmpty() || signUpRequest.getSurname().isEmpty() || signUpRequest.getMiddleName().isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Имя, фамилия или отчество пустое"));
+            return ResponseEntity.badRequest().body("Роль не выбрана");
         }
 
         if (signUpRequest.getRole().equals("ROLE_STUDENT") && !groupService.existsByName(signUpRequest.getGroup())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Данной группы не существует"));
+            return ResponseEntity.badRequest().body("Данной группы не существует");
         }
 
         if (userDetailsService.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Данное имя пользователя занято"));
+            return ResponseEntity.badRequest().body("Данное имя пользователя занято");
         }
 
         if (userDetailsService.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Данная почта занята"));
+            return ResponseEntity.badRequest().body("Данная почта занята");
         }
 
         User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()),
@@ -93,12 +87,8 @@ public class AdminController {
     @SuppressWarnings("squid:S2696")
     @PostMapping("/create-group")
     public ResponseEntity<?> createGroup(@Valid @RequestBody GroupRequest groupRequest) {
-        if (groupRequest.getName().isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Название группы пустое"));
-        }
-
         if (groupService.existsByName(groupRequest.getName())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Данная группа существует"));
+            return ResponseEntity.badRequest().body("Данная группа существует");
         }
 
         Group group = new Group(groupRequest.getName());

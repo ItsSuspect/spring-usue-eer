@@ -75,11 +75,18 @@ a {
     display: none;
 }
 
+.main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-top: 64px;
+}
+
 .sidebar {
     display: flex;
     flex-direction: column;
-    max-width: 286px;
-    margin-top: 64px;
+    max-width: 288px;
+    width: max-content;
 }
 
 .sidebar__header {
@@ -153,4 +160,28 @@ a {
     padding: 16px;
     border-radius: 0 0 16px 0;
     background-color: #ddd;
+}
+
+.main__container {
+    width: 100%;
+    padding: 0 64px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 1360px;
+    min-height: 784px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 16px;
+}
+
+.content__header {
+    display: block;
+    width: 100%;
+    text-align: center;
 }

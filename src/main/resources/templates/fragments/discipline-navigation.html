@@ -1,28 +1,28 @@
 <nav class="discipline-list__tab-navigation tab-navigation">
     <ul class="tab-navigation__tab-list">
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Основная информация</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/information'" class="tab-navigation_link">Основная информация</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Объявления</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/advertisement'" class="tab-navigation_link">Объявления</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Модули</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/modules'" class="tab-navigation_link">Модули</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Ресурсы</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/resources'" class="tab-navigation_link">Ресурсы</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Задания</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/tasks'" class="tab-navigation_link">Задания</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Тестирование</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/testing'" class="tab-navigation_link">Тестирование</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Обмен файлами</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/file-sharing'" class="tab-navigation_link">Обмен файлами</a>
         </li>
         <li class="tab-navigation__tab">
-            <a href="" class="tab-navigation_link">Список участников</a>
+            <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/list-of-participants'" class="tab-navigation_link">Список участников</a>
         </li>
     </ul>
 </nav>

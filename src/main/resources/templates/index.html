@@ -1,75 +1,83 @@
 <!DOCTYPE html>
 <html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<link rel="stylesheet" th:href="@{/css/style.css}"/>
-	<script th:src="@{/js/script.js}"></script>
-	<title>ЭОР</title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/js/script.js}"></script>
+    <title>ЭОР</title>
 </head>
 <body>
 <header class="header">
-	<div class="header__logo logo">
-		<a href="" class="logo__link">
-			<span class="logo__image"></span>
-			<div class="logo__name">
-				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Э</em>лектронный</p>
-				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">О</em>бразовательный</p>
-				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Р</em>есурс</p>
-			</div>
-		</a>
-	</div>
-	<nav class="header__navigation navigation">
-		<a href="" class="navigation__link">Календарь</a>
-		<a href="" class="navigation__link">Ресурсы</a>
-		<a href="" class="navigation__link">Дисциплины</a>
-		<a href="" class="navigation__link">Сведения</a>
-	</nav>
-	<div class="header__icons icons">
-		<div class="icons__notification-center notification-center">
-			<span class="notification-center__theme-changer theme-changer_light"></span>
-			<div class="notification-center__notification-block notification-block">
-				<div class="notification-block__notification">
-					<div class="notification-block__header">
-						<p class="notification-block__subject">Выставлена оценка</p>
-						<span class="notification-block__result">
-                                    <p class="notification-block__mark_affliction_student">90</p>
-                                    <p class="notification-block__mark_affliction_teacher">/100</p>
-                                </span>
-					</div>
-					<p class="notification-block__discipline">Разработка многоуровневых приложений</p>
-					<p class="notification-block__task">Лабораторная работа №1</p>
-				</div>
-			</div>
-		</div>
-		<span class="icons__bell icons__bell_notification_empty"></span>
-		<div class="icons__profile profile">
-			<span class="profile__icon"></span>
-			<div class="profile__functions-block">
-				<a href="" class="profile__function">Профиль</a>
-				<a href="" class="profile__function">Настройки</a>
-				<a href="" class="profile__function">Выйти</a>
-			</div>
-		</div>
-	</div>
+    <div class="header__logo logo">
+        <a href="http://localhost:8080/portal" class="logo__link">
+            <span class="logo__image"></span>
+            <div class="logo__name">
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Э</em>лектронный</p>
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">О</em>бразовательный</p>
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Р</em>есурс</p>
+            </div>
+        </a>
+    </div>
+    <nav class="header__navigation navigation">
+        <a href="" class="navigation__link">Календарь</a>
+        <a href="" class="navigation__link">Ресурсы</a>
+        <a href="" class="navigation__link">Дисциплины</a>
+        <a href="http://localhost:8080/auth/logout" class="navigation__link">Сведения</a>
+    </nav>
+    <div class="header__icons icons">
+        <div class="icons__notification-center notification-center">
+            <span class="notification-center__theme-changer theme-changer_light"></span>
+            <div class="notification-center__notification-block notification-block">
+                <div class="notification-block__notification">
+                    <div class="notification-block__header">
+                        <p class="notification-block__subject">Выставлена оценка</p>
+                        <span class="notification-block__result">
+							<p class="notification-block__mark_affliction_student">90</p>
+							<p class="notification-block__mark_affliction_teacher">/100</p>
+						</span>
+                    </div>
+                    <p class="notification-block__discipline">Разработка многоуровневых приложений</p>
+                    <p class="notification-block__task">Лабораторная работа №1</p>
+                </div>
+            </div>
+        </div>
+        <span class="icons__bell icons__bell_notification_empty"></span>
+        <div class="icons__profile profile">
+            <span class="profile__icon"></span>
+            <div class="profile__functions-block">
+                <a href="" class="profile__function">Профиль</a>
+                <a href="" class="profile__function">Настройки</a>
+                <a href="" class="profile__function">Выйти</a>
+            </div>
+        </div>
+    </div>
 </header>
 <main class="main">
-	<aside class="main__aside">
-		<sidebar class="main__sidebar sidebar">
-			<h3 class="sidebar__header">Дисциплины</h3>
-			<nav class="sidebar__discipline-navigation discipline-navigation">
-				<ul class="discipline-navigation__discipline-list discipline-list">
-					<li class="discipline-list__item_selection_unselected" th:if="${not #lists.isEmpty(disciplines)}" th:each="discipline : ${disciplines}">
-						<p class="discipline-list__discipline-name" th:text="${discipline.name}" onclick="disciplineSelection(this)"></p>
-						<div th:replace="~{fragments/discipline-navigation}"></div>
-					</li>
-				</ul>
-			</nav>
-			<div class="sidebar__footer"></div>
-		</sidebar>
-	</aside>
+    <aside class="main__aside">
+        <sidebar class="main__sidebar sidebar">
+            <h3 class="sidebar__header">Дисциплины</h3>
+            <nav class="sidebar__discipline-navigation discipline-navigation">
+                <ul class="discipline-navigation__discipline-list discipline-list">
+                    <li class="discipline-list__item_selection_unselected" th:if="${not #lists.isEmpty(disciplines)}"
+                        th:each="discipline : ${disciplines}">
+                        <p class="discipline-list__discipline-name" th:text="${discipline.name}"
+                           onclick="disciplineSelection(this)"></p>
+                        <div th:replace="~{fragments/discipline-navigation}"></div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar__footer"></div>
+        </sidebar>
+    </aside>
+    <div class="main__container">
+        <section class="main__content content">
+            <h2 class="content__header" th:text="${category}">Заголовок</h2>
+            <h2 class="content__header" th:text="${disciplineId}">ID Дисциплины</h2>
+        </section>
+    </div>
 </main>
 </body>
 </html>

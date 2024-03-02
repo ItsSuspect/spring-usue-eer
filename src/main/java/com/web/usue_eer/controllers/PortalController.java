@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Set;
 
@@ -28,11 +29,26 @@ public class PortalController {
 
     @GetMapping("/portal")
     public String index(Model model) {
+        model.addAttribute("disciplines", getDisciplines());
+        return "index";
+    }
+
+    @GetMapping("/portal/discipline/{disciplineId}/{category}")
+    public String getDisciplineCategoryContent(@PathVariable("disciplineId") Long disciplineId,
+                                               @PathVariable("category") String category,
+                                               Model model) {
+
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("category", category);
+        model.addAttribute("disciplineId", disciplineId);
+
+        return "index";
+    }
+
+    public Set<Discipline> getDisciplines () {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        Set<Discipline> disciplines = user.getDisciplines();
-        model.addAttribute("disciplines", disciplines);
-        return "index";
+        return user.getDisciplines();
     }
 }

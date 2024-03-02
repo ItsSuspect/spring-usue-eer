@@ -46,6 +46,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "discipline_id"))
     private Set<Discipline> disciplines = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserTask> userTasks = new HashSet<>();
+
     public User() {
     }
 

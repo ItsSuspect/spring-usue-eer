@@ -2,85 +2,73 @@
 <html lang="en"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" th:href="@{/css/index.css}"/>
-		<script th:src="@{/js/script.js}"></script>
-		<title>Главная</title>
-	</head>
-	<body>
-		<header>
-			<div id="header-top">
-				<p id="logo">УрГЭУ</p>
-				<div>
-					<span id="theme-change" class="light-theme" onclick="changeState('theme-change', 'light-theme', 'dark-theme')"></span>
-					<div style="position: relative;">
-						<span id="user" onclick="changeState('user-menu', 'visible', 'hidden')"></span>
-						<nav id="user-menu" class="hidden">
-							<ul>
-								<li>
-									<a href="">Личный кабинет</a>
-								</li>
-								<li sec:authorize="hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')">
-									<a href="/teacher/new-discipline">Создать дисциплину</a>
-								</li>
-								<li sec:authorize="hasAnyRole('ROLE_ADMIN')">
-									<a href="/admin/create">Создать пользователя</a>
-								</li>
-								<li>
-									<a href="">Настройки</a>
-								</li>
-								<li>
-									<a href="/auth/logout">Выход</a>
-								</li>
-							</ul>
-						</nav>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<script th:src="@{/js/script.js}"></script>
+	<title>Главная</title>
+</head>
+<body>
+<header class="header">
+	<div class="header__logo logo">
+		<a href="" class="logo__link">
+			<span class="logo__image"></span>
+			<div class="logo__name">
+				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Э</em>лектронный</p>
+				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">О</em>бразовательный</p>
+				<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Р</em>есурс</p>
+			</div>
+		</a>
+	</div>
+	<nav class="header__navigation navigation">
+		<a href="" class="navigation__link">Календарь</a>
+		<a href="" class="navigation__link">Ресурсы</a>
+		<a href="" class="navigation__link">Дисциплины</a>
+		<a href="/auth/logout" class="navigation__link">Сведения</a>
+	</nav>
+	<div class="header__icons icons">
+		<div class="icons__notification-center notification-center">
+			<span class="notification-center__theme-changer theme-changer_light"></span>
+			<div class="notification-center__notification-block notification-block">
+				<div class="notification-block__notification">
+					<div class="notification-block__header">
+						<p class="notification-block__subject">Выставлена оценка</p>
+						<span class="notification-block__result">
+                                    <p class="notification-block__mark_affliction_student">90</p>
+                                    <p class="notification-block__mark_affliction_teacher">/100</p>
+						</span>
 					</div>
+					<p class="notification-block__discipline">Разработка многоуровневых приложений</p>
+					<p class="notification-block__task">Лабораторная работа №1</p>
 				</div>
 			</div>
-			<div id="header-bottom" class="unfolded">
-				<div>
-					<span th:each="discipline : ${disciplines}">
-						<a th:href="@{'/discipline/' + ${discipline.getId()}}" th:title="${discipline.getName()}" th:text="${discipline.getName()}"></a>
-					</span>
-				</div>
+		</div>
+		<span class="icons__bell icons__bell_notification_empty"></span>
+		<div class="icons__profile profile">
+			<span class="profile__icon"></span>
+			<div class="profile__functions-block">
+				<a href="" class="profile__function">Профиль</a>
+				<a href="" class="profile__function">Настройки</a>
+				<a href="" class="profile__function">Выйти</a>
 			</div>
-			<button id="folding-agent" onclick="changeState('header-bottom', 'unfolded', 'folded')"></button>
-		</header>
-		<sidebar>
-			<nav>
-				<ul>
-					<li>
-						<a href="">Главная</a>
-					</li>
-					<li>
-						<a href="">Ресурсы</a>
-					</li>
-					<li>
-						<a href="tasks/task.html">Задания</a>
-					</li>
-					<li>
-						<a href="">Тесты</a>
-					</li>
-					<li>
-						<a href="">Обмен файлов</a>
+		</div>
+	</div>
+</header>
+<main class="main">
+	<aside class="main__aside">
+		<sidebar class="main__sidebar sidebar">
+			<h2 class="sidebar__header">Дисциплины</h2>
+			<nav class="sidebar__discipline-navigation discipline-navigation">
+				<ul class="discipline-navigation__discipline-list discipline-list">
+					<li class="discipline-list__item" th:if="${not #lists.isEmpty(disciplines)}" th:each="discipline : ${disciplines}">
+						<p class="discipline-list__discipline-name" th:text="${discipline.name}"></p>
+						<div th:replace="~{fragments/discipline-navigation}"></div>
 					</li>
 				</ul>
 			</nav>
 		</sidebar>
-		<main>
-			<div id="content">
-				<div>
-					<h2>Главная</h2>
-					<div>
-						<p>Строка 1</p>
-						<p>Строка 2</p>
-						<p>Строка 3</p>
-					</div>
-				</div>
-			</div>
-		</main>
-		<footer></footer>
-	</body>
+	</aside>
+</main>
+</body>
 </html>

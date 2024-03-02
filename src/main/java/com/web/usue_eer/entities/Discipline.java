@@ -2,7 +2,6 @@ package com.web.usue_eer.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "disciplines")

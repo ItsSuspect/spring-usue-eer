@@ -27,12 +27,11 @@ public class PortalController {
     private DisciplineService disciplineService;
 
     @GetMapping("/portal")
-    public String index(Model model) { //Todo: Не работает вывод дисциплин
+    public String index(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
         Set<Discipline> disciplines = user.getDisciplines();
-        System.out.println(disciplines);
         model.addAttribute("disciplines", disciplines);
         return "index";
     }

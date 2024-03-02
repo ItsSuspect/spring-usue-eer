@@ -4,10 +4,10 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 	<script th:src="@{/js/script.js}"></script>
-	<title>Главная</title>
+	<title>ЭОР</title>
 </head>
 <body>
 <header class="header">
@@ -25,7 +25,7 @@
 		<a href="" class="navigation__link">Календарь</a>
 		<a href="" class="navigation__link">Ресурсы</a>
 		<a href="" class="navigation__link">Дисциплины</a>
-		<a href="/auth/logout" class="navigation__link">Сведения</a>
+		<a href="" class="navigation__link">Сведения</a>
 	</nav>
 	<div class="header__icons icons">
 		<div class="icons__notification-center notification-center">
@@ -37,7 +37,7 @@
 						<span class="notification-block__result">
                                     <p class="notification-block__mark_affliction_student">90</p>
                                     <p class="notification-block__mark_affliction_teacher">/100</p>
-						</span>
+                                </span>
 					</div>
 					<p class="notification-block__discipline">Разработка многоуровневых приложений</p>
 					<p class="notification-block__task">Лабораторная работа №1</p>
@@ -58,15 +58,16 @@
 <main class="main">
 	<aside class="main__aside">
 		<sidebar class="main__sidebar sidebar">
-			<h2 class="sidebar__header">Дисциплины</h2>
+			<h3 class="sidebar__header">Дисциплины</h3>
 			<nav class="sidebar__discipline-navigation discipline-navigation">
 				<ul class="discipline-navigation__discipline-list discipline-list">
-					<li class="discipline-list__item" th:if="${not #lists.isEmpty(disciplines)}" th:each="discipline : ${disciplines}">
-						<p class="discipline-list__discipline-name" th:text="${discipline.name}"></p>
+					<li class="discipline-list__item_selection_unselected" th:if="${not #lists.isEmpty(disciplines)}" th:each="discipline : ${disciplines}">
+						<p class="discipline-list__discipline-name" th:text="${discipline.name}" onclick="disciplineSelection(this)"></p>
 						<div th:replace="~{fragments/discipline-navigation}"></div>
 					</li>
 				</ul>
 			</nav>
+			<div class="sidebar__footer"></div>
 		</sidebar>
 	</aside>
 </main>

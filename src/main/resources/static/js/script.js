@@ -1,38 +1,20 @@
-let selectedDiscipline = localStorage.getItem('selectedDiscipline');
-let selectedCategory = localStorage.getItem('selectedCategory');
-
-function updateSelectedData(discipline, category) {
-  selectedDiscipline = discipline;
-  selectedCategory = category;
-  localStorage.setItem('selectedDiscipline', discipline);
-  localStorage.setItem('selectedCategory', category);
-}
-
 $(document).ready(function() {
-  let selectedDiscipline = localStorage.getItem('selectedDiscipline');
+  let currentPageUrl = window.location.href;
+  let parts = currentPageUrl.split('/');
 
-  if (selectedDiscipline) {
-    let liElement = $('li[data-discipline-name="' + selectedDiscipline + '"]');
-    liElement.removeClass('discipline-list__item_selection_unselected').addClass('discipline-list__item_selection_selected');
+  let disciplineId = parts[parts.length - 2];
+  let category = parts[parts.length - 1];
 
-    let navElement = $('nav[data-discipline-nav="' + selectedDiscipline + '"]');
-    navElement.toggle();
-  }
+  let liElement = $('li[data-discipline-id="' + disciplineId + '"]');
+  liElement.removeClass('discipline-list__item_selection_unselected').addClass('discipline-list__item_selection_selected');
+
+  let navElement = $('nav[data-discipline-nav="' + disciplineId + '"]');
+  navElement.toggle();
+
+  let aElement = navElement.find('a[data-discipline-category="' + category + '"]');
+  aElement.removeClass('tab-navigation__link tab-navigation__link_selection_unselected').addClass('tab-navigation__link tab-navigation__link_selection_selected');
 });
 
-
-// Функция выбора дисциплины
 function disciplineSelection(element) {
-  const selectedDisciplineListItem = $(element).closest('li');
-  const selectedDisciplineNav = $(element).next('.discipline-list__tab-navigation');
-
-  selectedDiscipline = selectedDisciplineListItem.data('discipline-name');
-  updateSelectedData(selectedDiscipline, selectedCategory);
-
-  if (selectedDisciplineNav.is(':hidden')) {
-    $('.discipline-list__item_selection_selected').not(selectedDisciplineListItem).removeClass('discipline-list__item_selection_selected').addClass('discipline-list__item_selection_unselected');
-    $('.discipline-list__tab-navigation').not(selectedDisciplineNav).hide();
-    selectedDisciplineListItem.removeClass('discipline-list__item_selection_unselected').addClass('discipline-list__item_selection_selected');
-    selectedDisciplineNav.toggle();
-  }
+  window.location.href = 'http://localhost:8080/portal/discipline/' + element.getAttribute("data-discipline-id") + '/information';
 }

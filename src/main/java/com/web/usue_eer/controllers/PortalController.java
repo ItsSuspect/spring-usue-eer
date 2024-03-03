@@ -43,6 +43,13 @@ public class PortalController {
         return "index";
     }
 
+    @GetMapping("/portal/disciplines/create")
+    public String createDisciplines(Model model) {
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/create-discipline");
+        return "index";
+    }
+
     @GetMapping("/portal/discipline/{disciplineId}/{category}")
     public String getDisciplineCategoryContent(@PathVariable("disciplineId") Long disciplineId,
                                                @PathVariable("category") String category,

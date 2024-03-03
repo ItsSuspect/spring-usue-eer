@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -45,10 +48,14 @@ public class PortalController {
         return "index";
     }
 
-    public Set<Discipline> getDisciplines () {
+    public List<Discipline> getDisciplines () {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        return user.getDisciplines();
+        List<Discipline> disciplines = user.getDisciplines();
+        Comparator<Discipline> comparator = Comparator.comparing(Discipline::getName);
+
+        disciplines.sort(comparator);
+        return disciplines;
     }
 }

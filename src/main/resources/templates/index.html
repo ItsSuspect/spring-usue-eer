@@ -61,10 +61,11 @@
             <h3 class="sidebar__header">Дисциплины</h3>
             <nav class="sidebar__discipline-navigation discipline-navigation">
                 <ul class="discipline-navigation__discipline-list discipline-list">
-                    <li class="discipline-list__item_selection_unselected" th:if="${not #lists.isEmpty(disciplines)}"
-                        th:each="discipline : ${disciplines}">
-                        <p class="discipline-list__discipline-name" th:text="${discipline.name}"
-                           onclick="disciplineSelection(this)"></p>
+                    <li class="discipline-list__item_selection_unselected"
+                        th:if="${not #lists.isEmpty(disciplines)}"
+                        th:each="discipline : ${disciplines}"
+                        th:data-discipline-name="${discipline.name}">
+                        <p class="discipline-list__discipline-name" th:text="${discipline.name}" onclick="disciplineSelection(this)"></p>
                         <div th:replace="~{fragments/discipline-navigation}"></div>
                     </li>
                 </ul>

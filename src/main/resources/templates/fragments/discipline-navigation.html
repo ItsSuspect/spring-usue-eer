@@ -1,4 +1,4 @@
-<nav class="discipline-list__tab-navigation tab-navigation">
+<nav class="discipline-list__tab-navigation tab-navigation" th:data-discipline-nav="${discipline.name}">
     <ul class="tab-navigation__tab-list">
         <li class="tab-navigation__tab">
             <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/information'" class="tab-navigation_link">Основная информация</a>

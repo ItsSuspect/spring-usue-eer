@@ -1,6 +1,8 @@
 package com.web.usue_eer.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -44,7 +46,7 @@ public class User {
     @JoinTable(name = "user_disciplines",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "discipline_id"))
-    private Set<Discipline> disciplines = new HashSet<>();
+    private List<Discipline> disciplines = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private Set<UserTask> userTasks = new HashSet<>();
@@ -133,16 +135,16 @@ public class User {
         this.groups = groups;
     }
 
-    public Set<Discipline> getDisciplines() {
+    public List<Discipline> getDisciplines() {
         return disciplines;
     }
 
-    public void setDisciplines(Set<Discipline> disciplines) {
+    public void setDisciplines(List<Discipline> disciplines) {
         this.disciplines = disciplines;
     }
 
     public void addDiscipline(Discipline discipline) {
-        Set<Discipline> disciplines = getDisciplines();
+        List<Discipline> disciplines = getDisciplines();
         disciplines.add(discipline);
     }
 }

@@ -18,6 +18,10 @@ public class GroupService {
         return groupRepository.findByName(name).orElseThrow(() -> new RuntimeException("Ошибка: Группа не найдена"));
     }
 
+    public List<Group> findAllGroups () {
+        return groupRepository.findAll();
+    }
+
     public boolean existsByName (String name) {
         return groupRepository.existsByName(name);
     }

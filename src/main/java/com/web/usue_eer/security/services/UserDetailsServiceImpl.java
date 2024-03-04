@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.web.usue_eer.entities.User;
 import com.web.usue_eer.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -31,6 +33,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден"));
+    }
+
+    @Transactional
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public List<User> findUsersByGroupName(String groupName) {
+        return userRepository.findUsersByGroupName(groupName);
     }
 
     public boolean existsByUsername(String username) {

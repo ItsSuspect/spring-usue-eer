@@ -1,18 +1,24 @@
 package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.Discipline;
+import com.web.usue_eer.entities.Group;
 import com.web.usue_eer.entities.User;
+import com.web.usue_eer.payload.request.DisciplineRequest;
 import com.web.usue_eer.repository.DisciplineRepository;
 import com.web.usue_eer.repository.UserRepository;
 import com.web.usue_eer.security.services.DisciplineService;
 import com.web.usue_eer.security.services.GroupService;
 import com.web.usue_eer.security.services.UserDetailsServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,10 +51,43 @@ public class PortalController {
 
     @GetMapping("/portal/disciplines/create")
     public String createDisciplines(Model model) {
+        List<Group> groups = groupService.findAllGroups();
+        List<User> users = userDetailsService.findAllUsers();
+
+        model.addAttribute("groups", groups);
+        model.addAttribute("users", users);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/create-discipline");
         return "index";
     }
+
+    @PostMapping("/portal/disciplines/create-getUserGroup")
+    public ResponseEntity<List<User>> getUsersGroup(@RequestBody Group group) {
+        List<User> users = userDetailsService.findUsersByGroupName(group.getName());
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/portal/disciplines/create")
+    public ResponseEntity<String> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
+        String owner = SecurityContextHolder.getContext().getAuthentication().getName();
+        Discipline discipline = disciplineService.saveDiscipline(new Discipline(disciplineRequest.getName(), owner));
+
+        List<String> usernames = disciplineRequest.getUsers();
+
+        for (String username : usernames) {
+            User user = userDetailsService.findUserByUsername(username);
+            if (user != null) {
+                user.addDiscipline(discipline);
+                userDetailsService.saveUser(user);
+            }
+        }
+
+        User user = userDetailsService.findUserByUsername(owner);
+        user.addDiscipline(discipline);
+        userDetailsService.saveUser(user);
+        return ResponseEntity.ok("Дисциплина успешно создана");
+    }
+
 
     @GetMapping("/portal/discipline/{disciplineId}/{category}")
     public String getDisciplineCategoryContent(@PathVariable("disciplineId") Long disciplineId,

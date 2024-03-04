@@ -14,7 +14,7 @@ public class DisciplineService {
     @Autowired
     private DisciplineRepository disciplineRepository;
 
-    public void saveDiscipline(Discipline discipline) {
-        disciplineRepository.save(discipline);
+    public Discipline saveDiscipline(Discipline discipline) {
+        return disciplineRepository.save(discipline);
     }
 }

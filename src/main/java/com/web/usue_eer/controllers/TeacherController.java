@@ -31,17 +31,17 @@ public class TeacherController {
         return "discipline_builder";
     }
 
-    @PostMapping("/teacher/new-discipline")
-    public ResponseEntity<?> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userDetailsService.findUserByUsername(disciplineRequest.getGroup());
-
-        Discipline discipline = new Discipline(disciplineRequest.getName(), username);
-        disciplineService.saveDiscipline(discipline);
-
-        user.addDiscipline(discipline);
-        userDetailsService.saveUser(user);
-        return ResponseEntity.ok().body(new MessageResponse("Новая дисциплина создана"));
-    }
+//    @PostMapping("/teacher/new-discipline")
+//    public ResponseEntity<?> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+////        User user = userDetailsService.findUserByUsername(disciplineRequest.getGroup());
+//
+//        Discipline discipline = new Discipline(disciplineRequest.getName(), username);
+//        disciplineService.saveDiscipline(discipline);
+//
+//        user.addDiscipline(discipline);
+//        userDetailsService.saveUser(user);
+//        return ResponseEntity.ok().body(new MessageResponse("Новая дисциплина создана"));
+//    }
 }

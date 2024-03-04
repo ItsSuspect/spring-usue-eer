@@ -355,27 +355,16 @@ a {
     margin: 0;
 }
 
-.group-search__group-name,
-.person-search__surname,
-.person-search__name,
-.person-search__patronymic {
+.group-search__group-name {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
 }
 
-.group-search__group-name {
-    margin: 0 0 0 8px;
-}
-
-.person-search__name,
-.person-search__patronymic {
-    margin: 0 0 0 6px;
-}
-
 .person-search__personal-info {
-    display: flex;
     margin: 0 0 0 8px;
+    font-size: 14px;
+    line-height: 16px;
 }
 
 .input-block__add-button {
@@ -469,20 +458,9 @@ a {
 }
 
 .member__personal-info {
-    display: flex;
-}
-
-.member__surname,
-.member__name,
-.member__patronymic {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
-}
-
-.member__name,
-.member__patronymic {
-    margin: 0 0 0 6px;
 }
 
 .member__member-checkbox {

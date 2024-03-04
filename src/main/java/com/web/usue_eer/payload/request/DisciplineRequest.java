@@ -1,14 +1,15 @@
 package com.web.usue_eer.payload.request;
 
 
+import com.web.usue_eer.entities.User;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
+
 public class DisciplineRequest {
-    @NotBlank(message = "Название не должно быть пустым")
     private String name;
 
-    @NotBlank(message = "Группа не должна быть пустой")
-    private String group;
+    private List<String> users;
 
     public String getName() {
         return name;
@@ -18,11 +19,11 @@ public class DisciplineRequest {
         this.name = name;
     }
 
-    public String getGroup() {
-        return group;
+    public List<String> getUsers() {
+        return users;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 }

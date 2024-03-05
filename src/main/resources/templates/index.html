@@ -31,13 +31,15 @@
     </aside>
     <div class="main__container">
         <section class="main__content content">
-            <div th:if="${content}">
+            <th:block th:unless="${content}">
+                <div>
+                    <h2 class="content__header" th:text="${category}">Заголовок</h2>
+                    <h2 class="content__header" th:text="${disciplineId}">ID Дисциплины</h2>
+                </div>
+            </th:block>
+            <th:block th:if="${content}">
                 <div th:replace="~{${content}}"></div>
-            </div>
-            <div th:unless="${content}">
-                <h2 class="content__header" th:text="${category}">Заголовок</h2>
-                <h2 class="content__header" th:text="${disciplineId}">ID Дисциплины</h2>
-            </div>
+            </th:block>
         </section>
     </div>
 </main>

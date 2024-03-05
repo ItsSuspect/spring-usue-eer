@@ -2,6 +2,7 @@ package com.web.usue_eer.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,7 +22,7 @@ public class UserTask {
 
     private String status;
 
-    private Date sendDate;
+    private LocalDateTime dateDelivery;
 
     private Integer resultScore;
 
@@ -60,12 +61,12 @@ public class UserTask {
         this.status = status;
     }
 
-    public Date getSendDate() {
-        return sendDate;
+    public LocalDateTime getDateDelivery() {
+        return dateDelivery;
     }
 
-    public void setSendDate(Date sendDate) {
-        this.sendDate = sendDate;
+    public void setDateDelivery(LocalDateTime dateDelivery) {
+        this.dateDelivery = dateDelivery;
     }
 
     public Integer getResultScore() {

@@ -1,9 +1,9 @@
 package com.web.usue_eer.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,19 +14,20 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
-    private Date dateStart;
+    private Integer maxScore;
 
-    @NotBlank
-    private Date dateEnd;
+    private LocalDateTime dateTimeIssue;
 
-    @NotBlank
-    private Integer scaleScore;
+    private LocalDateTime dateTimeDelivery;
 
-    @NotBlank
+    @Transient
+    private String formattedDateTimeIssue;
+
+    @Transient
+    private String formattedDateTimeDelivery;
+
     private String instruction;
 
     @ManyToOne
@@ -37,6 +38,15 @@ public class Task {
     private Set<UserTask> userTasks = new HashSet<>();
 
     public Task() {
+    }
+
+    public Task(String name, Integer maxScore, LocalDateTime dateTimeIssue, LocalDateTime dateTimeDelivery, String instruction, Discipline discipline) {
+        this.name = name;
+        this.maxScore = maxScore;
+        this.dateTimeIssue = dateTimeIssue;
+        this.dateTimeDelivery = dateTimeDelivery;
+        this.instruction = instruction;
+        this.discipline = discipline;
     }
 
     public Long getId() {
@@ -55,28 +65,28 @@ public class Task {
         this.name = name;
     }
 
-    public Date getDateStart() {
-        return dateStart;
+    public Integer getMaxScore() {
+        return maxScore;
     }
 
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
+    public void setMaxScore(Integer maxScore) {
+        this.maxScore = maxScore;
     }
 
-    public Date getDateEnd() {
-        return dateEnd;
+    public LocalDateTime getDateTimeIssue() {
+        return dateTimeIssue;
     }
 
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
+    public void setDateTimeIssue(LocalDateTime dateTimeIssue) {
+        this.dateTimeIssue = dateTimeIssue;
     }
 
-    public Integer getScaleScore() {
-        return scaleScore;
+    public LocalDateTime getDateTimeDelivery() {
+        return dateTimeDelivery;
     }
 
-    public void setScaleScore(Integer scaleScore) {
-        this.scaleScore = scaleScore;
+    public void setDateTimeDelivery(LocalDateTime dateTimeDelivery) {
+        this.dateTimeDelivery = dateTimeDelivery;
     }
 
     public String getInstruction() {
@@ -93,5 +103,29 @@ public class Task {
 
     public void setDiscipline(Discipline discipline) {
         this.discipline = discipline;
+    }
+
+    public Set<UserTask> getUserTasks() {
+        return userTasks;
+    }
+
+    public void setUserTasks(Set<UserTask> userTasks) {
+        this.userTasks = userTasks;
+    }
+
+    public String getFormattedDateTimeIssue() {
+        return formattedDateTimeIssue;
+    }
+
+    public void setFormattedDateTimeIssue(String formattedDateTimeIssue, DateTimeFormatter formatter) {
+        this.formattedDateTimeIssue = formattedDateTimeIssue;
+    }
+
+    public String getFormattedDateTimeDelivery() {
+        return formattedDateTimeDelivery;
+    }
+
+    public void setFormattedDateTimeDelivery(String formattedDateTimeDelivery, DateTimeFormatter formatter) {
+        this.formattedDateTimeDelivery = formattedDateTimeDelivery;
     }
 }

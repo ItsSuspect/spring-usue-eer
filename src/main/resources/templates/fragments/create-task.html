@@ -1,25 +1,26 @@
-<div class="content__content-block content-block" style="display: none;">
+<h2 class="content__header">Добавление задания</h2>
+<div class="content__content-block content-block">
     <div class="content-block__task-block task-block">
         <div class="task-block__header">
-            <input class="task-block__task-name-input" type="text" placeholder="Название дисциплины">
-            <input class="task-block__task-mark-input" type="number" placeholder="Оценка">
+            <input class="task-block__task-name-input" id="name_task" type="text" placeholder="Название задания">
+            <input class="task-block__task-mark-input" id="score_number" type="number" placeholder="Оценка">
         </div>
         <div class="task-block__content">
             <div class="task-block__task-instruction task-instruction">
                 <div class="task-instruction__due-dates">
                     <span class="task-instruction__issue">
-                        <input type="date" class="task-instruction__issue-date">
-                        <input type="time" class="task-instruction__issue-time">
+                        <input type="date" class="task-instruction__issue-date" id="date_issue">
+                        <input type="time" class="task-instruction__issue-time" id="time_issue">
                     </span>
                     <span class="task-instruction__delivery">
-                        <input type="date" class="task-instruction__delivery-date">
-                        <input type="time" class="task-instruction__delivery-time">
+                        <input type="date" class="task-instruction__delivery-date" id="date_delivery">
+                        <input type="time" class="task-instruction__delivery-time" id="time_delivery">
                     </span>
                 </div>
                 <p class="task-instruction__header">Инструкции к заданию</p>
-                <textarea class="task-instruction__content" name="" id="" oninput="autoGrow(this)"></textarea>
+                <textarea class="task-instruction__content" name="" id="instruction-task" oninput="autoGrow(this)"></textarea>
                 <div class="task-instruction__file-attachment-area">+ Прекрепить файл</div>
-                <button class="task-instruction__submit-button">Создать задание</button>
+                <button class="task-instruction__submit-button" th:data-disciplineId="${disciplineId}" onclick="createTask(this)">Создать задание</button>
             </div>
         </div>
     </div>

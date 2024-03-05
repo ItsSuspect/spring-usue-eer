@@ -1,19 +1,21 @@
 <div class="content__content-block content-block">
     <div class="content-block__task-block task-block">
         <div class="task-block__header">
-            <h3 class="task-block__task-name">Лабораторная работа №1</h3>
-            <span class="task-block__task-mark task-mark">
-                                    <p class="task-mark__student-mark">10</p>
-                                    <p class="task-mark__separator"> / </p>
-                                    <p class="task-mark__max-mark">10</p>
-                                </span>
+            <h3 class="task-block__task-name" th:text="${task.name}">Лабораторная работа №1</h3>
+            <span class="task-block__task-mark task-mark" th:text="'Максимальная оценка: ' + ${task.maxScore} + ' баллов'">
+<!--                <p class="task-mark__student-mark">10</p>-->
+<!--                <p class="task-mark__separator"> / </p>-->
+<!--                <p class="task-mark__max-mark">10</p>-->
+            </span>
         </div>
         <div class="task-block__content">
             <div class="task-block__task-instruction task-instruction">
                 <p class="task-instruction__header">Инструкции к заданию</p>
                 <div class="task-instruction__content">
-                    <p class="task-instruction__text">Для выполнения задания вам потребуется проделать следующие шаги:</p>
+                    <p class="task-instruction__text" th:text="${task.instruction}">Для выполнения задания вам потребуется проделать следующие шаги:</p>
                 </div>
+                <p th:text="'Дата выдачи: ' + ${task.formattedDateTimeIssue}"></p>
+                <p th:text="'Срок сдачи: ' +${task.formattedDateTimeDelivery}"></p>
             </div>
             <div class="task-block__student-response student-response">
                 <p class="student-response__header">Сдача задания</p>

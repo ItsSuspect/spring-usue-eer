@@ -670,7 +670,7 @@ a {
 }
 
 .status-list__task-status_state_pending {
-    display: none;
+    display: flex;
     color: #f4f4f4;
     background-color: #999;
 }

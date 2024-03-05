@@ -1,3 +1,4 @@
+<h2 class="content__header">Список участников</h2>
 <div class="content__content-block content-block">
     <div class="content-block__links-list" th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'') or hasRole(''ROLE_ADMIN'')')}">
         <a href="" class="content-block__link content-block__link_assignment_edit">Редактировать</a>

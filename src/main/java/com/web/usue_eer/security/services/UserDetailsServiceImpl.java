@@ -41,6 +41,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Transactional
+    public List<User> findByDisciplinesId(Long disciplineId) {
+        return userRepository.findByDisciplineId(disciplineId);
+    }
+
+
+    @Transactional
     public List<User> findUsersByGroupName(String groupName) {
         return userRepository.findUsersByGroupName(groupName);
     }

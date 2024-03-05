@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class PortalController {
@@ -68,7 +66,7 @@ public class PortalController {
     }
 
     @PostMapping("/portal/disciplines/create")
-    public ResponseEntity<String> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
+    public ResponseEntity<Discipline> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
         String owner = SecurityContextHolder.getContext().getAuthentication().getName();
         Discipline discipline = disciplineService.saveDiscipline(new Discipline(disciplineRequest.getName(), owner));
 
@@ -85,7 +83,7 @@ public class PortalController {
         User user = userDetailsService.findUserByUsername(owner);
         user.addDiscipline(discipline);
         userDetailsService.saveUser(user);
-        return ResponseEntity.ok("Дисциплина успешно создана");
+        return ResponseEntity.ok(discipline);
     }
 
 
@@ -98,6 +96,18 @@ public class PortalController {
         model.addAttribute("category", category);
         model.addAttribute("disciplineId", disciplineId);
 
+        return "index";
+    }
+
+    @GetMapping("/portal/discipline/{disciplineId}/member-list")
+    public String getMemberList(Model model, @PathVariable String disciplineId) {
+        List<User> users = userDetailsService.findByDisciplinesId(Long.parseLong(disciplineId));
+        Map<String, List<User>> usersByGroup = users.stream()
+                .collect(Collectors.groupingBy(user -> user.getGroups().iterator().next().getName()));
+
+        model.addAttribute("usersByGroup", usersByGroup);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/member-list");
         return "index";
     }
 

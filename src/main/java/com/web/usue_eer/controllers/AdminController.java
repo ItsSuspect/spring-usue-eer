@@ -72,13 +72,11 @@ public class AdminController {
 
         user.setRoles(roles);
 
-        if (signUpRequest.getRole().equals("ROLE_STUDENT")) {
-            Set<Group> groups = new HashSet<>();
-            Group group = groupService.findGroupByName(signUpRequest.getGroup());
-            groups.add(group);
+        Set<Group> groups = new HashSet<>();
+        Group group = groupService.findGroupByName(signUpRequest.getGroup());
+        groups.add(group);
 
-            user.setGroups(groups);
-        }
+        user.setGroups(groups);
 
         userDetailsService.saveUser(user);
         return ResponseEntity.ok(new MessageResponse("Пользователь успешно зарегистрирован"));

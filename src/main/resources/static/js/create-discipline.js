@@ -233,7 +233,6 @@ function createDiscipline() {
         name: disciplineName,
         users: users
     };
-    console.log(data)
 
     fetch('/portal/disciplines/create', {
         method: 'POST',
@@ -242,9 +241,14 @@ function createDiscipline() {
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Ответ от сервера:', data);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(discipline => {
+            window.location.href = "http://localhost:8080/portal/discipline/" + discipline.id + "/information";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

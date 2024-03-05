@@ -1,0 +1,27 @@
+<div class="content__content-block content-block" style="display: none;">
+    <div class="content-block__task-block task-block">
+        <div class="task-block__header">
+            <input class="task-block__task-name-input" type="text" placeholder="Название дисциплины">
+            <input class="task-block__task-mark-input" type="number" placeholder="Оценка">
+        </div>
+        <div class="task-block__content">
+            <div class="task-block__task-instruction task-instruction">
+                <div class="task-instruction__due-dates">
+                    <span class="task-instruction__issue">
+                        <input type="date" class="task-instruction__issue-date">
+                        <input type="time" class="task-instruction__issue-time">
+                    </span>
+                    <span class="task-instruction__delivery">
+                        <input type="date" class="task-instruction__delivery-date">
+                        <input type="time" class="task-instruction__delivery-time">
+                    </span>
+                </div>
+                <p class="task-instruction__header">Инструкции к заданию</p>
+                <textarea class="task-instruction__content" name="" id="" oninput="autoGrow(this)"></textarea>
+                <div class="task-instruction__file-attachment-area">+ Прекрепить файл</div>
+                <button class="task-instruction__submit-button">Создать задание</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/create-task.js}"></script>

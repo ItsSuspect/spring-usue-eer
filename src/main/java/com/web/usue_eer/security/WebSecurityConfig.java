@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                             .requestMatchers("/error").permitAll()
                             .requestMatchers("/auth/**").anonymous()
+                            .requestMatchers("/portal/disciplines").authenticated()
                             .requestMatchers("/portal/disciplines/**").hasAnyAuthority("ROLE_TEACHER", "ROLE_ADMIN")
                             .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                             .anyRequest().authenticated();

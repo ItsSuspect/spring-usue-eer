@@ -41,7 +41,6 @@ function transliterate(text) {
 
 function createNewUser() {
     const username = document.getElementById("username-input").value;
-    const password = document.getElementById("password-input").value;
 
     const role = document.getElementById("roles-list").value;
     const email = document.getElementById("email-input").value;
@@ -52,7 +51,7 @@ function createNewUser() {
 
     const signUpRequest = {
         "username": username,
-        "password": password,
+        "password": 'student',
 
         "role": role,
         "email": email,
@@ -63,6 +62,10 @@ function createNewUser() {
 
     if (role === "ROLE_STUDENT") {
         signUpRequest.group = group;
+    } else if (role === "ROLE_TEACHER") {
+        signUpRequest.group = "Преподаватель";
+    } else if (role === "ROLE_ADMIN") {
+        signUpRequest.group = "Администратор";
     }
 
     console.log(signUpRequest)

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/admin-page.css}"/>
-    <script th:src="@{/js/script.js}"></script>
     <script th:src="@{/js/admin.js}"></script>
     <title>Регистрация</title>
   </head>
@@ -29,7 +28,6 @@
             <input id="middleName-input" name="middleName" type="text" placeholder="Отчество" onchange="generateUsername()">
             <hr>
             <input id="username-input" name="username" type="text" placeholder="Логин" autocomplete="off" disabled>
-            <input id="password-input" name="password" type="password" placeholder="Пароль" autocomplete="off">
             <input class="submit-btn" type="button" onclick="createNewUser()" value="Зарегистрировать">
           </form>
           <br>

@@ -101,6 +101,13 @@ a {
     background-color: #f4f4f4;
 }
 
+.theme-changer_dark::before {
+    left: 100%;
+    transform: translateX(-100%);
+    border: 1px solid #999;
+    background-color: #444;
+}
+
 .notification-center {
     position: relative;
 }
@@ -256,6 +263,7 @@ a {
     max-width: 1360px;
     min-height: 784px;
     margin: 0 auto;
+    padding: 0 64px;
     background-color: #fff;
     border-radius: 16px;
 }
@@ -270,6 +278,7 @@ a {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
 }
 
 .input-block {
@@ -355,16 +364,27 @@ a {
     margin: 0;
 }
 
-.group-search__group-name {
+.group-search__group-name,
+.person-search__surname,
+.person-search__name,
+.person-search__patronymic {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
 }
 
-.person-search__personal-info {
+.group-search__group-name {
     margin: 0 0 0 8px;
-    font-size: 14px;
-    line-height: 16px;
+}
+
+.person-search__name,
+.person-search__patronymic {
+    margin: 0 0 0 6px;
+}
+
+.person-search__personal-info {
+    display: flex;
+    margin: 0 0 0 8px;
 }
 
 .input-block__add-button {
@@ -458,9 +478,20 @@ a {
 }
 
 .member__personal-info {
+    display: flex;
+}
+
+.member__surname,
+.member__name,
+.member__patronymic {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
+}
+
+.member__name,
+.member__patronymic {
+    margin: 0 0 0 6px;
 }
 
 .member__member-checkbox {
@@ -513,4 +544,368 @@ a {
 .content-block__link + .content-block__link {
     margin-left: 16px;
     font-size: 14px;
+}
+
+/* Оформление блока участников */
+.member-block {
+    min-width: 448px;
+    width: 70%;
+}
+
+.member-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.member-header__column-name {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.member__role {
+    font-size: 14px;
+    line-height: 16px;
+}
+
+/* Оформление блока заданий */
+
+.task-block {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+    width: 70%;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+}
+
+.task-block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+}
+
+.task-block__additional-columns {
+    display: flex;
+    align-items: center;
+}
+
+.task-block__column-name {
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
+.task-block__column-name + .task-block__column-name {
+    margin-left: 16px;
+}
+
+.task-block__column-name_content_status,
+.task-block__column-name_content_issue,
+.task-block__column-name_content_delivery {
+    width: 96px;
+}
+
+.task-block__column-name_content_mark {
+    width: 64px;
+}
+
+.task-block__content {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.task-container {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.task-container + .task-container {
+    border-top: 1px solid #999;
+}
+
+.task-container__task-name {
+    width: 100%;
+}
+
+.task-container__task-name,
+.task-mark__student-mark,
+.task-mark__separator,
+.task-mark__max-mark,
+.task-container__task-issue,
+.task-container__task-delivery {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-container__status-list,
+.task-container__task-issue,
+.task-container__task-delivery {
+    min-width: 96px;
+    margin-left: 16px;
+}
+
+.task-container__status-list,
+.task-container__task-mark {
+    display: flex;
+    justify-content: center;
+}
+
+.status-list__task-status {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+}
+
+.status-list__task-status_state_pending {
+    display: none;
+    color: #f4f4f4;
+    background-color: #999;
+}
+
+.status-list__task-status_state_in-progress {
+    display: none;
+    background-color: #eee;
+}
+
+.status-list__task-status_state_delivered {
+    display: none;
+    border: 1px solid #999;
+}
+
+.status-list__task-status_state_checked {
+/*    display: none;*/
+    background-color: #B9FEB9;
+}
+
+.status-list__task-status_state_rejected {
+    display: none;
+    background-color: #FFBFBF;
+}
+
+.task-container__task-mark {
+    min-width: 64px;
+    margin-left: 16px;
+}
+
+.task-mark__separator {
+    margin: 0 4px;
+}
+
+.task-container__task-issue,
+.task-container__task-delivery {
+    text-align: center;
+}
+
+/* Оформление блока отдельного задания */
+
+.task-block__task-name {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.task-block__task-mark {
+    display: flex;
+    justify-content: center;
+}
+
+.task-block__task-instruction {
+    padding: 8px 0;
+}
+
+.task-instruction__header {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.task-instruction__content {
+    margin-top: 16px;
+}
+
+.task-instruction__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-block__student-response {
+    margin-top: 12px;
+    padding: 20px 0 8px;
+    border-top: 1px solid #999;
+}
+
+.student-response__header {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.student-response__content {
+    display: flex;
+    margin-top: 16px;
+}
+
+.student-response__file-attachment-area {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f4f4f4;
+}
+
+.student-response__submit-button {
+    margin-left: 16px;
+    padding: 4px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    text-wrap: nowrap;
+}
+
+/* Оформление блока создания задания */
+
+.task-block__task-name-input {
+    min-width: 224px;
+    width: 50%;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input {
+    max-width: 80px;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    text-align: right;
+    font-size: 16px;
+    line-height: 16px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input::-webkit-outer-spin-button,
+.task-block__task-mark-input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.task-instruction__due-dates {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-instruction__issue {
+    display: flex;
+    align-items: stretch;
+    max-width: 50%;
+}
+
+.task-instruction__issue-date {
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__issue-time {
+    margin-left: 16px;
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__delivery {
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    max-width: 50%;
+    margin-left: 32px;
+}
+
+.task-instruction__delivery-date {
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__delivery-time {
+    margin-left: 16px;
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__header {
+    margin-top: 16px;
+}
+
+.task-instruction__content {
+    width: 100%;
+    min-height: 64px;
+    max-height: 448px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    resize: none;
+    overflow: hidden;
+    font-size: 14px;
+    outline: none;
+    line-height: 16px;
+}
+
+.task-instruction__file-attachment-area {
+    width: 100%;
+    margin-top: 16px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f4f4f4;
+}
+
+.task-instruction__submit-button {
+    width: 100%;
+    margin: 16px 0 0 auto;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    text-wrap: nowrap;
 }

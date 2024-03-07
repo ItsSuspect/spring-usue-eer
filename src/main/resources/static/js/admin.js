@@ -68,8 +68,6 @@ function createNewUser() {
         signUpRequest.group = "Администратор";
     }
 
-    console.log(signUpRequest)
-
     fetch("/admin/create-user", {
         method: "POST",
         headers: {

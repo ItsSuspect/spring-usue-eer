@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT u FROM User u JOIN u.groups g WHERE g.name = :groupName")
     List<User> findUsersByGroupName(@Param("groupName") String groupName);
 
-    @Query("SELECT DISTINCT u FROM User u JOIN u.disciplines d WHERE d.id = :disciplineId")
+    @Query("SELECT DISTINCT u FROM User u JOIN u.userDisciplines ud WHERE ud.discipline.id = :disciplineId")
     List<User> findByDisciplineId(Long disciplineId);
 
     Boolean existsByUsername(String username);

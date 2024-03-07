@@ -4,8 +4,8 @@ import com.web.usue_eer.entities.enums.AccessType;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "discipline_access")
-public class DisciplineAccess {
+@Table(name = "user_disciplines")
+public class UserDiscipline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,10 +21,10 @@ public class DisciplineAccess {
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
 
-    public DisciplineAccess() {
+    public UserDiscipline() {
     }
 
-    public DisciplineAccess(User user, Discipline discipline, AccessType accessType) {
+    public UserDiscipline(User user, Discipline discipline, AccessType accessType) {
         this.user = user;
         this.discipline = discipline;
         this.accessType = accessType;

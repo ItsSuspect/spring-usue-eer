@@ -34,7 +34,7 @@ public class PortalController {
     private UserTaskService userTaskService;
 
     @Autowired
-    private DisciplineAccessService disciplineAccessService;
+    private UserDisciplineService userDisciplineService;
 
     @GetMapping("")
     public String index(Model model) {
@@ -80,17 +80,13 @@ public class PortalController {
 
             User user = userDetailsService.findUserByUsername(username);
             if (user != null) {
-                user.addDiscipline(discipline);
-                userDetailsService.saveUser(user);
-                disciplineAccessService.saveAccess(new DisciplineAccess(user, discipline, access));
+                userDisciplineService.saveAccess(new UserDiscipline(user, discipline, access));
             }
         }
 
         User ownerUser = userDetailsService.findUserByUsername(owner);
         if (ownerUser != null) {
-            ownerUser.addDiscipline(discipline);
-            userDetailsService.saveUser(ownerUser);
-            disciplineAccessService.saveAccess(new DisciplineAccess(ownerUser, discipline, AccessType.LEADER));
+            userDisciplineService.saveAccess(new UserDiscipline(ownerUser, discipline, AccessType.LEADER));
         }
         return ResponseEntity.ok(discipline);
     }
@@ -106,18 +102,6 @@ public class PortalController {
         return "index";
     }
 
-//    @GetMapping("/discipline/{disciplineId}/member-list")
-//    public String getMemberList(Model model, @PathVariable String disciplineId) {
-//        List<User> users = userDetailsService.findByDisciplinesId(Long.parseLong(disciplineId));
-//        Map<String, List<User>> usersByGroup = users.stream()
-//                .collect(Collectors.groupingBy(user -> user.getGroups().iterator().next().getName()));
-//
-//        model.addAttribute("usersByGroup", usersByGroup);
-//        model.addAttribute("disciplines", getDisciplines());
-//        model.addAttribute("content", "fragments/member-list");
-//        return "index";
-//    }
-
     @GetMapping("/discipline/{disciplineId}/member-list")
     public String getMemberList(Model model, @PathVariable String disciplineId) {
         List<User> users = userDetailsService.findByDisciplinesId(Long.parseLong(disciplineId));
@@ -128,7 +112,7 @@ public class PortalController {
         model.addAttribute("disciplines", getDisciplines());
 
         users.forEach(user -> {
-            AccessType accessType = disciplineAccessService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId()).getAccessType();
+            AccessType accessType = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId()).getAccessType();
             user.setAccessType(accessType == AccessType.PARTICIPANT ? "Участник" : "Руководитель");
         });
         model.addAttribute("users", users);
@@ -136,8 +120,6 @@ public class PortalController {
         model.addAttribute("content", "fragments/member-list");
         return "index";
     }
-
-
 
     public List<Discipline> getDisciplines () {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

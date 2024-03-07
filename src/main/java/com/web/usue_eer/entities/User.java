@@ -46,11 +46,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Set<Group> groups = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_disciplines",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "discipline_id"))
-    private List<Discipline> disciplines = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private Set<UserDiscipline> userDisciplines = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<UserTask> userTasks = new HashSet<>();
@@ -123,6 +120,14 @@ public class User {
         this.middleName = middleName;
     }
 
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public void setAccessType(String accessType) {
+        this.accessType = accessType;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -139,25 +144,12 @@ public class User {
         this.groups = groups;
     }
 
-    public List<Discipline> getDisciplines() {
-        return disciplines;
+    public Set<UserDiscipline> getUserDisciplines() {
+        return userDisciplines;
     }
 
-    public void setDisciplines(List<Discipline> disciplines) {
-        this.disciplines = disciplines;
-    }
-
-    public void addDiscipline(Discipline discipline) {
-        List<Discipline> disciplines = getDisciplines();
-        disciplines.add(discipline);
-    }
-
-    public String getAccessType() {
-        return accessType;
-    }
-
-    public void setAccessType(String accessType) {
-        this.accessType = accessType;
+    public void setUserDisciplines(Set<UserDiscipline> userDisciplines) {
+        this.userDisciplines = userDisciplines;
     }
 
     public Set<UserTask> getUserTasks() {
@@ -167,4 +159,13 @@ public class User {
     public void setUserTasks(Set<UserTask> userTasks) {
         this.userTasks = userTasks;
     }
+
+    public List<Discipline> getDisciplines() {
+        List<Discipline> disciplines = new ArrayList<>();
+        for (UserDiscipline userDiscipline : userDisciplines) {
+            disciplines.add(userDiscipline.getDiscipline());
+        }
+        return disciplines;
+    }
+
 }

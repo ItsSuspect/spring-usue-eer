@@ -26,8 +26,6 @@ function createTask(element) {
         instructionTask: instructionTask
     };
 
-    console.log(TaskRequest);
-
     fetch('/portal/discipline/' + disciplineId + '/task-list/create', {
         method: 'POST',
         headers: {
@@ -39,9 +37,8 @@ function createTask(element) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();
         })
-        .then(data => {
+        .then(() => {
             window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/task-list";
         })
         .catch(error => {

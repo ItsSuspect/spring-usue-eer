@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function toggleAccessButton(button) {
+    let $accessButton = $(button);
+    if ($accessButton.text() === "Участник") {
+        $accessButton.text("Руководитель");
+    } else $accessButton.text("Участник");
+}
+
 function deleteSelected() {
     const resultDiscipline = document.getElementById('result-discipline');
 
@@ -128,6 +135,7 @@ function addUserToList(user) {
             liElement.classList.add('member-list__member', 'member');
             liElement.innerHTML = `
                 <p class="member__personal-info" data-user-username="${user.username}">${user.surname} ${user.name} ${user.middleName}</p>
+                <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
                 <input class="member__member-checkbox checkbox" type="checkbox">
             `;
             ulItem.appendChild(liElement);
@@ -150,6 +158,7 @@ function addUserToList(user) {
         liElement.classList.add('member-list__member', 'member');
         liElement.innerHTML = `
             <p class="member__personal-info" data-user-username="${user.username}">${user.surname} ${user.name} ${user.middleName}</p>
+            <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
             <input class="member__member-checkbox checkbox" type="checkbox">
         `;
         ulItem.appendChild(liElement);
@@ -174,7 +183,7 @@ function addGroupToList(group) {
             let existingGroup = Array.from(resultDiscipline.querySelectorAll('.member-list__group-name')).find(groupElement => groupElement.textContent.trim() === group.name);
 
             if (existingGroup) {
-                const ulItem = existingGroup.parentNode.nextElementSibling.querySelector('.member-list__group-members');
+                const ulItem = existingGroup.closest('.member-list__grouping-block').querySelector('.member-list__group-members');
                 const existingUsernames = Array.from(ulItem.querySelectorAll('.member__personal-info')).map(info => info.dataset.userUsername);
                 const missingUsers = data.filter(user => !existingUsernames.includes(user.username));
 
@@ -184,6 +193,7 @@ function addGroupToList(group) {
                         liElement.classList.add('member-list__member', 'member');
                         liElement.innerHTML = `
                             <p class="member__personal-info" data-user-username="${user.username}">${user.surname} ${user.name} ${user.middleName}</p>
+                            <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
                             <input class="member__member-checkbox checkbox" type="checkbox">
                         `;
                         ulItem.appendChild(liElement);
@@ -207,6 +217,7 @@ function addGroupToList(group) {
                     liElement.classList.add('member-list__member', 'member');
                     liElement.innerHTML = `
                         <p class="member__personal-info" data-user-username="${user.username}">${user.surname} ${user.name} ${user.middleName}</p>
+                        <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
                         <input class="member__member-checkbox checkbox" type="checkbox">
                     `;
                     ulItem.appendChild(liElement);
@@ -227,19 +238,26 @@ function createDiscipline() {
     const disciplineName = document.getElementById('discipline-name').value;
 
     const userList = resultDiscipline.querySelectorAll('.member__personal-info');
-    const users = Array.from(userList).map(userElement => userElement.getAttribute('data-user-username'));
+    const users = {};
+    Array.from(userList).forEach(userElement => {
+        const username = userElement.getAttribute('data-user-username');
+        users[username] = getUserAccess(userElement.nextElementSibling.textContent.trim());
+    });
 
-    const data = {
+    const DisciplineRequest = {
         name: disciplineName,
         users: users
     };
+
+    console.log(DisciplineRequest)
+
 
     fetch('/portal/disciplines/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(DisciplineRequest)
     })
         .then(response => {
             if (!response.ok) {
@@ -253,4 +271,14 @@ function createDiscipline() {
         .catch(error => {
             console.error('Произошла ошибка:', error);
         });
+}
+
+function getUserAccess(accessText) {
+    if (accessText === 'Участник') {
+        return 'PARTICIPANT';
+    } else if (accessText === 'Руководитель') {
+        return 'LEADER';
+    } else {
+        return 'PARTICIPANT';
+    }
 }

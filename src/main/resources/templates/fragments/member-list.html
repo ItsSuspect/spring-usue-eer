@@ -18,8 +18,8 @@
                 </div>
                 <ul class="member-list__group-members">
                     <li class="member-list__member member" th:each="user : ${entry.value}">
-                        <p class="member__personal-info" th:text="${user.getName() + ' ' + user.getSurname() + ' ' + user.getMiddleName()}">ФИО пользователя</p>
-                        <p class="member__role" th:text="${entry.key eq 'Преподаватель' ? 'Преподаватель' : (entry.key eq 'Администратор' ? 'Администратор' : (entry.key eq 'Гость' ? 'Гость' : 'Студент'))}"></p>
+                        <p class="member__personal-info" th:text="${user.getSurname() + ' ' + user.getName() + ' ' + user.getMiddleName()}">ФИО пользователя</p>
+                        <p class="member__role" th:text="${user.accessType}">Права доступа</p>
                     </li>
                 </ul>
             </div>

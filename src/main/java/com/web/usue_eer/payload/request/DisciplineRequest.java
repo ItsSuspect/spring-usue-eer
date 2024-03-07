@@ -5,11 +5,12 @@ import com.web.usue_eer.entities.User;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
+import java.util.Map;
 
 public class DisciplineRequest {
     private String name;
 
-    private List<String> users;
+    private Map<String, String> users;
 
     public String getName() {
         return name;
@@ -19,11 +20,11 @@ public class DisciplineRequest {
         this.name = name;
     }
 
-    public List<String> getUsers() {
+    public Map<String, String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<String> users) {
+    public void setUsers(Map<String, String> users) {
         this.users = users;
     }
 }

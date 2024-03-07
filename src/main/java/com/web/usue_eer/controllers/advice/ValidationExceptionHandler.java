@@ -1,7 +1,5 @@
-package com.web.usue_eer.controllers;
+package com.web.usue_eer.controllers.advice;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,7 +1,24 @@
+.discipline-creation {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.discipline-creation__input-block {
+    max-width: 50%;
+    width: 50%;
+}
+
+.discipline-creation__output-block {
+    max-width: 50%;
+    width: 50%;
+}
+
 .input-block {
     display: flex;
     flex-direction: column;
-    margin-bottom: 32px;
+    align-items: stretch;
 }
 
 .input-block__discipline-title {
@@ -22,52 +39,47 @@
 .group-search, .person-search {
     display: flex;
     flex-direction: column;
-    min-width: 288px;
+    align-items: stretch;
+}
+
+.group-search {
+    max-width: 40%;
+/*    min-width: 288px;*/
+    width: 40%;
 }
 
 .person-search {
+    max-width: 60%;
+/*    min-width: 288px;*/
+    width: 60%;
     margin-left: 16px;
 }
 
-.group-search__form, .person-search__form {
-    position: relative;
-}
-
-.group-search__input, .person-search__input {
+.group-search__input,
+.person-search__input {
     width: 100%;
-    padding: 8px 32px 8px 16px;
+    padding: 8px 16px 8px 16px;
     border: 1px solid #999;
     border-radius: 10px;
     font-size: 14px;
     line-height: 16px;
+    z-index: 2;
 }
 
-.group-search__submit, .person-search__submit {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    border: 1px solid #999;
-    border-radius: 50%;
-    background-color: #f4f4f4;
-}
-
-.group-search__results-list, .person-search__results-list {
+.group-search__results-list,
+.person-search__results-list {
     display: none;
+    width: 100%;
     margin: -10px 0 0 0;
-    padding: 16px 16px 8px 16px;
+    padding: 10px 16px 0 16px;
     border: 1px solid #999;
     border-radius: 0 0 10px 10px;
     list-style: none;
 }
 
-.group-search__result, .person-search__result {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
+.group-search__result,
+.person-search__result {
+    padding: 8px;
 }
 
 .group-search__result + .group-search__result,
@@ -75,82 +87,67 @@
     border-top: 1px solid #999;    
 }
 
-.group-search__checkbox, .person-search__checkbox {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-}
-
 .group-search__group-name,
-.person-search__surname,
-.person-search__name,
-.person-search__patronymic {
+.person-search__personal-info {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
 }
 
-.group-search__group-name {
-    margin: 0 0 0 8px;
-}
-
-.person-search__name,
-.person-search__patronymic {
-    margin: 0 0 0 6px;
-}
-
-.person-search__personal-info {
-    display: flex;
-    margin: 0 0 0 8px;
-}
-
-.input-block__add-button {
-    margin-top: 32px;
-    padding: 8px;
-    border: 1px solid #999;
-    border-radius: 10px;
-    letter-spacing: 0.1em;
-    background-color: #f4f4f4;
-}
-
 .output-block {
     display: flex;
     flex-direction: column;
-    min-width: 448px;
     margin-left: 32px;
 }
 
 .member-block {
     display: flex;
     flex-direction: column;
+    padding: 8px;
+    border-radius: 16px;
+    background-color: #f4f4f4;
 }
 
 .member-block__header {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    margin: 0;
+    margin-bottom: 8px;
     padding: 8px 16px;
-    border: 1px solid #999;
-    border-radius: 10px 10px 0 0;
-    text-align: center;
+}
+
+.member-block__header_text {
+    margin: 0;
     font-size: 16px;
     line-height: 16px;
+    font-weight: 600;
+}
+
+.member-block__header_text_access {
+    min-width: 128px;
+    margin-right: 36px;
+    text-align: center;
+}
+
+.member-block__member-list {
+    width: 100%;
 }
 
 .member-list {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    overflow: auto;
     max-height: 488px;
-    padding: 8px 4px;
-    border: 1px solid #999;
-    border-width: 0 1px;
+    padding: 8px;
+    border-radius: 16px;
+    background-color: #fff;
 }
 
 .member-list__grouping-block {
-    padding: 0 4px 4px 4px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #999;
     border-radius: 8px;
-    background-color: #f4f4f4;
 }
 
 .member-list__grouping-block + .member-list__grouping-block {
@@ -161,6 +158,8 @@
     display: flex;
     justify-content: space-between;
     padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    background-color: #fafafa;
 }
 
 .member-list__group-name {
@@ -178,14 +177,13 @@
 .member-list__group-members {
     margin: 0;
     padding: 4px 32px;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     list-style: none;
     background-color: #fff;
 }
 
 .member {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 4px 0;
 }
@@ -195,20 +193,24 @@
 }
 
 .member__personal-info {
-    display: flex;
-}
-
-.member__surname,
-.member__name,
-.member__patronymic {
+    width: 100%;
     margin: 0;
     font-size: 14px;
     line-height: 16px;
 }
 
-.member__name,
-.member__patronymic {
-    margin: 0 0 0 6px;
+.member__member-access {
+    padding: 4px 24px 4px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #666;
+    background-color: #fff;
+}
+
+.member__member-access:hover {
+    background-color: #f4f4f4;
 }
 
 .member__member-checkbox {
@@ -218,23 +220,21 @@
 }
 
 .member-block__footer {
-    width: 100%;
-    padding: 8px 16px;
     display: flex;
     justify-content: flex-end;
-    border: 1px solid #999;
-    border-width: 0 1px 1px 1px;
-    border-radius: 0 0 10px 10px;
+    padding: 8px 0 0 0;
 }
 
 .member-block__delete-button {
+    margin: 0 0 0 16px;
     padding: 4px 16px;
-    border: 1px solid #999;
+    border: none;
     border-radius: 8px;
+    text-align: center;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.1em;
-    background-color: #f4f4f4;
+    background-color: #fff;
 }
 
 .member-block__delete-button + .member-block__delete-button {
@@ -242,10 +242,13 @@
 }
 
 .output-block__save-button {
+    width: 100%;
     margin-top: 32px;
-    padding: 8px;
-    border: 1px solid #999;
-    border-radius: 10px;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 16px;
     letter-spacing: 0.1em;
     background-color: #f4f4f4;
 }

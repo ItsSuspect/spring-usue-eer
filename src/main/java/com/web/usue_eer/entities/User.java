@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.web.usue_eer.entities.enums.AccessType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,9 @@ public class User {
     private String surname;
 
     private String middleName;
+
+    @Transient
+    private String accessType;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -146,5 +150,21 @@ public class User {
     public void addDiscipline(Discipline discipline) {
         List<Discipline> disciplines = getDisciplines();
         disciplines.add(discipline);
+    }
+
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public void setAccessType(String accessType) {
+        this.accessType = accessType;
+    }
+
+    public Set<UserTask> getUserTasks() {
+        return userTasks;
+    }
+
+    public void setUserTasks(Set<UserTask> userTasks) {
+        this.userTasks = userTasks;
     }
 }

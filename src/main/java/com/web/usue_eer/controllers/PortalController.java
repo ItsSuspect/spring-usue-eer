@@ -158,6 +158,16 @@ public class PortalController {
         return "index";
     }
 
+    @GetMapping("/portal/discipline/{disciplineId}/task-list/{taskId}/edit")
+    public String getEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
+        Task task = taskService.findTaskById(Long.parseLong(taskId));
+
+        model.addAttribute("task", task);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/task");
+        return "index";
+    }
+
     @GetMapping("/portal/discipline/{disciplineId}/task-list/create")
     public String getTaskCreate(Model model, @PathVariable String disciplineId) {
         model.addAttribute("disciplines", getDisciplines());

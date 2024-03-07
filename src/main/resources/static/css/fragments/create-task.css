@@ -1,0 +1,160 @@
+/* Оформление блока создания задания */
+
+.task-block {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+    width: 70%;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+}
+
+.task-block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+}
+
+.task-block__content {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+
+
+
+
+.task-block__task-name-input {
+    min-width: 224px;
+    width: 50%;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input {
+    max-width: 80px;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    text-align: right;
+    font-size: 16px;
+    line-height: 16px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input::-webkit-outer-spin-button,
+.task-block__task-mark-input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.task-instruction__due-dates {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-instruction__issue {
+    display: flex;
+    align-items: stretch;
+    max-width: 50%;
+}
+
+.task-instruction__issue-date {
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__issue-time {
+    margin-left: 16px;
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__delivery {
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    max-width: 50%;
+    margin-left: 32px;
+}
+
+.task-instruction__delivery-date {
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__delivery-time {
+    margin-left: 16px;
+    padding: 4px 0 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    outline: none;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-instruction__header {
+    margin-top: 16px;
+}
+
+.task-instruction__content {
+    width: 100%;
+    min-height: 64px;
+    max-height: 448px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    resize: none;
+    overflow: hidden;
+    font-size: 14px;
+    outline: none;
+    line-height: 16px;
+}
+
+.task-instruction__file-attachment-area {
+    width: 100%;
+    margin-top: 16px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f4f4f4;
+}
+
+.task-instruction__submit-button {
+    width: 100%;
+    margin: 16px 0 0 auto;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    text-wrap: nowrap;
+}

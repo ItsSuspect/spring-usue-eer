@@ -1,0 +1,31 @@
+<link rel="stylesheet" th:href="@{/css/fragments/completed-tasks.css}">
+<div class="content__content-block content-block">
+    <div class="content-block__completed-tasks completed-tasks">
+        <div class="completed-tasks__header">
+                                <span class="completed-tasks__main-column">
+                                    <p class="completed-tasks__column-name completed-tasks__column-name_content_students">Студент</p>
+                                </span>
+            <span class="completed-tasks__additional-columns">
+                                    <p class="completed-tasks__column-name completed-tasks__column-name_content_status">Статус</p>
+                                    <p class="completed-tasks__column-name completed-tasks__column-name_content_mark">Оценка</p>
+                                    <p class="completed-tasks__column-name completed-tasks__column-name_content_delivery">Дата сдачи</p>
+                                </span>
+        </div>
+        <div class="completed-tasks__content">
+            <div class="completed-tasks__task task-container">
+                <a class="task-container__student-info" href="">Маслов Глеб Олегович</a>
+                <div class="task-container__status-list status-list">
+                    <span class="status-list__task-status status-list__task-status_state_in-progress">В работе</span>
+                    <span class="status-list__task-status status-list__task-status_state_checked">Проверено</span>
+                    <span class="status-list__task-status status-list__task-status_state_rejected">Откланено</span>
+                </div>
+                <span class="task-container__task-mark task-mark">
+                                        <p class="task-mark__student-mark">?</p>
+                                        <p class="task-mark__separator"> / </p>
+                                        <p class="task-mark__max-mark">10</p>
+                                    </span>
+                <p class="task-container__task-delivery">дд.мм.гг</p>
+            </div>
+        </div>
+    </div>
+</div>

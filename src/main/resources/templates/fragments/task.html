@@ -1,27 +1,34 @@
+<link rel="stylesheet" th:href="@{/css/fragments/task.css}">
 <div class="content__content-block content-block">
     <div class="content-block__task-block task-block">
         <div class="task-block__header">
             <h3 class="task-block__task-name" th:text="${task.name}">Лабораторная работа №1</h3>
-            <span class="task-block__task-mark task-mark" th:text="'Максимальная оценка: ' + ${task.maxScore} + ' баллов'">
-<!--                <p class="task-mark__student-mark">10</p>-->
-<!--                <p class="task-mark__separator"> / </p>-->
-<!--                <p class="task-mark__max-mark">10</p>-->
-            </span>
+            <p class="task-block__task-mark" th:text="'Максимальная оценка: ' + ${task.maxScore} + ' баллов'"></p>
         </div>
         <div class="task-block__content">
             <div class="task-block__task-instruction task-instruction">
-                <p class="task-instruction__header">Инструкции к заданию</p>
+                <div class="task-instruction__header">
+                    <p class="task-instruction__header-text">Инструкции к заданию</p>
+                    <!--Todo: Кнопка редактирования только для преподавателя-->
+<!--                    th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list/' + ${task.id} + '/edit'"-->
+                    <a href="" class="task-instruction__edit-button" title="Редактирование"
+                       onmouseenter="addEditButtonText(this)" onmouseleave="removeEditButtonText(this)">Редактировать</a>
+                </div>
                 <div class="task-instruction__content">
                     <p class="task-instruction__text" th:text="${task.instruction}">Для выполнения задания вам потребуется проделать следующие шаги:</p>
                 </div>
                 <p th:text="'Дата выдачи: ' + ${task.formattedDateTimeIssue}"></p>
                 <p th:text="'Срок сдачи: ' +${task.formattedDateTimeDelivery}"></p>
             </div>
+            <!--Todo: Нижний div только для студента-->
             <div class="task-block__student-response student-response">
                 <p class="student-response__header">Сдача задания</p>
                 <div class="student-response__content">
-                    <div class="student-response__file-attachment-area">+ Прекрепить файл</div>
-                    <button class="student-response__submit-button">Сдать работу</button>
+                    <textarea class="student-response__feedback" name="" oninput="autoGrow(this)" placeholder="Комментарий к заданию для преподавателя"></textarea>
+                    <div class="student-response__container">
+                        <div class="student-response__file-attachment-area">+ Прекрепить файл</div>
+                        <button class="student-response__submit-button">Сдать работу</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,197 @@
+.task-check-block {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    max-width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+}
+
+.task-check-block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+}
+
+.task-check-block__student-mark-input {
+    max-width: 80px;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    text-align: right;
+    font-size: 16px;
+    line-height: 16px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.task-check-block__student-mark-input::-webkit-outer-spin-button,
+.task-check-block__student-mark-input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.task-check-block__content {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.task-mark__student-mark,
+.task-mark__separator,
+.task-mark__max-mark
+ {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+
+.task-check-block__task-name {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.task-check-block__task-mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-check-block__task-instruction {
+    padding: 8px 0;
+}
+
+.task-instruction__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-instruction__header-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.task-instruction__content {
+    margin-top: 16px;
+}
+
+.task-instruction__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-check-block__student-response {
+    margin-top: 12px;
+    padding: 20px 0 8px;
+    border-top: 1px solid #999;
+}
+
+.student-response__header {
+    display: flex;
+    align-items: center;
+}
+
+.student-response__header-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.student-response__student-group {
+    margin: 0 0 0 16px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #666;
+}
+
+.student-response__student-info {
+    margin: 0 0 0 16px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #666;
+}
+
+.student-response__content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.student-response__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.task-check-block__teacher-response {
+    margin-top: 12px;
+    padding: 20px 0 8px;
+    border-top: 1px solid #999;
+}
+
+.teacher-response__header {
+    display: flex;
+    align-items: center;
+}
+
+.teacher-response__header-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.teacher-response__content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.teacher-response__feedback {
+    width: 100%;
+    min-height: 64px;
+    max-height: 448px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    resize: none;
+    overflow: hidden;
+    font-size: 14px;
+    outline: none;
+    line-height: 16px;
+}
+
+.teacher-response__container {
+    display: flex;
+    margin-top: 16px;
+}
+
+.teacher-response__file-attachment-area {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f4f4f4;
+}
+
+.teacher-response__submit-button {
+    margin-left: 16px;
+    padding: 4px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    text-wrap: nowrap;
+}

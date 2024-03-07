@@ -1,0 +1,251 @@
+.input-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
+}
+
+.input-block__discipline-title {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.input-block__search-block {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 32px;
+}
+
+.group-search, .person-search {
+    display: flex;
+    flex-direction: column;
+    min-width: 288px;
+}
+
+.person-search {
+    margin-left: 16px;
+}
+
+.group-search__form, .person-search__form {
+    position: relative;
+}
+
+.group-search__input, .person-search__input {
+    width: 100%;
+    padding: 8px 32px 8px 16px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.group-search__submit, .person-search__submit {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 1px solid #999;
+    border-radius: 50%;
+    background-color: #f4f4f4;
+}
+
+.group-search__results-list, .person-search__results-list {
+    display: none;
+    margin: -10px 0 0 0;
+    padding: 16px 16px 8px 16px;
+    border: 1px solid #999;
+    border-radius: 0 0 10px 10px;
+    list-style: none;
+}
+
+.group-search__result, .person-search__result {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.group-search__result + .group-search__result,
+.person-search__result + .person-search__result {
+    border-top: 1px solid #999;    
+}
+
+.group-search__checkbox, .person-search__checkbox {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.group-search__group-name,
+.person-search__surname,
+.person-search__name,
+.person-search__patronymic {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.group-search__group-name {
+    margin: 0 0 0 8px;
+}
+
+.person-search__name,
+.person-search__patronymic {
+    margin: 0 0 0 6px;
+}
+
+.person-search__personal-info {
+    display: flex;
+    margin: 0 0 0 8px;
+}
+
+.input-block__add-button {
+    margin-top: 32px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    background-color: #f4f4f4;
+}
+
+.output-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 448px;
+    margin-left: 32px;
+}
+
+.member-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-block__header {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+    border: 1px solid #999;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.member-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 488px;
+    padding: 8px 4px;
+    border: 1px solid #999;
+    border-width: 0 1px;
+}
+
+.member-list__grouping-block {
+    padding: 0 4px 4px 4px;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+}
+
+.member-list__grouping-block + .member-list__grouping-block {
+    margin-top: 8px;
+}
+
+.member-list__grouping-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+}
+
+.member-list__group-name {
+    margin: 0;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.member-list__group-checkbox {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.member-list__group-members {
+    margin: 0;
+    padding: 4px 32px;
+    border-radius: 8px;
+    list-style: none;
+    background-color: #fff;
+}
+
+.member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.member + .member {
+    border-top: 1px solid #999;
+}
+
+.member__personal-info {
+    display: flex;
+}
+
+.member__surname,
+.member__name,
+.member__patronymic {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.member__name,
+.member__patronymic {
+    margin: 0 0 0 6px;
+}
+
+.member__member-checkbox {
+    width: 14px;
+    height: 14px;
+    margin: 0 0 0 16px;
+}
+
+.member-block__footer {
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: flex-end;
+    border: 1px solid #999;
+    border-width: 0 1px 1px 1px;
+    border-radius: 0 0 10px 10px;
+}
+
+.member-block__delete-button {
+    padding: 4px 16px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    background-color: #f4f4f4;
+}
+
+.member-block__delete-button + .member-block__delete-button {
+    margin-left: 16px;
+}
+
+.output-block__save-button {
+    margin-top: 32px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    background-color: #f4f4f4;
+}

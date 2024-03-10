@@ -124,6 +124,30 @@ public class TaskController {
         return "index";
     }
 
+    @GetMapping("/{disciplineId}/task-list/{taskId}/{username}/task-check")
+    public String getSendTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @PathVariable String username) {
+        User user = userDetailsService.findUserByUsername(username);
+        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId)).get();
+
+        TaskResponse taskResponse;
+        taskResponse = new TaskResponse();
+        taskResponse.setId(Long.parseLong(taskId));
+        taskResponse.setName(task.getName());
+        taskResponse.setMaxScore(task.getMaxScore());
+        taskResponse.setCommentStudent(userTask.getCommentStudent());
+        taskResponse.setCommentTeacher(userTask.getCommentTeacher());
+        taskResponse.setResultScore(userTask.getResultScore());
+        taskResponse.setInstruction(task.getInstruction());
+        taskResponse.setUser(user);
+
+
+        model.addAttribute("task", taskResponse);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/task-check");
+        return "index";
+    }
+
     @GetMapping("/{disciplineId}/task-list/{taskId}")
     public String getTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

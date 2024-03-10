@@ -12,21 +12,31 @@ public class UserTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private Task task;
 
     private String status;
 
     private LocalDateTime dateDelivery;
+    private String commentStudent;
+    private String commentTeacher;
 
     private Integer resultScore;
 
     public UserTask() {
+    }
+
+    public UserTask(User user, Task task, String status, LocalDateTime dateDelivery, String commentStudent) {
+        this.user = user;
+        this.task = task;
+        this.status = status;
+        this.dateDelivery = dateDelivery;
+        this.commentStudent = commentStudent;
     }
 
     public Long getId() {
@@ -75,5 +85,21 @@ public class UserTask {
 
     public void setResultScore(Integer resultScore) {
         this.resultScore = resultScore;
+    }
+
+    public String getCommentStudent() {
+        return commentStudent;
+    }
+
+    public void setCommentStudent(String commentStudent) {
+        this.commentStudent = commentStudent;
+    }
+
+    public String getCommentTeacher() {
+        return commentTeacher;
+    }
+
+    public void setCommentTeacher(String commentTeacher) {
+        this.commentTeacher = commentTeacher;
     }
 }

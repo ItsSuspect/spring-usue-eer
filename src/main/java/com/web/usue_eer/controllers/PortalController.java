@@ -3,6 +3,7 @@ package com.web.usue_eer.controllers;
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.entities.enums.AccessType;
 import com.web.usue_eer.payload.request.DisciplineRequest;
+import com.web.usue_eer.payload.response.UserResponse;
 import com.web.usue_eer.security.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,46 @@ public class PortalController {
         List<Group> groups = groupService.findAllGroups();
         List<User> users = userDetailsService.findAllUsers();
 
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> {
+                    UserResponse dto = new UserResponse();
+                    dto.setId(user.getId());
+                    dto.setUsername(user.getUsername());
+                    dto.setEmail(user.getEmail());
+                    dto.setName(user.getName());
+                    dto.setSurname(user.getSurname());
+                    dto.setMiddleName(user.getMiddleName());
+                    dto.setGroups(user.getGroups());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
         model.addAttribute("groups", groups);
-        model.addAttribute("users", users);
+        model.addAttribute("users", userResponses);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/create-discipline");
         return "index";
     }
 
     @PostMapping("/disciplines/create-getUserGroup")
-    public ResponseEntity<List<User>> getUsersGroup(@RequestBody Group group) {
+    public ResponseEntity<List<UserResponse>> getUsersGroup(@RequestBody Group group) {
         List<User> users = userDetailsService.findUsersByGroupName(group.getName());
-        return ResponseEntity.ok(users);
+
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> {
+                    UserResponse dto = new UserResponse();
+                    dto.setId(user.getId());
+                    dto.setUsername(user.getUsername());
+                    dto.setEmail(user.getEmail());
+                    dto.setName(user.getName());
+                    dto.setSurname(user.getSurname());
+                    dto.setMiddleName(user.getMiddleName());
+                    dto.setGroups(user.getGroups());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userResponses);
     }
 
     @PostMapping("/disciplines/create")

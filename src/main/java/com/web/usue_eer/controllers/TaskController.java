@@ -1,6 +1,7 @@
 package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
+import com.web.usue_eer.payload.request.SendTaskRequest;
 import com.web.usue_eer.payload.request.TaskRequest;
 import com.web.usue_eer.security.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class TaskController {
 
     @Autowired
     private UserTaskService userTaskService;
+
+    @Autowired
+    private UserDisciplineService userDisciplineService;
 
     @GetMapping("/{disciplineId}/task-list/create")
     public String getTaskCreate(Model model, @PathVariable String disciplineId) {
@@ -65,6 +69,12 @@ public class TaskController {
 
     @GetMapping("/{disciplineId}/task-list/{taskId}")
     public String getTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
+
         Task task = taskService.findTaskById(Long.parseLong(taskId));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
@@ -75,9 +85,23 @@ public class TaskController {
         task.setFormattedDateTimeDelivery(formattedDateTimeDelivery, formatter);
 
         model.addAttribute("task", task);
+        model.addAttribute("authorities", authorities);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task");
         return "index";
+    }
+
+    @PostMapping("/{disciplineId}/task-list/{taskId}/send")
+    public ResponseEntity<String> sendingTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody SendTaskRequest sendTaskRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        LocalDateTime localDateTime = LocalDateTime.now().withSecond(0).withNano(0);
+
+        UserTask userTask = new UserTask(user, task, "Отправлено", localDateTime, sendTaskRequest.getComment());
+        userTaskService.saveUserTask(userTask);
+        return ResponseEntity.ok("Удачно отправлено");
     }
 
     @PostMapping("/{disciplineId}/task-list/create")

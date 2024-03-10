@@ -4,8 +4,10 @@ import com.web.usue_eer.entities.UserDiscipline;
 import com.web.usue_eer.repository.UserDisciplineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserDisciplineService {
     @Autowired
     private UserDisciplineRepository userDisciplineRepository;

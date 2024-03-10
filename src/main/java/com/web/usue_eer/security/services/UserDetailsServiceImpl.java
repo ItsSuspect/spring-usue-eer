@@ -13,12 +13,12 @@ import com.web.usue_eer.repository.UserRepository;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден"));
@@ -30,23 +30,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userRepository.save(user);
     }
 
-    @Transactional
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден"));
     }
 
-    @Transactional
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    @Transactional
     public List<User> findByDisciplinesId(Long disciplineId) {
         return userRepository.findByDisciplineId(disciplineId);
     }
 
-
-    @Transactional
     public List<User> findUsersByGroupName(String groupName) {
         return userRepository.findUsersByGroupName(groupName);
     }

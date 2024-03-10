@@ -12,8 +12,10 @@
                     <p class="task-instruction__header-text">Инструкции к заданию</p>
                     <!--Todo: Кнопка редактирования только для преподавателя-->
 <!--                    th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list/' + ${task.id} + '/edit'"-->
-                    <a href="" class="task-instruction__edit-button" title="Редактирование"
-                       onmouseenter="addEditButtonText(this)" onmouseleave="removeEditButtonText(this)">Редактировать</a>
+                    <div th:if="${authorities}">
+                        <a href="" class="task-instruction__edit-button" title="Редактирование"
+                           onmouseenter="addEditButtonText(this)" onmouseleave="removeEditButtonText(this)">Редактировать</a>
+                    </div>
                 </div>
                 <div class="task-instruction__content">
                     <p class="task-instruction__text" th:text="${task.instruction}">Для выполнения задания вам потребуется проделать следующие шаги:</p>
@@ -21,17 +23,17 @@
                 <p th:text="'Дата выдачи: ' + ${task.formattedDateTimeIssue}"></p>
                 <p th:text="'Срок сдачи: ' +${task.formattedDateTimeDelivery}"></p>
             </div>
-            <!--Todo: Нижний div только для студента-->
-            <div class="task-block__student-response student-response">
+            <div th:if="${!authorities}" class="task-block__student-response student-response">
                 <p class="student-response__header">Сдача задания</p>
                 <div class="student-response__content">
-                    <textarea class="student-response__feedback" name="" oninput="autoGrow(this)" placeholder="Комментарий к заданию для преподавателя"></textarea>
+                    <textarea id="comment-to-task" class="student-response__feedback" name="" oninput="autoGrow(this)" placeholder="Комментарий к заданию для преподавателя"></textarea>
                     <div class="student-response__container">
                         <div class="student-response__file-attachment-area">+ Прекрепить файл</div>
-                        <button class="student-response__submit-button">Сдать работу</button>
+                        <button class="student-response__submit-button" th:data-taskId="${task.id}" th:data-disciplineId="${disciplineId}" onclick="sendTask(this)">Сдать работу</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script th:src="@{/js/task.js}"></script>

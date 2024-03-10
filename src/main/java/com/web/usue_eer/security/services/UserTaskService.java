@@ -15,4 +15,8 @@ public class UserTaskService {
     public List<UserTask> findUserTasksByUserId (Long id) {
         return userTaskRepository.findUserTasksByUserId(id);
     }
+
+    public void saveUserTask(UserTask userTask) {
+        userTaskRepository.save(userTask);
+    }
 }

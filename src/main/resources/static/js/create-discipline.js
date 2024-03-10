@@ -249,9 +249,6 @@ function createDiscipline() {
         users: users
     };
 
-    console.log(DisciplineRequest)
-
-
     fetch('/portal/disciplines/create', {
         method: 'POST',
         headers: {

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.usue_eer.entities.enums.AccessType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -20,6 +21,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     @Email
@@ -31,24 +33,29 @@ public class User {
 
     private String middleName;
 
+    @JsonIgnore
     @Transient
     private String accessType;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_groups",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Set<Group> groups = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<UserDiscipline> userDisciplines = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<UserTask> userTasks = new HashSet<>();
 
@@ -167,5 +174,4 @@ public class User {
         }
         return disciplines;
     }
-
 }

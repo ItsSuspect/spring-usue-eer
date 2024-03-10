@@ -29,6 +29,7 @@ public class Task {
     private String formattedDateTimeDelivery;
 
     private String instruction;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "discipline_id")
@@ -40,13 +41,14 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, Integer maxScore, LocalDateTime dateTimeIssue, LocalDateTime dateTimeDelivery, String instruction, Discipline discipline) {
+    public Task(String name, Integer maxScore, LocalDateTime dateTimeIssue, LocalDateTime dateTimeDelivery, String instruction, Discipline discipline, String status) {
         this.name = name;
         this.maxScore = maxScore;
         this.dateTimeIssue = dateTimeIssue;
         this.dateTimeDelivery = dateTimeDelivery;
         this.instruction = instruction;
         this.discipline = discipline;
+        this.status = status;
     }
 
     public Long getId() {
@@ -117,15 +119,23 @@ public class Task {
         return formattedDateTimeIssue;
     }
 
-    public void setFormattedDateTimeIssue(String formattedDateTimeIssue, DateTimeFormatter formatter) {
-        this.formattedDateTimeIssue = formattedDateTimeIssue;
-    }
-
     public String getFormattedDateTimeDelivery() {
         return formattedDateTimeDelivery;
     }
 
-    public void setFormattedDateTimeDelivery(String formattedDateTimeDelivery, DateTimeFormatter formatter) {
+    public void setFormattedDateTimeIssue(String formattedDateTimeIssue) {
+        this.formattedDateTimeIssue = formattedDateTimeIssue;
+    }
+
+    public void setFormattedDateTimeDelivery(String formattedDateTimeDelivery) {
         this.formattedDateTimeDelivery = formattedDateTimeDelivery;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

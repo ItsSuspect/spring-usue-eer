@@ -16,6 +16,10 @@ public class UserDisciplineService {
         userDisciplineRepository.save(disciplineAccess);
     }
 
+    public Long countStudentsByDisciplineId (Long disciplineId) {
+        return userDisciplineRepository.countStudentsByDisciplineId(disciplineId);
+    }
+
     public UserDiscipline findByDisciplineIdAndUserId(Long disciplineId, Long userId) {
         return userDisciplineRepository.findByDisciplineIdAndUserId(disciplineId, userId);
     }

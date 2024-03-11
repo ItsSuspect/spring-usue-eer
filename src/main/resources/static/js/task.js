@@ -18,9 +18,8 @@ function sendTask(element) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();
         })
-        .then(discipline => {
+        .then(() => {
             window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/task-list";
         })
         .catch(error => {

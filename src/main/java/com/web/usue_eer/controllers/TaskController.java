@@ -2,6 +2,7 @@ package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.payload.request.SendTaskRequest;
+import com.web.usue_eer.payload.request.SendTaskTeacherRequest;
 import com.web.usue_eer.payload.request.TaskRequest;
 import com.web.usue_eer.payload.response.TaskResponse;
 import com.web.usue_eer.security.services.*;
@@ -13,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,6 +60,9 @@ public class TaskController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
+
         List<TaskResponse> taskResponses = tasks.stream()
                 .map(task -> {
                     TaskResponse taskResponse = new TaskResponse();
@@ -81,17 +87,13 @@ public class TaskController {
                     }
                     if (taskResponse.getStatus() == null) taskResponse.setStatus(task.getStatus());
                     if (!taskResponse.isSending()) taskResponse.setSending(false);
-                    taskResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(Long.parseLong(disciplineId), task.getId()));
+                    if (authorities) {
+                        taskResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(Long.parseLong(disciplineId), task.getId()));
+                        taskResponse.setCountChecked(userTaskService.countByStatusAndTaskId(task.getId()));
+                    }
                     taskResponse.setUser(user);
                     return taskResponse;
                 }).collect(Collectors.toList());
-
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
-
-        if (authorities) {
-            model.addAttribute("sendingFalse", userDisciplineService.countStudentsByDisciplineId(Long.parseLong(disciplineId)));
-        }
 
         model.addAttribute("authorities", authorities);
         model.addAttribute("tasks", taskResponses);
@@ -176,6 +178,8 @@ public class TaskController {
                     userTask.getDateDelivery().format(formatter),
                     userTask.getStatus(),
                     userTask.getCommentStudent(),
+                    userTask.getCommentTeacher(),
+                    userTask.getResultScore(),
                     user,
                     true
             );
@@ -209,6 +213,69 @@ public class TaskController {
 
         UserTask userTask = new UserTask(user, task, "Сдано", localDateTime, sendTaskRequest.getComment());
         userTaskService.saveUserTask(userTask);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{disciplineId}/task-list/{taskId}/edit")
+    public String getEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        task.setFormattedDateTimeDelivery(task.getDateTimeDelivery().format(formatter));
+        task.setFormattedDateTimeIssue(task.getDateTimeIssue().format(formatter));
+
+        LocalDateTime localDateTimeIssue = task.getDateTimeIssue();
+        Date dateIssue = Date.from(localDateTimeIssue.atZone(ZoneId.systemDefault()).toInstant());
+        model.addAttribute("formattedDateIssue", dateIssue);
+
+        LocalDateTime localDateTimeDelivery = task.getDateTimeIssue();
+        Date dateDelivery = Date.from(localDateTimeDelivery.atZone(ZoneId.systemDefault()).toInstant());
+        model.addAttribute("formattedDateIssue", dateDelivery);
+
+        model.addAttribute("task", task);
+        model.addAttribute("authorities", authorities);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/edit-task");
+        return "index";
+    }
+
+    @PostMapping("/{disciplineId}/task-list/{taskId}/edit")
+    public ResponseEntity<Void> postEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody TaskRequest taskRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
+        LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
+
+        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        task.setName(taskRequest.getName());
+        task.setMaxScore(taskRequest.getMaxScore());
+        task.setInstruction(taskRequest.getInstructionTask());
+        task.setDateTimeDelivery(dateTimeDelivery);
+        task.setDateTimeIssue(dateTimeIssue);
+
+        taskService.saveTask(task);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{disciplineId}/task-list/{taskId}/answer-teacher")
+    public ResponseEntity<Void> answerTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody SendTaskTeacherRequest sendTaskTeacherRequest) {
+        User user = userDetailsService.findUserByUsername(sendTaskTeacherRequest.getUsername());
+
+        Optional<UserTask> optionalUserTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId));
+        System.out.println(optionalUserTask.isPresent());
+        if (optionalUserTask.isPresent()) {
+            UserTask userTask = optionalUserTask.get();
+            userTask.setCommentTeacher(sendTaskTeacherRequest.getCommentTeacher());
+            userTask.setResultScore(sendTaskTeacherRequest.getResultScore());
+            userTask.setStatus("Проверено");
+            userTaskService.saveUserTask(userTask);
+        }
         return ResponseEntity.ok().build();
     }
 

@@ -1,10 +1,12 @@
 <link rel="stylesheet" th:href="@{/css/fragments/task-check.css}">
+<h2 class="content__header">Выполненное задание</h2>
 <div class="content__content-block content-block">
     <div class="content-block__task-check-block task-check-block">
         <div class="task-check-block__header">
             <h3 class="task-check-block__task-name" th:text="${task.name}">Название задания</h3>
             <span class="task-check-block__task-mark task-mark">
-                <input class="task-check-block__student-mark-input" type="number" placeholder="Оценка">
+                <input id="result-score" class="task-check-block__student-mark-input" type="number" placeholder="Оценка"
+                       th:value="${task.resultScore != null} ? ${task.resultScore} : ''">
                 <p class="task-mark__separator"> / </p>
                 <p class="task-mark__max-mark" th:text="${task.maxScore}">Максимальнация оценка</p>
             </span>
@@ -34,13 +36,15 @@
                     <p class="teacher-response__header-text">Ответ преподавателя</p>
                 </div>
                 <div class="teacher-response__content">
-                    <textarea class="teacher-response__feedback" name="" id="" oninput="autoGrow(this)" th:text="${task.commentTeacher}"></textarea>
+                    <textarea class="teacher-response__feedback" id="comment-teacher" oninput="autoGrow(this)" th:text="${task.commentTeacher}"></textarea>
                     <div class="teacher-response__container">
                         <div class="teacher-response__file-attachment-area">+ Прикрепить файл</div>
-                        <button class="teacher-response__submit-button">Сохранить</button>
+                        <button class="teacher-response__submit-button" th:data-username="${task.user.username}" th:data-taskId="${task.id}"
+                                th:data-disciplineId="${disciplineId}" onclick="saveTaskTeacher(this)">Сохранить</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script th:src="@{/js/task-check.js}"></script>

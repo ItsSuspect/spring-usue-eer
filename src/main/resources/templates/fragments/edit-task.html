@@ -1,0 +1,39 @@
+<link rel="stylesheet" th:href="@{/css/fragments/create-task.css}">
+<h2 class="content__header">Редактирование задания</h2>
+<div class="content__content-block content-block">
+  <div class="content-block__task-block task-block">
+    <div class="task-block__header">
+      <input class="task-block__task-name-input" id="name_task" type="text" placeholder="Название задания" th:value="${task.name}">
+      <input class="task-block__task-mark-input" id="score_number" type="number" placeholder="Оценка" th:value="${task.maxScore}">
+    </div>
+    <div class="task-block__content">
+      <div class="task-block__task-instruction task-instruction">
+        <div class="task-instruction__due-dates">
+          <span class="task-instruction__issue">
+            <input type="date" class="task-instruction__issue-date" id="date_issue"
+                   th:if="${formattedDateIssue != null}"
+                   th:value="${#dates.format(formattedDateIssue, 'yyyy-MM-dd')}">
+            <input type="time" class="task-instruction__issue-time" id="time_issue"
+                   th:if="${task.formattedDateTimeIssue != null}"
+                   th:value="${#strings.substringAfter(task.formattedDateTimeIssue, ' ')}">
+          </span>
+          <span class="task-instruction__delivery">
+            <input type="date" class="task-instruction__delivery-date" id="date_delivery"
+                   th:if="${formattedDateIssue != null}"
+                   th:value="${#dates.format(formattedDateIssue, 'yyyy-MM-dd')}">
+            <input type="time" class="task-instruction__delivery-time" id="time_delivery"
+                   th:if="${task.formattedDateTimeDelivery != null}"
+                   th:value="${#strings.substringAfter(task.formattedDateTimeDelivery, ' ')}">
+          </span>
+        </div>
+        <p class="task-instruction__header">Инструкции к заданию</p>
+        <textarea class="task-instruction__content" name="" id="instruction-task" oninput="autoGrow(this)" th:text="${task.instruction}"></textarea>
+        <div class="task-instruction__file-attachment-area">+ Прикрепить файл</div>
+        <button class="task-instruction__submit-button" th:data-disciplineId="${disciplineId}"
+                th:data-taskId="${task.id}" onclick="editTask(this)">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/edit-task.js}"></script>
+<script th:src="@{/js/create-task.js}"></script>

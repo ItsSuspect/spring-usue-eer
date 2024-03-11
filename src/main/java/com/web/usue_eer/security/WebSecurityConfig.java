@@ -59,7 +59,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
                     authorize
-                            .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+                            .requestMatchers("/css/**", "/images/**", "/js/**", "/fonts/**").permitAll()
                             .requestMatchers("/error").permitAll()
                             .requestMatchers("/auth/**").anonymous()
                             .requestMatchers("/portal/disciplines").authenticated()

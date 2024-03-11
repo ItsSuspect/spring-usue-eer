@@ -1,3 +1,13 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const scoreInput = document.getElementById('score_number');
+
+    scoreInput.addEventListener('input', function(event) {
+        let value = event.target.value;
+        value = value.replace(/\D/g, '');
+        event.target.value = value;
+    });
+});
+
 function autoGrow(element) {
     element.style.height = "16px";
     element.style.height = (element.scrollHeight) + "px";

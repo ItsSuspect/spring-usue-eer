@@ -29,6 +29,10 @@ public class UserTaskService {
         return userTaskRepository.countUserTasksByDisciplineIdAndTaskId(disciplineId, taskId);
     }
 
+    public int countByStatusAndTaskId (Long taskId) {
+        return userTaskRepository.countByStatusAndTaskId(taskId);
+    }
+
     public void saveUserTask(UserTask userTask) {
         userTaskRepository.save(userTask);
     }

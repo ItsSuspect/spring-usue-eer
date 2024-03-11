@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Регистрация гостя</title>
+
+		<link rel="preload" th:href="@{/css/style.css}" as="style">
+		<link rel="preload" th:href="@{/css/registration.css}" as="style">
+		<link rel="preload" th:href="@{/css/slick.css}" as="style">
+		<link rel="preload" th:href="@{/css/slick-theme.css}" as="style">
+
+		<link rel="preload" href="https://code.jquery.com/jquery-3.6.4.min.js" as="script">
+		<link rel="preload" th:href="@{/js/slick.min.js}" as="script">
+		<link rel="preload" th:href="@{/js/slider.js}" as="script">
+
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script th:src="@{/js/slick.min.js}"></script>
+		<script th:src="@{/js/slider.js}"></script>
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/registration.css}">
+		<link rel="stylesheet" th:href="@{/css/slick.css}">
+		<link rel="stylesheet" th:href="@{/css/slick-theme.css}">
+	</head>
+	<body>
+		<div class="registration">
+			<section class="registration__related-info related-info">
+				<div class="related-info__slide related-info__slide_subject_parallel-education">
+					<div class="related-info__slide-content">
+						<h3 class="related-info__header">Параллельное образование</h3>
+						<p class="related-info__text">
+							Возможность получения второго высшего образования совместно с основной специальностью.
+						</p>
+					</div>
+					<img th:src="@{/images/parallel-education.webp}" alt="" class="related-info__background-image">
+				</div>
+				<div class="related-info__slide related-info__slide_subject_opportunities">
+					<div class="related-info__slide-content">
+						<h3 class="related-info__header">Реальные перспективы</h3>
+						<p class="related-info__text">
+							После оконыания ВУЗа студенты могут расчитывать на получение приглашений от компаний сотрудничающих с вузом.
+						</p>
+					</div>
+					<img th:src="@{/images/happy-graduates.webp}" alt="" class="related-info__background-image" loading="lazy">
+				</div>
+				<div class="related-info__slide related-info__slide_subject_invited-experts">
+					<div class="related-info__slide-content">
+						<h3 class="related-info__header">Приглашенные эксперты</h3>
+						<p class="related-info__text">
+							Учащимся дается возможность посетить лекции широко известных в своей области специалистов.
+						</p>
+					</div>
+					<img th:src="@{/images/invited-experts.webp}" alt="" class="related-info__background-image" loading="lazy">
+				</div>
+			</section>
+			<aside class="registration__registration-block registration-block">
+				<div class="registration-block__logo logo">
+					<div class="logo__link">
+						<img class="logo__image" th:src="@{/images/logo.png}" alt="">
+						<div class="logo__name">
+							<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Э</em>лектронный</p>
+							<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">О</em>бразовательный</p>
+							<p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Р</em>есурс</p>
+						</div>
+					</div>
+				</div>
+				<div class="registration-block__registration-content">
+					<a href="http://localhost:8080/auth/signIn" class="registration-block__return-button">Назад</a>
+					<form action="" class="registration-block__registration-form registration-form">
+						<input type="text" name="login" class="registration-form__input registration-form__input_assignment_login" placeholder="Логин">
+						<input type="password" name="password" class="registration-form__input registration-form__input_assignment_password" placeholder="Пароль">
+						<hr class="registration-form__separating-line">
+						<input type="text" name="surname" class="registration-form__input registration-form__input_assignment_password" placeholder="Фамилия">
+						<input type="text" name="name" class="registration-form__input registration-form__input_assignment_password" placeholder="Имя">
+						<input type="text" name="patronymic" class="registration-form__input registration-form__input_assignment_password" placeholder="Отчество">
+						<input type="text" name="email" class="registration-form__input registration-form__input_assignment_password" placeholder="Электронная почта">
+						<button class="registration-form__submit-button">Зарегистрироваться</button>
+					</form>
+				</div>
+			</aside>
+		</div>
+	</body>
+</html>

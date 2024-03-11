@@ -1,10 +1,14 @@
 <link rel="stylesheet" th:href="@{/css/fragments/task.css}">
+<link rel="stylesheet" th:href="@{/css/fragments/checked-task.css}">
 <h2 class="content__header">Задание</h2>
 <div class="content__content-block content-block">
     <div class="content-block__task-block task-block">
         <div class="task-block__header">
             <h3 class="task-block__task-name" th:text="${task.name}">Лабораторная работа №1</h3>
-            <p class="task-block__task-mark" th:text="'Максимальная оценка: ' + ${task.maxScore} + ' баллов'"></p>
+            <p class="task-block__task-mark" th:if="${#strings.isEmpty(task.resultScore)}"
+               th:text="'Максимальная оценка: ' + ${task.maxScore}"></p>
+            <p class="task-block__task-mark" th:if="${not #strings.isEmpty(task.resultScore)}"
+               th:text="'Ваша оценка: ' + ${task.resultScore}"></p>
         </div>
         <div class="task-block__content">
             <div class="task-block__task-instruction task-instruction">
@@ -17,16 +21,37 @@
                     </div>
                 </div>
                 <div class="task-instruction__content">
-                    <p class="task-instruction__text" th:text="${task.instruction}">Для выполнения задания вам потребуется проделать следующие шаги:</p>
+                    <p class="task-instruction__text" th:text="${task.instruction}">Инструкция к заданию</p>
                 </div>
                 <p th:text="'Дата выдачи: ' + ${task.formattedDateTimeIssue}"></p>
                 <p th:text="'Срок сдачи: ' +${task.formattedDateTimeDelivery}"></p>
+                <!--Блок когда работа отправлена-->
                 <div th:if="${task.sending}">
-                    <hr>
-                    <p th:text="'Статус задания: ' +${task.status}"></p>
-                    <p th:text="'Дата сдачи работы: ' +${task.dateDelivery}"></p>
-                    <textarea class="student-response__feedback" oninput="autoGrow(this)" th:text="${task.commentStudent}"
-                              placeholder="Комментарий к заданию для преподавателя"></textarea>
+                    <div class="checked-task-block__student-response student-response">
+                        <div class="student-response__header">
+                            <span class="student-response__header-container">
+                                <p class="student-response__header-text">Ответ студента</p>
+                                <p class="student-response__student-group" th:text="${task.user.groups[0].name}">Учебная группа</p>
+                                <p class="student-response__student-info"
+                                   th:text="${task.user.surname} + ' ' + ${task.user.name} + ' ' + ${task.user.middleName}">ФИО студента</p>
+                            </span>
+                            <p class="student-response__date" th:text="${task.dateDelivery}">дд.мм чч:мм</p>
+                        </div>
+                        <div class="student-response__content">
+                            <p class="student-response__text" th:text="${task.commentStudent}">Ответ студента</p>
+                        </div>
+                    </div>
+                </div>
+                <!--Блок когда работа проверена-->
+                <div th:if="${not #strings.isEmpty(task.resultScore)}">
+                    <div class="checked-task-block__teacher-response teacher-response">
+                        <div class="teacher-response__header">
+                            <p class="teacher-response__header-text">Ответ преподавателя</p>
+                        </div>
+                        <div class="teacher-response__content">
+                            <p class="teacher-response__text" th:text="${task.commentTeacher}">Ответ преподавателя</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div th:if="${!authorities} and ${!task.sending}" class="task-block__student-response student-response">

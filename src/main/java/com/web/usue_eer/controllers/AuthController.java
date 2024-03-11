@@ -1,8 +1,5 @@
 package com.web.usue_eer.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.web.usue_eer.payload.response.MessageResponse;
 import jakarta.validation.Valid;
 
@@ -17,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 @Controller
 @RequestMapping("/auth")
@@ -36,10 +33,16 @@ public class AuthController {
         return "authorization";
     }
 
+    @GetMapping("/signUp")
+    public String getSignUp() {
+        return "registration";
+    }
+
     @SuppressWarnings("squid:S2696")
     @PostMapping("/signIn")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         if (signInRequest.getUsername() == null || signInRequest.getPassword() == null) {
+            System.out.println("тута");
             return ResponseEntity.badRequest().body(new MessageResponse("Ошибка: Неверное имя пользователя или пароль "));
         }
         Authentication authentication = authenticationManager.authenticate(

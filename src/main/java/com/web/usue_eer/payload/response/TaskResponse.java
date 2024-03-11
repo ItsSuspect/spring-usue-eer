@@ -21,12 +21,14 @@ public class TaskResponse {
     private User user;
     private boolean sending;
     private Long countSend;
+    private int countChecked;
 
     public TaskResponse() {
     }
 
     public TaskResponse(Long id, String instruction, String name, Integer maxScore, String formattedDateTimeDelivery,
-                        String formattedDateTimeIssue, String dateDelivery, String status, String commentStudent, User user, boolean sending) {
+                        String formattedDateTimeIssue, String dateDelivery, String status, String commentStudent, String commentTeacher,
+                        Integer resultScore, User user, boolean sending) {
         this.id = id;
         this.instruction = instruction;
         this.name = name;
@@ -36,6 +38,8 @@ public class TaskResponse {
         this.dateDelivery = dateDelivery;
         this.status = status;
         this.commentStudent = commentStudent;
+        this.commentTeacher = commentTeacher;
+        this.resultScore = resultScore;
         this.user = user;
         this.sending = sending;
     }
@@ -162,5 +166,13 @@ public class TaskResponse {
 
     public void setCountSend(Long countSend) {
         this.countSend = countSend;
+    }
+
+    public int getCountChecked() {
+        return countChecked;
+    }
+
+    public void setCountChecked(int countChecked) {
+        this.countChecked = countChecked;
     }
 }

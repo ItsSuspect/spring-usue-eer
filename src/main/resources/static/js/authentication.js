@@ -1,3 +1,8 @@
+function toggleRememberMe(text) {
+    var checkbox = $(text).siblings('.authorization-form__input_assignment_remember-me');
+    checkbox.prop('checked', !checkbox.prop('checked'));
+};
+
 function signIn() {
     const username = document.getElementById("username-input").value;
     const password = document.getElementById("password-input").value;

@@ -2,6 +2,7 @@ package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.entities.enums.AccessType;
+import com.web.usue_eer.payload.request.AdvertisementRequest;
 import com.web.usue_eer.payload.request.DisciplineRequest;
 import com.web.usue_eer.payload.response.UserResponse;
 import com.web.usue_eer.security.services.*;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +39,9 @@ public class PortalController {
 
     @Autowired
     private UserDisciplineService userDisciplineService;
+
+    @Autowired
+    private AdvertisementService advertisementService;
 
     @GetMapping("")
     public String index(Model model) {
@@ -149,6 +155,81 @@ public class PortalController {
 
         model.addAttribute("content", "fragments/member-list");
         return "index";
+    }
+
+    @GetMapping("/discipline/{disciplineId}/information")
+    public String getDisciplineInformation(Model model, @PathVariable String disciplineId) {
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/basic-information");
+        return "index";
+    }
+
+    @GetMapping("/discipline/{disciplineId}/advertisements")
+    public String getDisciplineAdvertisements(Model model, @PathVariable String disciplineId) {
+        List<Advertisement> advertisements = advertisementService.findAdvertisementsByDisciplineId(Long.parseLong(disciplineId));
+        List<Advertisement> sortedAdvertisements = advertisements.stream()
+                .sorted(Comparator.comparing(Advertisement::getDate))
+                .collect(Collectors.toList());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy'г.'", new Locale("ru"));
+        for (Advertisement advertisement : sortedAdvertisements) {
+            String formattedDate = advertisement.getDate().format(formatter);
+            advertisement.setFormattedDate(formattedDate);
+        }
+
+        model.addAttribute("advertisements", sortedAdvertisements);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/advertisements");
+        return "index";
+    }
+
+    @GetMapping("/discipline/{disciplineId}/advertisements/{advertisementId}/edit-advertisement")
+    public String getEditDisciplineAdvertisements(Model model, @PathVariable String disciplineId, @PathVariable String advertisementId) {
+        Advertisement advertisement = advertisementService.findAdvertisementById(Long.parseLong(advertisementId));
+        model.addAttribute("advertisement", advertisement);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/edit-advertisement");
+        return "index";
+    }
+
+    @PostMapping("/discipline/{disciplineId}/advertisements/{advertisementId}/edit-advertisement")
+    public ResponseEntity<Void> editDisciplineAdvertisements(Model model, @PathVariable String disciplineId, @PathVariable String advertisementId, @RequestBody AdvertisementRequest advertisementRequest) {
+        String owner = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(owner);
+
+        Advertisement advertisement = advertisementService.findAdvertisementById(Long.parseLong(advertisementId));
+        advertisement.setName(advertisementRequest.getName());
+        advertisement.setContent(advertisementRequest.getContent());
+        advertisement.setUser(user);
+
+        advertisementService.saveAdvertisement(advertisement);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/discipline/{disciplineId}/advertisements/create-advertisement")
+    public String getCreateAdvertisement(Model model, @PathVariable String disciplineId) {
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("content", "fragments/create-advertisement");
+        return "index";
+    }
+
+    @PostMapping("/discipline/{disciplineId}/advertisements/create-advertisement")
+    public ResponseEntity<Void> createAdvertisement(Model model, @PathVariable String disciplineId, @RequestBody AdvertisementRequest advertisementRequest) {
+        String owner = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(owner);
+
+        Discipline discipline = disciplineService.findDisciplineById(Long.parseLong(disciplineId));
+        LocalDate currentDate = LocalDate.now();
+
+        Advertisement advertisement = new Advertisement();
+        advertisement.setName(advertisementRequest.getName());
+        advertisement.setContent(advertisementRequest.getContent());
+        advertisement.setDiscipline(discipline);
+        advertisement.setDate(currentDate);
+        advertisement.setUser(user);
+
+        advertisementService.saveAdvertisement(advertisement);
+        return ResponseEntity.ok().build();
     }
 
     public List<Discipline> getDisciplines () {

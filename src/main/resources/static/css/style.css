@@ -33,39 +33,115 @@ a {
 .content {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: center;
     max-width: 1360px;
     min-height: 784px;
     margin: 0 auto;
-    padding: 0 64px;
+    padding: 16px 64px;
     background-color: #fff;
     border-radius: 16px;
 }
 
 .content__header {
-    display: block;
-    width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.content__header-text {
+    margin: 0;
+    font-size: 24px;
+    line-height: 48px;
+    letter-spacing: 0.1em;
+}
+
+.content__return-button {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 4px 12px 4px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 16px;
+    background-color: #fff;
+    transition: 0.2s ease-out;
+}
+
+.content__return-button:hover {
+    background-color: #eee;
+}
+
+.content__return-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ddd;
+}
+
+.content__interaction-buttons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.interaction-buttons__button {
+    display: flex;
+    position: relative;
+    max-width: 24px;
+    width: fit-content;
+    height: 24px;
+    padding: 4px 0 4px 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 16px;
+    color: #eee;
+    transition: 0.3s ease-out;
+    background-color: #eee;
+}
+
+.interaction-buttons__button + .interaction-buttons__button {
+    margin-left: 16px;
+}
+
+.interaction-buttons__button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ddd;
+}
+
+.interaction-buttons__button_purpose_create::before {
+    background-color: #9f9;
+}
+
+.interaction-buttons__button_purpose_edit::before {
+    background-color: #ff9;
+}
+
+.interaction-buttons__button_purpose_delete::before {
+    background-color: #f99;
 }
 
 .content-block {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-}
-
-/* Оформление для кнопочек (Создать Редактировать удалить) */
-
-.content-block__links-list {
-    display: flex;
-    justify-content: flex-end;
-    width: 90%;
-}
-
-.content-block__link + .content-block__link {
-    margin-left: 16px;
-    font-size: 14px;
+    margin-top: 16px;
 }

@@ -111,3 +111,27 @@ function removeEditButtonText(editButton) {
   editButton.style.padding = '2px 0 2px 16px';
   editButton.style.color = '#f4f4f4';
 }
+
+function addEditButtonTextTwo(editButton) {
+  editButton.style.maxWidth = '160px';
+  editButton.style.padding = '4px 12px 4px 28px';
+  editButton.style.color = '#444';
+}
+
+function removeEditButtonTextTwo(editButton) {
+  editButton.style.maxWidth = '24px';
+  editButton.style.padding = '4px 0 4px 24px';
+  editButton.style.color = '#f4f4f4';
+}
+
+function expandButtonText(button) {
+  button.style.maxWidth = '112px';
+  button.style.padding = '4px 8px 4px 28px';
+  button.style.color = '#444';
+}
+
+function hideButtonText(button) {
+  button.style.maxWidth = '24px';
+  button.style.padding = '4px 0 4px 24px';
+  button.style.color = '#eee';
+}

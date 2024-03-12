@@ -1,10 +1,8 @@
-/* Оформление блока заданий */
-
 .task-block {
     display: flex;
     flex-direction: column;
     min-width: max-content;
-    width: 70%;
+    width: 100%;
     padding: 8px;
     border-radius: 10px;
     background-color: #f4f4f4;
@@ -35,16 +33,13 @@
     margin-left: 16px;
 }
 
-.task-block__column-name_content_works {
-    width: 224px;
-}
-
 .task-block__column-name_content_status,
 .task-block__column-name_content_issue,
 .task-block__column-name_content_delivery {
     width: 112px;
 }
 
+.task-block__column-name_content_works,
 .task-block__column-name_content_mark {
     width: 64px;
 }
@@ -61,7 +56,13 @@
     display: flex;
     align-items: center;
     padding: 8px 0;
+    /*    padding: 4px 0;*/
+    transition: 0.2s ease-out;
 }
+
+/*.task-container:hover {
+   padding: 8px 0;
+}*/
 
 .task-container + .task-container {
     border-top: 1px solid #999;
@@ -69,13 +70,25 @@
 
 .task-container__task-name {
     width: 100%;
+    transition: 0.2s ease-out;
+}
+
+.task-container__task-name:hover {
+    color: #0075ff;
 }
 
 .task-works {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 224px;
+    min-width: 64px;
+    margin-left: 16px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+
+.task-works:hover {
+    color: #0075ff;
 }
 
 .task-container__task-name,
@@ -111,6 +124,7 @@
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.05em;
+    text-wrap: nowrap;
 }
 
 .status-list__task-status_state_pending {
@@ -123,6 +137,7 @@
 }
 
 .status-list__task-status_state_delivered {
+    padding: 3px 7px;
     border: 1px solid #999;
 }
 
@@ -131,7 +146,14 @@
 }
 
 .status-list__task-status_state_rejected {
-    background-color: #FFBFBF;
+    background-color: #ffbfbf;
+}
+
+.status-list__task-status_state_completed {
+    padding: 3px 7px;
+    border: 1px solid #888;
+    color: #888;
+    background-color: #ddd;
 }
 
 .task-container__task-mark {

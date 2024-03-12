@@ -23,4 +23,8 @@ public class TaskService {
     public Task findTaskById (Long id) {
         return taskRepository.findTaskById(id);
     }
+
+    public List<Task> findTasksByStatus(String status) {
+        return taskRepository.findByStatus(status);
+    }
 }

@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'Проверено':
                 element.classList.add('status-list__task-status_state_checked');
                 break;
+            case 'Завершено':
+                element.classList.add('status-list__task-status_state_completed');
+                break;
             default:
                 break;
         }

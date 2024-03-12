@@ -93,7 +93,7 @@ public class TaskController {
                     }
                     taskResponse.setUser(user);
                     return taskResponse;
-                }).collect(Collectors.toList());
+                }).sorted(Comparator.comparing(TaskResponse::getName)).collect(Collectors.toList());
 
         model.addAttribute("authorities", authorities);
         model.addAttribute("tasks", taskResponses);
@@ -118,7 +118,7 @@ public class TaskController {
                     taskResponse.setMaxScore(task.getMaxScore());
                     taskResponse.setDateDelivery(userTask.getDateDelivery().format(formatter));
                     return taskResponse;
-                }).collect(Collectors.toList());
+                }).sorted(Comparator.comparing(TaskResponse::getStatus)).collect(Collectors.toList());
 
         model.addAttribute("tasks", taskResponses);
         model.addAttribute("disciplines", getDisciplines());
@@ -187,6 +187,7 @@ public class TaskController {
             taskResponse = new TaskResponse(
                     Long.parseLong(taskId),
                     task.getInstruction(),
+                    task.getStatus(),
                     task.getName(),
                     task.getMaxScore(),
                     task.getFormattedDateTimeDelivery(),
@@ -244,15 +245,22 @@ public class TaskController {
         return "index";
     }
 
+    //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
     @PostMapping("/{disciplineId}/task-list/{taskId}/edit")
     public ResponseEntity<Void> postEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody TaskRequest taskRequest) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
+        LocalDateTime currentTime = LocalDateTime.now();
 
         LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
         LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
-
         Task task = taskService.findTaskById(Long.parseLong(taskId));
+
+        if (dateTimeIssue.isBefore(currentTime)) {
+            task.setStatus("В процессе");
+        } else task.setStatus("Не началось");
+        if (dateTimeDelivery.isBefore(currentTime)) {
+            task.setStatus("Завершено");
+        }
+
         task.setName(taskRequest.getName());
         task.setMaxScore(taskRequest.getMaxScore());
         task.setInstruction(taskRequest.getInstructionTask());
@@ -279,15 +287,25 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
+    //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
     @PostMapping("/{disciplineId}/task-list/create")
     public ResponseEntity<Void> createTask(@PathVariable String disciplineId, @RequestBody TaskRequest taskRequest) {
+        LocalDateTime currentTime = LocalDateTime.now();
+
         LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
         LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
+        String status = "Не началось";
+        if (dateTimeIssue.isBefore(currentTime)) {
+            status = "В процессе";
+        }
+        if (dateTimeDelivery.isBefore(currentTime)) {
+            status = "Завершено";
+        }
 
         Discipline discipline = disciplineService.findDisciplineById(Long.parseLong(disciplineId));
 
         Task task = new Task(taskRequest.getName(), taskRequest.getMaxScore(), dateTimeIssue, dateTimeDelivery,
-                taskRequest.getInstructionTask(), discipline, "Не началось");
+                taskRequest.getInstructionTask(), discipline, status);
         taskService.saveTask(task);
         return ResponseEntity.ok().build();
     }

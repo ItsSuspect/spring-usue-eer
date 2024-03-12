@@ -1,0 +1,78 @@
+.main-block {
+  display: flex;
+}
+
+.useful-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.useful-info__teacher-block,
+.useful-info__student-block,
+.useful-info__owner-block {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.useful-info__student-block,
+.useful-info__owner-block {
+  margin-top: 16px;
+}
+
+.useful-info__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.useful-info__header-text {
+  margin: 0;
+  text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.useful-info__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.useful-info__content-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.useful-info__content-text + .useful-info__content-text {
+  margin-top: 16px; 
+}
+
+.useful-info__content-link {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 8px;
+  background-color: #eee;
+}
+
+.useful-info__content-link:hover {
+  background-color: #ddd;
+}
+
+.useful-info__footer {
+  display: flex;
+  flex-direction: column;
+  margin: 16px 8px 0;
+  padding: 16px;
+  border: solid #999;
+  border-width: 1px 0;
+}

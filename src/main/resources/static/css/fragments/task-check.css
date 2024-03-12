@@ -193,4 +193,10 @@
     line-height: 16px;
     letter-spacing: 0.1em;
     text-wrap: nowrap;
+    background-color: #eee;
+    transition: 0.2s ease-out;
+}
+
+.teacher-response__submit-button:hover {
+    background-color: #ddd;
 }

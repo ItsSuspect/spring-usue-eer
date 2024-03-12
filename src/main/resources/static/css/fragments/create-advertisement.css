@@ -1,0 +1,71 @@
+.advertisement-creation {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+    width: 100%;
+    padding: 8px;
+    border-radius: 24px;
+    background-color: #f4f4f4;
+}
+
+.advertisement-creation__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+}
+
+.advertisement-creation__advertisement-subject-input {
+    min-width: 224px;
+    width: 50%;
+    padding: 4px 8px;
+    border-width: 0 0 1px 0;
+    border-color: #999;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    background: none;
+}
+
+.advertisement-creation__content {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background-color: #fff;
+}
+
+.advertisement-creation__advertisement-content {
+    width: 100%;
+    min-height: 64px;
+    max-height: 448px;
+    resize: none;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    outline: none;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.advertisement-creation__submit-button {
+    width: 100%;
+    margin: 16px 0 8px 0;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    background-color: #eee;
+    transition: 0.2s ease-out;
+}
+
+.advertisement-creation__submit-button:hover {
+    background-color: #ddd;
+}

@@ -44,10 +44,11 @@ public class TaskResponse {
         this.sending = sending;
     }
 
-    public TaskResponse(Long id, String instruction, String name, Integer maxScore, String formattedDateTimeDelivery,
+    public TaskResponse(Long id, String instruction, String status, String name, Integer maxScore, String formattedDateTimeDelivery,
                         String formattedDateTimeIssue, User user, boolean sending) {
         this.id = id;
         this.instruction = instruction;
+        this.status = status;
         this.name = name;
         this.maxScore = maxScore;
         this.formattedDateTimeDelivery = formattedDateTimeDelivery;

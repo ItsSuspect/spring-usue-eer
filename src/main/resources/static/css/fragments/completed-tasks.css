@@ -1,9 +1,8 @@
-
 .completed-tasks {
     display: flex;
     flex-direction: column;
     min-width: max-content;
-    width: 70%;
+    width: 100%;
     padding: 8px;
     border-radius: 10px;
     background-color: #f4f4f4;
@@ -63,6 +62,11 @@
 
 .task-container__student-info {
     width: 100%;
+    transition: 0.2s ease-out;
+}
+
+.task-container__student-info:hover {
+    color: #0075ff;
 }
 
 .task-works {
@@ -103,17 +107,8 @@
     letter-spacing: 0.05em;
 }
 
-.status-list__task-status_state_pending {
-    color: #f4f4f4;
-    background-color: #999;
-}
-
 .status-list__task-status_state_in-progress {
     background-color: #eee;
-}
-
-.status-list__task-status_state_delivered {
-    border: 1px solid #999;
 }
 
 .status-list__task-status_state_checked {

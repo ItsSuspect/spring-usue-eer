@@ -3,6 +3,7 @@ package com.web.usue_eer.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -22,8 +23,14 @@ public class Advertisement {
     @NotBlank
     private String content;
 
-    @NotBlank
-    private Date date;
+    private LocalDate date;
+
+    @Transient
+    private String formattedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Advertisement() {
     }
@@ -60,11 +67,27 @@ public class Advertisement {
         this.content = content;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
     }
 }

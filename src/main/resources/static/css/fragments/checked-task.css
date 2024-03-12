@@ -1,8 +1,7 @@
 .checked-task-block {
     display: flex;
     flex-direction: column;
-    width: max-content;
-    max-width: 100%;
+    width: 100%;
     padding: 8px;
     border-radius: 10px;
     background-color: #f4f4f4;

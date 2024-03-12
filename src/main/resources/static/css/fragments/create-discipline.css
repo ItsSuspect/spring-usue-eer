@@ -26,6 +26,7 @@
     padding: 8px 16px;
     border: 1px solid #999;
     border-radius: 10px;
+    outline: none;
     font-size: 16px;
     line-height: 16px;
 }
@@ -61,6 +62,7 @@
     padding: 8px 16px 8px 16px;
     border: 1px solid #999;
     border-radius: 10px;
+    outline: none;
     font-size: 14px;
     line-height: 16px;
     z-index: 2;
@@ -250,5 +252,10 @@
     font-size: 16px;
     line-height: 16px;
     letter-spacing: 0.1em;
-    background-color: #f4f4f4;
+    background-color: #eee;
+    transition: 0.2s ease-out;
+}
+
+.output-block__save-button:hover {
+    background-color: #ddd;
 }

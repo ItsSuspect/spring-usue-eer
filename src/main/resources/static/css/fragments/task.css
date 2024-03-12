@@ -1,29 +1,23 @@
-/* Оформление блока отдельного задания */
-
 .task-block {
     display: flex;
     flex-direction: column;
-    min-width: max-content;
-    width: 70%;
+    width: 100%;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 16px;
     background-color: #f4f4f4;
 }
 
 .task-block__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    padding: 8px 16px;
+    flex-direction: column;
+    padding: 8px 0;
 }
 
-.task-block__content {
+.task-block__header-top {
     display: flex;
-    flex-direction: column;
-    padding: 8px 16px;
-    border-radius: 10px;
-    background-color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
 }
 
 .task-mark__student-mark,
@@ -31,12 +25,9 @@
 .task-mark__max-mark
  {
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 16px;
 }
-
-
-
 
 .task-block__task-name {
     margin: 0;
@@ -46,9 +37,34 @@
 }
 
 .task-block__task-mark {
+    display: flex;
+    justify-content: center;
+}
+
+.task-block__header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding: 4px 16px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.task-block__issue-date,
+.task-block__delivery-date {
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 16px;
+    letter-spacing: 0.1em;
+}
+
+.task-block__content {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #fff;
 }
 
 .task-block__task-instruction {
@@ -92,9 +108,8 @@
     background-color: #ddd;
 }
 
-
 .task-instruction__content {
-    margin-top: 16px;
+    margin: 16px 0 0 16px;
 }
 
 .task-instruction__text {
@@ -125,7 +140,7 @@
     width: 100%;
     min-height: 64px;
     max-height: 448px;
-    padding: 8px;
+    padding: 8px 16px;
     border: 1px solid #999;
     border-radius: 8px;
     resize: none;
@@ -143,18 +158,24 @@
 .student-response__file-attachment-area {
     width: 100%;
     padding: 8px 16px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 14px;
-    background-color: #f4f4f4;
+    background-color: #eee;
 }
 
 .student-response__submit-button {
     margin-left: 16px;
-    padding: 4px 32px;
+    padding: 4px 64px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.1em;
     text-wrap: nowrap;
+    background-color: #eee;
+    transition: 0.2s ease-out;
+}
+
+.student-response__submit-button:hover {
+    background-color: #ddd;
 }

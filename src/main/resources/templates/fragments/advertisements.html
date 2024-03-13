@@ -1,7 +1,7 @@
 <link rel="stylesheet" th:href="@{/css/fragments/advertisements.css}">
 <div class="content__header">
     <h2 class="content__header-text">Объявления</h2>
-    <span class="content__interaction-buttons interaction-buttons">
+    <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
         <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements/create-advertisement'" class="interaction-buttons__button interaction-buttons__button_purpose_create" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Создать</a>
     </span>
 </div>
@@ -10,7 +10,9 @@
         <article class="content-block__advertisement advertisement" th:each="advertisement : ${advertisements}">
             <div class="advertisement__header">
                 <h3 class="advertisement__header-text" th:text="${advertisement.name}">Тема объявления</h3>
-                <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements/' + ${advertisement.id} +'/edit-advertisement'" class="advertisement__edit-button" onmouseenter="addEditButtonTextTwo(this)" onmouseleave="removeEditButtonTextTwo(this)">Редактировать</a>
+                <a th:if="${authorities}"
+                   th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements/' + ${advertisement.id} +'/edit-advertisement'"
+                   class="advertisement__edit-button" onmouseenter="addEditButtonTextTwo(this)" onmouseleave="removeEditButtonTextTwo(this)">Редактировать</a>
             </div>
             <div class="advertisement__content">
                 <p class="advertisement__content-text" th:text="${advertisement.content}"></p>

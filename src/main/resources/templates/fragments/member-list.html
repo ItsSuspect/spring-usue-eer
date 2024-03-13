@@ -1,9 +1,9 @@
 <link rel="stylesheet" th:href="@{/css/fragments/member-list.css}">
-<h2 class="content__header">Список участников</h2>
-<div class="content__content-block content-block">
-    <div class="content-block__links-list" th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'') or hasRole(''ROLE_ADMIN'')')}">
-        <a href="" class="content-block__link content-block__link_assignment_edit">Редактировать</a>
-    </div>
+<div class="content__header">
+    <h2 class="content__header-text">Список участников</h2>
+    <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
+        <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
+    </span>
 </div>
 <div class="content__content-block content-block">
     <div class="content-block__member-block member-block">

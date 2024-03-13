@@ -11,7 +11,7 @@
                 <input id="result-score" class="task-check-block__student-mark-input" type="number" placeholder="Оценка"
                        th:value="${task.resultScore != null} ? ${task.resultScore} : ''">
                 <p class="task-mark__separator"> / </p>
-                <p class="task-mark__max-mark" th:text="${task.maxScore}">Максимальнация оценка</p>
+                <p class="task-mark__max-mark" th:text="${task.maxScore}">Максимальная оценка</p>
             </span>
         </div>
         <div class="task-check-block__content">

@@ -27,7 +27,7 @@
                     <span id="status-task" class="status-list__task-status" th:text="${task.status}">Статус задания</span>
                 </div>
                 <span class="task-container__task-mark task-mark">
-                    <p class="task-mark__student-mark" th:text="${task.resultScore}">Итоговая оценка</p>
+                    <p class="task-mark__student-mark" th:text="${task.resultScore != null ? task.resultScore : '-'}">Итоговая оценка</p>
                     <p class="task-mark__separator"> / </p>
                     <p class="task-mark__max-mark" th:text="${task.maxScore}">Максимальная оценка</p>
                 </span>

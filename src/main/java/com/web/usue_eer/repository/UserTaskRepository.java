@@ -15,7 +15,7 @@ public interface UserTaskRepository extends JpaRepository<UserTask, Long> {
     List<UserTask> findUserTasksByTaskId(Long id);
     Optional<UserTask> findUserTaskByUserIdAndTaskId(Long userId, Long taskId);
     @Query("SELECT COUNT(ut) FROM UserTask ut JOIN ut.task t WHERE t.discipline.id = :disciplineId AND t.id = :taskId")
-    Long countUserTasksByDisciplineIdAndTaskId(@Param("disciplineId") Long disciplineId, @Param("taskId") Long taskId);
+    int countUserTasksByDisciplineIdAndTaskId(@Param("disciplineId") Long disciplineId, @Param("taskId") Long taskId);
 
     @Query("SELECT COUNT(ut) FROM UserTask ut WHERE ut.status = 'Проверено' AND ut.task.id = :taskId")
     int countByStatusAndTaskId(@Param("taskId") Long taskId);

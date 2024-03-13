@@ -1,9 +1,13 @@
 package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
+import com.web.usue_eer.entities.enums.AccessType;
 import com.web.usue_eer.payload.request.SendTaskRequest;
 import com.web.usue_eer.payload.request.SendTaskTeacherRequest;
 import com.web.usue_eer.payload.request.TaskRequest;
+import com.web.usue_eer.payload.response.CompletedTaskResponse;
+import com.web.usue_eer.payload.response.TaskCheckResponse;
+import com.web.usue_eer.payload.response.TaskListResponse;
 import com.web.usue_eer.payload.response.TaskResponse;
 import com.web.usue_eer.security.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,42 +65,40 @@ public class TaskController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
         UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
+        boolean authorities = getAuthorities(userDiscipline.getAccessType());
 
-        List<TaskResponse> taskResponses = tasks.stream()
+        List<TaskListResponse> taskListResponses = tasks.stream()
                 .map(task -> {
-                    TaskResponse taskResponse = new TaskResponse();
+                    TaskListResponse taskListResponse = new TaskListResponse(
+                            task.getId(),
+                            task.getName(),
+                            task.getMaxScore(),
+                            task.getDateTimeDelivery().format(formatter),
+                            task.getDateTimeIssue().format(formatter)
+                    );
 
-                    taskResponse.setId(task.getId());
-                    taskResponse.setInstruction(task.getInstruction());
-                    taskResponse.setName(task.getName());
-                    taskResponse.setMaxScore(task.getMaxScore());
-                    taskResponse.setFormattedDateTimeIssue(task.getDateTimeIssue().format(formatter));
-                    taskResponse.setFormattedDateTimeDelivery(task.getDateTimeDelivery().format(formatter));
-
-                    for (UserTask userTask : userTasks) {
-                        if (userTask.getTask().getId().equals(task.getId())) {
-                            taskResponse.setStatus(userTask.getStatus());
-                            taskResponse.setCommentStudent(userTask.getCommentStudent());
-                            taskResponse.setDateDelivery(userTask.getDateDelivery().format(formatter));
-                            taskResponse.setCommentTeacher(userTask.getCommentTeacher());
-                            taskResponse.setResultScore(userTask.getResultScore());
-                            taskResponse.setSending(true);
-                            break;
+                    if (!authorities) {
+                        for (UserTask userTask : userTasks) {
+                            if (userTask.getTask().getId().equals(task.getId())) {
+                                taskListResponse.setStatus(userTask.getStatus());
+                                taskListResponse.setResultScore(userTask.getResultScore());
+                                break;
+                            }
                         }
+                    } else {
+                        taskListResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(Long.parseLong(disciplineId), task.getId()));
+                        taskListResponse.setCountChecked(userTaskService.countByStatusAndTaskId(task.getId()));
                     }
-                    if (taskResponse.getStatus() == null) taskResponse.setStatus(task.getStatus());
-                    if (!taskResponse.isSending()) taskResponse.setSending(false);
-                    if (authorities) {
-                        taskResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(Long.parseLong(disciplineId), task.getId()));
-                        taskResponse.setCountChecked(userTaskService.countByStatusAndTaskId(task.getId()));
+
+                    if (taskListResponse.getStatus() == null) {
+                        taskListResponse.setStatus(task.getStatus());
                     }
-                    taskResponse.setUser(user);
-                    return taskResponse;
-                }).sorted(Comparator.comparing(TaskResponse::getName)).collect(Collectors.toList());
+
+                    return taskListResponse;
+                }).sorted(Comparator.comparing(TaskListResponse::getName)).collect(Collectors.toList());
 
         model.addAttribute("authorities", authorities);
-        model.addAttribute("tasks", taskResponses);
+        model.addAttribute("tasks", taskListResponses);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task-list");
         return "index";
@@ -108,19 +110,17 @@ public class TaskController {
         List<UserTask> userTasks = userTaskService.findUserTasksByTaskId(Long.parseLong(taskId));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
-        List<TaskResponse> taskResponses = userTasks.stream()
-                .map(userTask -> {
-                    TaskResponse taskResponse = new TaskResponse();
-                    taskResponse.setId(Long.parseLong(taskId));
-                    taskResponse.setUser(userTask.getUser());
-                    taskResponse.setStatus(userTask.getStatus());
-                    taskResponse.setResultScore(userTask.getResultScore());
-                    taskResponse.setMaxScore(task.getMaxScore());
-                    taskResponse.setDateDelivery(userTask.getDateDelivery().format(formatter));
-                    return taskResponse;
-                }).sorted(Comparator.comparing(TaskResponse::getStatus)).collect(Collectors.toList());
+        List<CompletedTaskResponse> completedTaskResponses = userTasks.stream()
+                .map(userTask -> new CompletedTaskResponse(
+                        Long.parseLong(taskId),
+                        userTask.getUser(),
+                        userTask.getStatus(),
+                        userTask.getResultScore(),
+                        task.getMaxScore(),
+                        userTask.getDateDelivery().format(formatter)
+                )).sorted(Comparator.comparing(CompletedTaskResponse::getStatus)).collect(Collectors.toList());
 
-        model.addAttribute("tasks", taskResponses);
+        model.addAttribute("tasks", completedTaskResponses);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/completed-tasks");
         return "index";
@@ -132,19 +132,18 @@ public class TaskController {
         Task task = taskService.findTaskById(Long.parseLong(taskId));
         UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId)).get();
 
-        TaskResponse taskResponse;
-        taskResponse = new TaskResponse();
-        taskResponse.setId(Long.parseLong(taskId));
-        taskResponse.setName(task.getName());
-        taskResponse.setMaxScore(task.getMaxScore());
-        taskResponse.setCommentStudent(userTask.getCommentStudent());
-        taskResponse.setCommentTeacher(userTask.getCommentTeacher());
-        taskResponse.setResultScore(userTask.getResultScore());
-        taskResponse.setInstruction(task.getInstruction());
-        taskResponse.setUser(user);
+        TaskCheckResponse taskCheckResponse = new TaskCheckResponse(
+                Long.parseLong(taskId),
+                task.getName(),
+                userTask.getResultScore(),
+                task.getMaxScore(),
+                userTask.getCommentStudent(),
+                userTask.getCommentTeacher(),
+                task.getInstruction(),
+                user
+        );
 
-
-        model.addAttribute("task", taskResponse);
+        model.addAttribute("task", taskCheckResponse);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task-check");
         return "index";
@@ -154,48 +153,37 @@ public class TaskController {
     public String getTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
+        long userId = user.getId();
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), userId);
+        boolean authorities = getAuthorities(userDiscipline.getAccessType());
 
-        Optional<UserTask> optionalUserTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId));
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        long parsedTaskId = Long.parseLong(taskId);
+
+        Optional<UserTask> userTaskOptional = userTaskService.findUserTaskByUserIdAndTaskId(userId, parsedTaskId);
+        Task task = taskService.findTaskById(parsedTaskId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
-        task.setFormattedDateTimeIssue(task.getDateTimeIssue().format(formatter));
-        task.setFormattedDateTimeDelivery(task.getDateTimeDelivery().format(formatter));
-        TaskResponse taskResponse;
-        if (optionalUserTask.isPresent()) {
-            UserTask userTask = optionalUserTask.get();
+        TaskResponse taskResponse = new TaskResponse(
+                parsedTaskId,
+                task.getInstruction(),
+                task.getName(),
+                task.getStatus(),
+                task.getMaxScore(),
+                task.getDateTimeDelivery().format(formatter),
+                task.getDateTimeIssue().format(formatter),
+                user,
+                false
+        );
 
-            taskResponse = new TaskResponse(
-                    Long.parseLong(taskId),
-                    task.getInstruction(),
-                    task.getName(),
-                    task.getMaxScore(),
-                    task.getFormattedDateTimeDelivery(),
-                    task.getFormattedDateTimeIssue(),
-                    userTask.getDateDelivery().format(formatter),
-                    userTask.getStatus(),
-                    userTask.getCommentStudent(),
-                    userTask.getCommentTeacher(),
-                    userTask.getResultScore(),
-                    user,
-                    true
-            );
-        } else {
-            taskResponse = new TaskResponse(
-                    Long.parseLong(taskId),
-                    task.getInstruction(),
-                    task.getStatus(),
-                    task.getName(),
-                    task.getMaxScore(),
-                    task.getFormattedDateTimeDelivery(),
-                    task.getFormattedDateTimeIssue(),
-                    user,
-                    false
-            );
-        }
+        userTaskOptional.ifPresent(userTask -> {
+            taskResponse.setDateDelivery(userTask.getDateDelivery().format(formatter));
+            taskResponse.setStatus(userTask.getStatus());
+            taskResponse.setCommentStudent(userTask.getCommentStudent());
+            taskResponse.setCommentTeacher(userTask.getCommentTeacher());
+            taskResponse.setResultScore(userTask.getResultScore());
+            taskResponse.setSending(true);
+        });
 
         model.addAttribute("task", taskResponse);
         model.addAttribute("authorities", authorities);
@@ -223,7 +211,6 @@ public class TaskController {
         User user = userDetailsService.findUserByUsername(username);
 
         UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        boolean authorities = userDiscipline.getAccessType().name().equals("LEADER");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         Task task = taskService.findTaskById(Long.parseLong(taskId));
@@ -239,7 +226,7 @@ public class TaskController {
         model.addAttribute("formattedDateIssue", dateDelivery);
 
         model.addAttribute("task", task);
-        model.addAttribute("authorities", authorities);
+        model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/edit-task");
         return "index";
@@ -308,6 +295,10 @@ public class TaskController {
                 taskRequest.getInstructionTask(), discipline, status);
         taskService.saveTask(task);
         return ResponseEntity.ok().build();
+    }
+
+    public boolean getAuthorities(AccessType accessType) {
+        return accessType.name().equals("LEADER");
     }
 
     public List<Discipline> getDisciplines () {

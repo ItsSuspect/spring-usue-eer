@@ -25,7 +25,7 @@ public class UserTaskService {
         return userTaskRepository.findUserTaskByUserIdAndTaskId(userId, taskId);
     }
 
-    public Long countUserTasksByDisciplineIdAndTaskId (Long disciplineId, Long taskId) {
+    public int countUserTasksByDisciplineIdAndTaskId (Long disciplineId, Long taskId) {
         return userTaskRepository.countUserTasksByDisciplineIdAndTaskId(disciplineId, taskId);
     }
 

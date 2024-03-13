@@ -144,15 +144,20 @@ public class PortalController {
         Map<String, List<User>> usersByGroup = users.stream()
                 .collect(Collectors.groupingBy(user -> user.getGroups().iterator().next().getName()));
 
-        model.addAttribute("usersByGroup", usersByGroup);
-        model.addAttribute("disciplines", getDisciplines());
-
         users.forEach(user -> {
             AccessType accessType = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId()).getAccessType();
             user.setAccessType(accessType == AccessType.PARTICIPANT ? "Участник" : "Руководитель");
         });
-        model.addAttribute("users", users);
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+
+        model.addAttribute("usersByGroup", usersByGroup);
+        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("users", users);
+        model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("content", "fragments/member-list");
         return "index";
     }
@@ -177,7 +182,13 @@ public class PortalController {
             advertisement.setFormattedDate(formattedDate);
         }
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+
         model.addAttribute("advertisements", sortedAdvertisements);
+        model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/advertisements");
         return "index";
@@ -230,6 +241,10 @@ public class PortalController {
 
         advertisementService.saveAdvertisement(advertisement);
         return ResponseEntity.ok().build();
+    }
+
+    public boolean getAuthorities(AccessType accessType) {
+        return accessType.name().equals("LEADER");
     }
 
     public List<Discipline> getDisciplines () {

@@ -1,18 +1,16 @@
-<link rel="stylesheet" th:href="@{/css/fragments/basic-information.css}">
+<link rel="stylesheet" th:href="@{/css/fragments/enter-basic-information.css}">
 <div class="content__header">
-    <h2 class="content__header-text">Основная информации</h2>
-    <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
-        <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/information/edit-information'" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
-    </span>
+    <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/information'" class="content__return-button">Назад</a>
+    <h2 class="content__header-text">Редактирование основной информации</h2>
 </div>
-<div class="content__content-block content-block">
+<div class="content__content-bloc content-block">
     <div class="content-block__basic-information basic-information">
         <div class="basic-information__discipline-information discipline-information">
             <div class="discipline-information__header">
                 <h3 class="discipline-information__header-text">Информация о дисциплине</h3>
             </div>
             <div class="discipline-information__content">
-                <p class="discipline-information__content-text" th:text="${information.informationOfDiscipline}">Информация о дисциплине</p>
+                <textarea class="discipline-information__enter-information" id="information-discipline" oninput="autoGrow(this)" placeholder="Краткое описание дисциплины"></textarea>
             </div>
         </div>
         <div class="basic-information__teacher-information teacher-information">
@@ -21,9 +19,7 @@
                     <h3 class="personal-information__header-text">Информация о преподавателе</h3>
                 </div>
                 <div class="personal-information__content">
-                    <div class="personal-information__text-block">
-                        <p class="personal-information__text" th:text="${information.informationOfTeacher}"></p>
-                    </div>
+                    <textarea class="personal-information__enter-information" id="information-teacher" oninput="autoGrow(this)" placeholder="Личная информация"></textarea>
                 </div>
             </div>
             <div class="teacher-information__teacher-contacts teacher-contacts">
@@ -31,11 +27,11 @@
                     <h3 class="teacher-contacts__header-text">Контактные данные преподавателя</h3>
                 </div>
                 <div class="teacher-contacts__content">
-                    <span class="teacher-contacts__contact">
-                        <p class="teacher-contacts__platform" th:text="${information.contacts}">Электронная почта:</p>
-                    </span>
+                    <textarea class="teacher-contacts__enter-information" id="contacts" oninput="autoGrow(this)" placeholder="Контактные данные"></textarea>
                 </div>
             </div>
+            <button class="basic-information__submit-button" th:data-disciplineId="${disciplineId}" onclick="saveMainInformation(this)">Сохранить</button>
         </div>
     </div>
 </div>
+<script th:src="@{/js/enter-basic-information.js}"></script>

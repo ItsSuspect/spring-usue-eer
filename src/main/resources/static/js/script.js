@@ -92,12 +92,62 @@ function hideDeleteButton(notification) {
 }
 
 function deleteNotification(element) {
-  const parent = element.parentElement.parentElement;
-  parent.remove();
+  const notificationId = element.getAttribute('data-notificationId');
+
+  const NotificationRequest = {
+    id: notificationId,
+  };
+
+  fetch('/portal/clear-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(NotificationRequest)
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const parent = element.parentElement.parentElement;
+        parent.remove();
+        if ($('.notification-center__notification-block.notification-block').find('.notification-block__notification').length === 0) {
+          $('.notification-center__notification-block.notification-block').prepend('<p>Уведомления отсутствуют</p>');
+        }
+      })
+      .catch(error => {
+        console.error('Произошла ошибка:', error);
+      });
 }
 
 function clearNotificationCenter() {
-  $('.notification-block__notification').remove();
+  const notificationIds = [];
+  const notificationElements = document.querySelectorAll('.notification-block__delete-button');
+
+  notificationElements.forEach(element => {
+    const notificationId = element.getAttribute('data-notificationId');
+    notificationIds.push(notificationId);
+  });
+
+  const requestData = { notificationIds: notificationIds };
+
+  fetch('/portal/clear-notifications-all', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        $('.notification-block__notification').remove();
+        $('.notification-center__notification-block.notification-block').prepend('<p>Уведомления отсутствуют</p>');
+      })
+      .catch(error => {
+        console.error('Произошла ошибка:', error);
+      });
 }
 
 function addEditButtonText(editButton) {

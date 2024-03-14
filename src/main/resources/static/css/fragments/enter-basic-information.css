@@ -1,0 +1,158 @@
+.basic-information {
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	width: 100%;
+}
+
+.basic-information__discipline-information {
+
+}
+
+.basic-information__teacher-information {
+	margin-left: 32px;
+}
+
+.basic-information__submit-button {
+	width: 100%;
+	margin: 16px 0 0 0;
+	padding: 16px 32px;
+	border: none;
+	border-radius: 16px;
+	font-size: 16px;
+	line-height: 16px;
+	letter-spacing: 0.1em;
+	background-color: #eee;
+	transition: 0.2s ease-out;
+}
+
+.basic-information__submit-button:hover {
+	background-color: #ddd;
+}
+
+.discipline-information {
+	display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  width: 50%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.discipline-information__header {
+	display: flex;
+	justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.discipline-information__header-text {
+	margin: 0;
+	text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.discipline-information__content {
+	display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border-radius: 8px;
+	overflow: hidden;
+  background-color: #fff;
+}
+
+.teacher-information {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+  max-width: 50%;
+  width: 50%;
+}
+
+.personal-information {
+	display: flex;
+  flex-direction: column;
+  height: 50%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.personal-information__header {
+	display: flex;
+	justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.personal-information__header-text {
+	margin: 0;
+	text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.personal-information__content {
+	display: flex;
+	justify-content: space-between;
+	height: 100%;
+  padding: 16px;
+  border-radius: 8px;
+	overflow: hidden;
+  background-color: #fff;
+}
+
+.teacher-contacts {
+	display: flex;
+  flex-direction: column;
+  height: 50%;
+  margin-top: 16px;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.teacher-contacts__header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 8px;
+	padding: 8px 16px;
+}
+
+.teacher-contacts__header-text {
+	margin: 0;
+	text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.teacher-contacts__content {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+  padding: 16px;
+  border-radius: 8px;
+	overflow: hidden;
+  background-color: #fff;
+}
+
+.discipline-information__enter-information,
+.personal-information__enter-information,
+.teacher-contacts__enter-information {
+	width: 100%;
+	min-height: 64px;
+	height: 100%;
+	resize: none;
+	padding: 0;
+	border: none;
+	outline: none;
+	overflow: hidden;
+	font-size: 14px;
+	line-height: 16px;
+}

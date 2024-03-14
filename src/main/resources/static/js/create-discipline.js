@@ -263,7 +263,7 @@ function createDiscipline() {
             return response.json();
         })
         .then(discipline => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + discipline.id + "/information";
+            window.location.href = "http://localhost:8080/portal/discipline/" + discipline.id + "/information/";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

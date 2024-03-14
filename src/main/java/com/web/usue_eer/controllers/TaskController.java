@@ -47,8 +47,16 @@ public class TaskController {
     @Autowired
     private UserDisciplineService userDisciplineService;
 
+    @Autowired
+    private UserNotificationService userNotificationService;
+
     @GetMapping("/{disciplineId}/task-list/create")
     public String getTaskCreate(Model model, @PathVariable String disciplineId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/create-task");
         return "index";
@@ -97,6 +105,9 @@ public class TaskController {
                     return taskListResponse;
                 }).sorted(Comparator.comparing(TaskListResponse::getName)).collect(Collectors.toList());
 
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("authorities", authorities);
         model.addAttribute("tasks", taskListResponses);
         model.addAttribute("disciplines", getDisciplines());
@@ -120,6 +131,11 @@ public class TaskController {
                         userTask.getDateDelivery().format(formatter)
                 )).sorted(Comparator.comparing(CompletedTaskResponse::getStatus)).collect(Collectors.toList());
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("tasks", completedTaskResponses);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/completed-tasks");
@@ -128,9 +144,9 @@ public class TaskController {
 
     @GetMapping("/{disciplineId}/task-list/{taskId}/{username}/task-check")
     public String getSendTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @PathVariable String username) {
-        User user = userDetailsService.findUserByUsername(username);
+        User student = userDetailsService.findUserByUsername(username);
         Task task = taskService.findTaskById(Long.parseLong(taskId));
-        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId)).get();
+        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(student.getId(), Long.parseLong(taskId)).get();
 
         TaskCheckResponse taskCheckResponse = new TaskCheckResponse(
                 Long.parseLong(taskId),
@@ -140,9 +156,14 @@ public class TaskController {
                 userTask.getCommentStudent(),
                 userTask.getCommentTeacher(),
                 task.getInstruction(),
-                user
+                student
         );
 
+        String usernameNotification = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(usernameNotification);
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", taskCheckResponse);
         model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task-check");
@@ -185,6 +206,9 @@ public class TaskController {
             taskResponse.setSending(true);
         });
 
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", taskResponse);
         model.addAttribute("authorities", authorities);
         model.addAttribute("disciplines", getDisciplines());
@@ -225,6 +249,9 @@ public class TaskController {
         Date dateDelivery = Date.from(localDateTimeDelivery.atZone(ZoneId.systemDefault()).toInstant());
         model.addAttribute("formattedDateIssue", dateDelivery);
 
+        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+
+        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", task);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("disciplines", getDisciplines());
@@ -270,7 +297,12 @@ public class TaskController {
             userTask.setResultScore(sendTaskTeacherRequest.getResultScore());
             userTask.setStatus("Проверено");
             userTaskService.saveUserTask(userTask);
+
+            UserNotification userNotification = new UserNotification(userTask.getUser(), "Выставлена оценка", "task");
+            userNotification.setUserTask(userTask);
+            userNotificationService.saveNotification(userNotification);
         }
+
         return ResponseEntity.ok().build();
     }
 

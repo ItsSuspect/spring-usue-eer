@@ -1,3 +1,4 @@
+
 .completed-tasks {
     display: flex;
     flex-direction: column;
@@ -24,6 +25,7 @@
 .completed-tasks__column-name {
     margin: 0;
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
     font-weight: 600;
@@ -62,11 +64,6 @@
 
 .task-container__student-info {
     width: 100%;
-    transition: 0.2s ease-out;
-}
-
-.task-container__student-info:hover {
-    color: #0075ff;
 }
 
 .task-works {
@@ -102,23 +99,14 @@
 .status-list__task-status {
     padding: 4px 8px;
     border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.05em;
 }
 
-.status-list__task-status_state_pending {
-    color: #f4f4f4;
-    background-color: #999;
-}
-
 .status-list__task-status_state_in-progress {
     background-color: #eee;
-}
-
-.status-list__task-status_state_delivered {
-    padding: 3px 7px;
-    border: 1px solid #999;
 }
 
 .status-list__task-status_state_checked {
@@ -126,14 +114,7 @@
 }
 
 .status-list__task-status_state_rejected {
-    background-color: #ffbfbf;
-}
-
-.status-list__task-status_state_completed {
-    padding: 3px 7px;
-    border: 1px solid #888;
-    color: #888;
-    background-color: #ddd;
+    background-color: #FFBFBF;
 }
 
 .task-container__task-mark {

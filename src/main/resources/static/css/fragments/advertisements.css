@@ -11,6 +11,7 @@
 .content-block__advertisement	{
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 	padding: 0 32px;
 	border-radius: 16px;
 	background-color: #fff;
@@ -43,7 +44,9 @@
 
 .advertisement__header-text {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 16px;
+  font-weight: 500;
 	line-height: 24px;
 	letter-spacing: 0.1em;
 }
@@ -64,15 +67,18 @@
 }
 
 .advertisement__edit-button::before {
-	content: "";
+	font-family: 'icomoon';
+	content: "\e909";
 	position: absolute;
 	top: 50%;
 	left: 4px;
 	transform: translateY(-50%);
 	width: 16px;
 	height: 16px;
-	border-radius: 50%;
-	background-color: #ddd;
+	text-align: center;
+	font-size: 12px;
+	line-height: 16px;
+	color: #444;
 }
 
 .advertisement__content {
@@ -95,14 +101,18 @@
 
 .advertisement__author {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
+  font-weight: 300;
 	line-height: 16px;
 	letter-spacing: 0.1em;
 }
 
 .advertisement__date {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
+  font-weight: 300;
 	line-height: 16px;
 	letter-spacing: 0.1em;
 }

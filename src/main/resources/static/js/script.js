@@ -112,7 +112,7 @@ function deleteNotification(element) {
         const parent = element.parentElement.parentElement;
         parent.remove();
         if ($('.notification-center__notification-block.notification-block').find('.notification-block__notification').length === 0) {
-          $('.notification-center__notification-block.notification-block').prepend('<p>Уведомления отсутствуют</p>');
+          $('.notification-center__notification-block.notification-block').prepend('<div class="notification-block__no-notification-block"><p class="notification-block__no-notification-text">Уведомления отсутствуют</p></div>');
         }
       })
       .catch(error => {
@@ -143,7 +143,11 @@ function clearNotificationCenter() {
           throw new Error('Network response was not ok');
         }
         $('.notification-block__notification').remove();
-        $('.notification-center__notification-block.notification-block').prepend('<p>Уведомления отсутствуют</p>');
+
+        if ($('.notification-center__notification-block.notification-block').find('.notification-block__notification').length === 0 && $('.notification-block__no-notification-block').length === 0) {
+          $('.notification-center__notification-block.notification-block').prepend('<div class="notification-block__no-notification-block"><p class="notification-block__no-notification-text">Уведомления отсутствуют</p></div>');
+        }
+
       })
       .catch(error => {
         console.error('Произошла ошибка:', error);
@@ -184,4 +188,20 @@ function hideButtonText(button) {
   button.style.maxWidth = '24px';
   button.style.padding = '4px 0 4px 24px';
   button.style.color = '#eee';
+}
+
+function toggleDisciplineList(button, parent) {
+  const toggleButton = $(button);
+  const header = toggleButton.parent();
+  const disciplinesBlock = header.parent();
+  const disciplineList = disciplinesBlock.find('.discipline-block__discipline-list');
+
+  toggleButton.toggleClass('discipline-block__toggle-list_state_unfolded').toggleClass('discipline-block__toggle-list_state_folded');
+
+
+  if (toggleButton.hasClass('discipline-block__toggle-list_state_folded')) {
+    disciplineList.hide();
+  } else {
+    disciplineList.show();
+  }
 }

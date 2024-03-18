@@ -13,7 +13,12 @@
 		<link rel="preload" th:href="@{/js/slick.min.js}" as="script">
 		<link rel="preload" th:href="@{/js/slider.js}" as="script">
 
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap" rel="stylesheet">
+
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<link rel="stylesheet" th:href="@{/css/fonts.css}">
 		<script th:src="@{/js/slick.min.js}"></script>
 		<script th:src="@{/js/slider.js}"></script>
 		<script th:src="@{/js/authentication.js}"></script>
@@ -40,7 +45,7 @@
 					<div class="related-info__slide-content">
 						<h3 class="related-info__header">Реальные перспективы</h3>
 						<p class="related-info__text">
-							После оконыания ВУЗа студенты могут расчитывать на получение приглашений от компаний сотрудничающих с вузом.
+							После окончания ВУЗа студенты могут рассчитывать на получение приглашений от компаний сотрудничающих с вузом.
 						</p>
 					</div>
 					<img th:src="@{/images/happy-graduates.webp}" alt="" class="related-info__background-image" loading="lazy">
@@ -72,7 +77,7 @@
 						<input type="password" id="password-input" class="authorization-form__input authorization-form__input_assignment_password" placeholder="Пароль">
 						<span class="authorization-form__remember-me">
 							<input type="checkbox" class="authorization-form__input authorization-form__input_assignment_remember-me">
-							<p class="authorization-form__text">Запомнить меня</p>
+							<p class="authorization-form__text" onclick="toggleRememberMe(this)">Запомнить меня</p>
 						</span>
 						<button class="authorization-form__submit-button" onclick="signIn()">Авторизоваться</button>
 					</div>

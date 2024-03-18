@@ -38,6 +38,7 @@
     border-color: #999;
     border-radius: 8px 8px 0 0;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
     letter-spacing: 0.1em;
@@ -45,15 +46,17 @@
 }
 
 .task-block__task-mark-input {
-    max-width: 80px;
+    max-width: 96px;
     padding: 4px 8px;
     border-width: 0 0 1px 0;
     border-color: #999;
     border-radius: 8px 8px 0 0;
     outline: none;
     text-align: right;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
+    letter-spacing: 0.1em;
     background-color: rgba(255, 255, 255, 0);
 }
 
@@ -79,7 +82,9 @@
     border-width: 0 0 1px 0;
     border-color: #999;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    letter-spacing: 0.1em;
     line-height: 16px;
 }
 
@@ -89,7 +94,9 @@
     border-width: 0 0 1px 0;
     border-color: #999;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    letter-spacing: 0.1em;
     line-height: 16px;
 }
 
@@ -106,8 +113,10 @@
     border-width: 0 0 1px 0;
     border-color: #999;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
+    letter-spacing: 0.1em;
 }
 
 .task-instruction__delivery-time {
@@ -116,8 +125,10 @@
     border-width: 0 0 1px 0;
     border-color: #999;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
+    letter-spacing: 0.1em;
 }
 
 .task-instruction__header {
@@ -153,8 +164,10 @@
     padding: 8px 32px;
     border: none;
     border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    font-weight: 300;
     line-height: 16px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-wrap: nowrap;
 }

@@ -20,20 +20,24 @@
     padding: 0 16px;
 }
 
+.task-block__task-name {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
 .task-mark__student-mark,
 .task-mark__separator,
 .task-mark__max-mark
  {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
-}
-
-.task-block__task-name {
-    margin: 0;
-    font-size: 16px;
-    line-height: 16px;
-    font-weight: 400;
+    letter-spacing: 0.1em;
 }
 
 .task-block__task-mark {
@@ -54,6 +58,7 @@
 .task-block__issue-date,
 .task-block__delivery-date {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.1em;
@@ -168,9 +173,11 @@
     padding: 4px 64px;
     border: none;
     border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    font-weight: 300;
     line-height: 16px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-wrap: nowrap;
     background-color: #eee;
     transition: 0.2s ease-out;

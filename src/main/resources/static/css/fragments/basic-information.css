@@ -33,8 +33,11 @@
 .discipline-information__header-text {
 	margin: 0;
 	text-align: center;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: 500;
   line-height: 16px;
+  letter-spacing: 0.1em;
 }
 
 .discipline-information__content {
@@ -79,8 +82,11 @@
 .personal-information__header-text {
 	margin: 0;
 	text-align: center;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: 500;
   line-height: 16px;
+  letter-spacing: 0.1em;
 }
 
 .personal-information__content {
@@ -135,8 +141,11 @@
 .teacher-contacts__header-text {
 	margin: 0;
 	text-align: center;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: 500;
   line-height: 16px;
+  letter-spacing: 0.1em;
 }
 
 .teacher-contacts__content {

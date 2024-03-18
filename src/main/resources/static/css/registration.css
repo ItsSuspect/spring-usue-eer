@@ -40,13 +40,16 @@
 
 .related-info__header {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 48px;
+  font-weight: 800;
 	line-height: 48px;
 	letter-spacing: 0.1em;
 }
 
 .related-info__text {
 	margin: 32px 0 0 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 20px;
 	line-height: 24px;
 	letter-spacing: 0.05em;
@@ -112,8 +115,9 @@
 
 .logo__text {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	line-height: 18px;
-	font-weight: bold;
+	font-weight: 800;
 	letter-spacing: 0.15em;
 }
 
@@ -141,18 +145,20 @@
 	width: max-content;
 	margin-bottom: 32px;
 	padding: 0 0 0 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
 }
 
 .registration-block__return-button::before {
-	content: "";
+	font-family: 'icomoon';
+	content: "\e911";
 	position: absolute;
 	top: 50%;
 	left: 0;
 	transform: translateY(-50%);
 	width: 16px;
 	height: 16px;
-	border-radius: 50%;
-	background-color: #999;
+	font-size: 16px;
 }
 
 .registration-block__registration-form {
@@ -186,9 +192,11 @@
 	border: none;
 	border-radius: 8px;
 	transition: 0.2s ease-out;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 16px;
+  font-weight: 300;
 	line-height: 16px;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.15em;
 	color: #fff;
 	background-color: #0075ff;
 }

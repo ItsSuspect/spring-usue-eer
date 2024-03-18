@@ -21,8 +21,8 @@
         <div class="icons__notification-center notification-center">
             <span class="notification-center__bell notification-center__bell_notification_empty" onclick="displayNotificationBlock()"></span>
             <div class="notification-center__notification-block notification-block">
-                <div th:if="${notifications.empty}">
-                    <p>Уведомления отсутствуют</p>
+                <div th:if="${notifications.empty}" class="notification-block__no-notification-block">
+                    <p class="notification-block__no-notification-text">Уведомления отсутствуют</p>
                 </div>
                 <div th:each="notification : ${notifications}"
                      class="notification-block__notification"
@@ -42,7 +42,6 @@
                 </div>
                 <button class="notification-block__clear-button" onclick="clearNotificationCenter()">Удалить все</button>
             </div>
-
         </div>
         <div class="icons__profile profile">
             <span class="profile__icon" onclick="displayProfileFunctions()"></span>

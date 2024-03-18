@@ -120,6 +120,7 @@
 
 .member-block__header_text {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
     font-weight: 600;
@@ -202,13 +203,27 @@
 }
 
 .member__member-access {
+    position: relative;
     padding: 4px 24px 4px 8px;
     border: none;
     border-radius: 8px;
     font-size: 14px;
-    line-height: 14px;
+    line-height: 16px;
     color: #666;
     background-color: #fff;
+}
+
+.member__member-access::after {
+    font-family: 'icomoon';
+    content: "\e90c";
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+    line-height: 16px;
 }
 
 .member__member-access:hover {
@@ -233,9 +248,11 @@
     border: none;
     border-radius: 8px;
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    font-weight: 300;
     line-height: 16px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     background-color: #fff;
 }
 
@@ -249,9 +266,11 @@
     padding: 16px;
     border: none;
     border-radius: 16px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
+    font-weight: 300;
     line-height: 16px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     background-color: #eee;
     transition: 0.2s ease-out;
 }

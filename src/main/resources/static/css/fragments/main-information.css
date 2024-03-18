@@ -34,8 +34,11 @@
 .useful-info__header-text {
   margin: 0;
   text-align: center;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: 500;
   line-height: 16px;
+  letter-spacing: 0.1em;
 }
 
 .useful-info__content {
@@ -54,7 +57,7 @@
 }
 
 .useful-info__content-text + .useful-info__content-text {
-  margin-top: 16px; 
+  margin-top: 16px;
 }
 
 .useful-info__content-link {

@@ -7,7 +7,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 100%;
     color: #444;
     background-color: #f4f4f4;
@@ -51,8 +51,10 @@ a {
 
 .content__header-text {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 24px;
     line-height: 48px;
+    font-weight: 600;
     letter-spacing: 0.1em;
 }
 
@@ -63,8 +65,10 @@ a {
     transform: translateY(-50%);
     padding: 4px 12px 4px 32px;
     border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
+    font-weight: 300;
     background-color: #fff;
     transition: 0.2s ease-out;
 }
@@ -74,15 +78,14 @@ a {
 }
 
 .content__return-button::before {
-    content: "";
+    font-family: 'icomoon';
+    content: "\e911";
     position: absolute;
     top: 50%;
-    left: 0;
+    left: 8px;
     transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #ddd;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .content__interaction-buttons {
@@ -104,8 +107,10 @@ a {
     padding: 4px 0 4px 24px;
     border-radius: 12px;
     overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
+    font-weight: 300;
     color: #eee;
     transition: 0.3s ease-out;
     background-color: #eee;
@@ -116,27 +121,31 @@ a {
 }
 
 .interaction-buttons__button::before {
-    content: "";
+    font-family: 'icomoon';
     position: absolute;
     top: 50%;
     left: 4px;
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    border-radius: 50%;
-    background-color: #ddd;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+    color: #444;
 }
 
 .interaction-buttons__button_purpose_create::before {
-    background-color: #9f9;
+    content: "\e901";
 }
 
 .interaction-buttons__button_purpose_edit::before {
-    background-color: #ff9;
+    content: "\e909";
+    font-size: 12px;
 }
 
 .interaction-buttons__button_purpose_delete::before {
-    background-color: #f99;
+    content: "\e901";
+    transform: translateY(-50%) rotate(45deg);
 }
 
 .content-block {

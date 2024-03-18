@@ -11,8 +11,10 @@
     padding: 16px;
     border-radius: 0 16px 0 0;
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     background-color: #ddd;
 }
 

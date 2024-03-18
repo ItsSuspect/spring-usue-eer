@@ -1,3 +1,4 @@
+<link rel="stylesheet" th:href="@{/css/fragments/discipline-block.css}">
 <div class="content__header">
     <h2 class="content__header-text">Список дисциплин</h2>
     <span class="content__interaction-buttons interaction-buttons" th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'') or hasRole(''ROLE_ADMIN'')')}">
@@ -5,4 +6,34 @@
         <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
         <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_delete" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Удалить</a>
     </span>
+</div>
+<div class="content__content-block content-block">
+    <div class="content-block__discipline-block discipline-block">
+        <div class="discipline-block__your-disciplines">
+            <div class="discipline-block__header">
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_discipline">Ваши дисциплины</h3>
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_owner">Преподаватель</h3>
+                <button class="discipline-block__toggle-list discipline-block__toggle-list_state_unfolded" onclick="toggleDisciplineList(this)"></button>
+            </div>
+            <div class="discipline-block__discipline-list discipline-list">
+                <div class="discipline-list__item" th:each="discipline : ${disciplines}">
+                    <a href="" class="discipline-list__discipline" th:text="${discipline.name}">Название дисциплины</a>
+                    <p class="discipline-list__owner" th:text="${discipline.owner}">Фамилия Имя Отчество</p>
+                </div>
+            </div>
+        </div>
+        <div class="discipline-block__open-disciplines">
+            <div class="discipline-block__header">
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_discipline">Открытые дисциплина</h3>
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_owner">Преподаватель</h3>
+                <button class="discipline-block__toggle-list discipline-block__toggle-list_state_folded" onclick="toggleDisciplineList(this)"></button>
+            </div>
+            <div class="discipline-block__discipline-list discipline-list" style="display: none">
+                <div class="discipline-list__item">
+                    <a href="" class="discipline-list__discipline">Название дисциплины</a>
+                    <p class="discipline-list__owner">Фамилия Имя Отчество</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -28,16 +28,20 @@
 .task-mark__max-mark
  {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
+    letter-spacing: 0.1em;
 }
 
 
 .checked-task-block__task-name {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 16px;
     font-weight: 400;
+    letter-spacing: 0.1em;
 }
 
 .checked-task-block__task-mark {
@@ -123,20 +127,25 @@
 
 .student-response__student-group {
     margin: 0 0 0 16px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
+    letter-spacing: 0.1em;
     color: #666;
 }
 
 .student-response__student-info {
     margin: 0 0 0 16px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
+    letter-spacing: 0.1em;
     color: #666;
 }
 
 .student-response__date {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.1em;
@@ -175,6 +184,7 @@
 
 .teacher-response__date {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0.1em;

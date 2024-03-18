@@ -22,22 +22,7 @@
 	position: relative;
 	overflow: hidden;
 	height: 100%;
-/*	background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;*/
 }
-
-/*.related-info__slide_subject_parallel-education {
-	background-image: url(../img/parallel-education.jpg);
-}
-
-.related-info__slide_subject_opportunities {
-	background-image: url(../img/happy-graduates.jpg);
-}
-
-.related-info__slide_subject_invited-experts {
-	background-image: url(../img/invited-experts.jpg);
-}*/
 
 .related-info__slide-content {
 	display: flex;
@@ -46,18 +31,25 @@
 	height: 100vh;
 	padding: 48px;
 	color: #fff;
-	background: linear-gradient(rgba(255, 255, 255, 0) 40%, rgba(93, 134, 183, 0.1) 50%, rgba(0, 45, 99, 0.4) 65%, rgba(0, 17, 37, 1) 95%);
+	background: linear-gradient(
+		rgba(255, 255, 255, 0) 40%,
+		rgba(93, 134, 183, 0.1) 50%,
+		rgba(0, 45, 99, 0.4) 65%,
+		rgba(0, 17, 37, 1) 95%);
 }
 
 .related-info__header {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 48px;
+  font-weight: 800;
 	line-height: 48px;
 	letter-spacing: 0.1em;
 }
 
 .related-info__text {
 	margin: 32px 0 0 0;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 20px;
 	line-height: 24px;
 	letter-spacing: 0.05em;
@@ -109,8 +101,9 @@
 
 .logo__text {
 	margin: 0;
+  font-family: 'Montserrat', sans-serif;
 	line-height: 18px;
-	font-weight: bold;
+	font-weight: 800;
 	letter-spacing: 0.15em;
 }
 
@@ -173,6 +166,7 @@
 	font-size: 14px;
 	line-height: 16px;
 	cursor: default;
+	user-select: none;
 }
 
 .authorization-form__submit-button {
@@ -180,9 +174,11 @@
 	border: none;
 	border-radius: 8px;
 	transition: 0.2s ease-out;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 16px;
+  font-weight: 300;
 	line-height: 16px;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.15em;
 	color: #fff;
 	background-color: #0075ff;
 }
@@ -193,7 +189,9 @@
 
 .authorization-block__link {
 	margin: 4px 0 0 16px;
+  font-family: 'Montserrat', sans-serif;
 	font-size: 12px;
 	line-height: 12px;
+  letter-spacing: 0.1em;
 	color: #0075ff;
 }

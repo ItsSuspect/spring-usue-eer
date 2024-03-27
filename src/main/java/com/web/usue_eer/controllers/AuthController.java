@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtUtils jwtUtils;
+    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
+    }
 
     @GetMapping("/signIn")
     public String getSignIn() {
@@ -38,11 +40,9 @@ public class AuthController {
         return "registration";
     }
 
-    @SuppressWarnings("squid:S2696")
     @PostMapping("/signIn")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         if (signInRequest.getUsername() == null || signInRequest.getPassword() == null) {
-            System.out.println("тута");
             return ResponseEntity.badRequest().body(new MessageResponse("Ошибка: Неверное имя пользователя или пароль "));
         }
         Authentication authentication = authenticationManager.authenticate(

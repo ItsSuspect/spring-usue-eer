@@ -24,41 +24,28 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/portal")
 public class PortalController {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final GroupService groupService;
+    private final DisciplineService disciplineService;
+    private final UserDisciplineService userDisciplineService;
+    private final AdvertisementService advertisementService;
+    private final UserNotificationService userNotificationService;
+    private final InformationService informationService;
 
     @Autowired
-    private GroupService groupService;
+    public PortalController(UserDetailsServiceImpl userDetailsService, GroupService groupService, DisciplineService disciplineService, UserDisciplineService userDisciplineService, AdvertisementService advertisementService, UserNotificationService userNotificationService, InformationService informationService) {
+        this.userDetailsService = userDetailsService;
+        this.groupService = groupService;
+        this.disciplineService = disciplineService;
+        this.userDisciplineService = userDisciplineService;
+        this.advertisementService = advertisementService;
+        this.userNotificationService = userNotificationService;
+        this.informationService = informationService;
+    }
 
-    @Autowired
-    private DisciplineService disciplineService;
-
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private UserTaskService userTaskService;
-
-    @Autowired
-    private UserDisciplineService userDisciplineService;
-
-    @Autowired
-    private AdvertisementService advertisementService;
-
-    @Autowired
-    private UserNotificationService userNotificationService;
-
-    @Autowired
-    private InformationService informationService;
 
     @GetMapping("")
     public String index(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/main-information");
         return "index";
     }
@@ -79,12 +66,6 @@ public class PortalController {
 
     @GetMapping("/disciplines")
     public String disciplines(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/disciplines");
         return "index";
     }
@@ -108,14 +89,8 @@ public class PortalController {
                 })
                 .collect(Collectors.toList());
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("groups", groups);
         model.addAttribute("users", userResponses);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/create-discipline");
         return "index";
     }
@@ -144,8 +119,9 @@ public class PortalController {
     @PostMapping("/disciplines/create")
     public ResponseEntity<Discipline> createDiscipline(@Valid @RequestBody DisciplineRequest disciplineRequest) {
         String owner = SecurityContextHolder.getContext().getAuthentication().getName();
+        User ownerUser = userDetailsService.findUserByUsername(owner);
 
-        Discipline discipline = disciplineService.saveDiscipline(new Discipline(disciplineRequest.getName(), owner));
+        Discipline discipline = disciplineService.saveDiscipline(new Discipline(disciplineRequest.getName(), ownerUser));
         Map<String, String> usersWithAccess = disciplineRequest.getUsers();
 
         for (Map.Entry<String, String> entry : usersWithAccess.entrySet()) {
@@ -158,7 +134,6 @@ public class PortalController {
             }
         }
 
-        User ownerUser = userDetailsService.findUserByUsername(owner);
         if (ownerUser != null) {
             userDisciplineService.saveAccess(new UserDiscipline(ownerUser, discipline, AccessType.LEADER));
         }
@@ -166,41 +141,29 @@ public class PortalController {
     }
 
     @GetMapping("/discipline/{disciplineId}/{category}")
-    public String getDisciplineCategoryContent(@PathVariable("disciplineId") Long disciplineId,
-                                               @PathVariable("category") String category,
-                                               Model model) {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
+    public String getDisciplineCategoryContent(@PathVariable Long disciplineId, @PathVariable String category, Model model) {
         model.addAttribute("category", category);
         model.addAttribute("disciplineId", disciplineId);
         return "index";
     }
 
     @GetMapping("/discipline/{disciplineId}/member-list")
-    public String getMemberList(Model model, @PathVariable String disciplineId) {
-        List<User> users = userDetailsService.findByDisciplinesId(Long.parseLong(disciplineId));
+    public String getMemberList(Model model, @PathVariable Long disciplineId) {
+        List<User> users = userDetailsService.findByDisciplinesId(disciplineId);
         Map<String, List<User>> usersByGroup = users.stream()
                 .collect(Collectors.groupingBy(user -> user.getGroups().iterator().next().getName()));
 
         users.forEach(user -> {
-            AccessType accessType = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId()).getAccessType();
+            AccessType accessType = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId()).getAccessType();
             user.setAccessType(accessType == AccessType.PARTICIPANT ? "Участник" : "Руководитель");
         });
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
 
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("usersByGroup", usersByGroup);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("users", users);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("content", "fragments/member-list");
@@ -208,14 +171,13 @@ public class PortalController {
     }
 
     @GetMapping("/discipline/{disciplineId}/information")
-    public String getDisciplineInformation(Model model, @PathVariable String disciplineId) {
+    public String getDisciplineInformation(Model model, @PathVariable Long disciplineId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
 
-        Information information = informationService.findInformationByDisciplineId(Long.parseLong(disciplineId))
+        Information information = informationService.findInformationByDisciplineId(disciplineId)
                 .orElseGet(() -> {
                     Information defaultInformation = new Information();
                     defaultInformation.setInformationOfDiscipline("Преподаватель скоро предоставит информацию");
@@ -225,16 +187,14 @@ public class PortalController {
                 });
 
         model.addAttribute("information", information);
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/basic-information");
         return "index";
     }
 
     @GetMapping("/discipline/{disciplineId}/advertisements")
-    public String getDisciplineAdvertisements(Model model, @PathVariable String disciplineId) {
-        List<Advertisement> advertisements = advertisementService.findAdvertisementsByDisciplineId(Long.parseLong(disciplineId));
+    public String getDisciplineAdvertisements(Model model, @PathVariable Long disciplineId) {
+        List<Advertisement> advertisements = advertisementService.findAdvertisementsByDisciplineId(disciplineId);
         List<Advertisement> sortedAdvertisements = advertisements.stream()
                 .sorted(Comparator.comparing(Advertisement::getDate))
                 .collect(Collectors.toList());
@@ -248,38 +208,29 @@ public class PortalController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
 
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("advertisements", sortedAdvertisements);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/advertisements");
         return "index";
     }
 
     @GetMapping("/discipline/{disciplineId}/advertisements/{advertisementId}/edit-advertisement")
-    public String getEditDisciplineAdvertisements(Model model, @PathVariable String disciplineId, @PathVariable String advertisementId) {
-        Advertisement advertisement = advertisementService.findAdvertisementById(Long.parseLong(advertisementId));
+    public String getEditDisciplineAdvertisements(Model model, @PathVariable Long disciplineId, @PathVariable Long advertisementId) {
+        Advertisement advertisement = advertisementService.findAdvertisementById(advertisementId);
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("advertisement", advertisement);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/edit-advertisement");
         return "index";
     }
 
     @PostMapping("/discipline/{disciplineId}/advertisements/{advertisementId}/edit-advertisement")
-    public ResponseEntity<Void> editDisciplineAdvertisements(Model model, @PathVariable String disciplineId, @PathVariable String advertisementId, @RequestBody AdvertisementRequest advertisementRequest) {
+    public ResponseEntity<Void> editDisciplineAdvertisements(@PathVariable Long disciplineId, @PathVariable Long advertisementId, @RequestBody AdvertisementRequest advertisementRequest) {
         String owner = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(owner);
 
-        Advertisement advertisement = advertisementService.findAdvertisementById(Long.parseLong(advertisementId));
+        Advertisement advertisement = advertisementService.findAdvertisementById(advertisementId);
         advertisement.setName(advertisementRequest.getName());
         advertisement.setContent(advertisementRequest.getContent());
         advertisement.setUser(user);
@@ -289,23 +240,17 @@ public class PortalController {
     }
 
     @GetMapping("/discipline/{disciplineId}/advertisements/create-advertisement")
-    public String getCreateAdvertisement(Model model, @PathVariable String disciplineId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
+    public String getCreateAdvertisement(Model model, @PathVariable Long disciplineId) {
         model.addAttribute("content", "fragments/create-advertisement");
         return "index";
     }
 
     @PostMapping("/discipline/{disciplineId}/advertisements/create-advertisement")
-    public ResponseEntity<Void> createAdvertisement(Model model, @PathVariable String disciplineId, @RequestBody AdvertisementRequest advertisementRequest) {
+    public ResponseEntity<Void> createAdvertisement(@PathVariable Long disciplineId, @RequestBody AdvertisementRequest advertisementRequest) {
         String owner = SecurityContextHolder.getContext().getAuthentication().getName();
         User userOwner = userDetailsService.findUserByUsername(owner);
 
-        Discipline discipline = disciplineService.findDisciplineById(Long.parseLong(disciplineId));
+        Discipline discipline = disciplineService.findDisciplineById(disciplineId);
         LocalDate currentDate = LocalDate.now();
 
         Advertisement advertisement = new Advertisement();
@@ -317,7 +262,7 @@ public class PortalController {
 
         advertisementService.saveAdvertisement(advertisement);
         String nameNotification = "Выложено объявление";
-        List<User> users = userDetailsService.findByDisciplinesId(Long.parseLong(disciplineId));
+        List<User> users = userDetailsService.findByDisciplinesId(disciplineId);
 
         for(User user : users) {
             UserNotification userNotification = new UserNotification(user, nameNotification, "advertisement");
@@ -328,20 +273,18 @@ public class PortalController {
     }
 
     @GetMapping("/discipline/{disciplineId}/information/edit-information")
-    public String getEditInformation(Model model, @PathVariable String disciplineId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
+    public String getEditInformation(Model model, @PathVariable Long disciplineId) {
+        Optional<Information> informationOptional = informationService.findInformationByDisciplineId(disciplineId);
+        Information information = informationOptional.orElse(new Information());
 
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
+        model.addAttribute("information", information);
         model.addAttribute("content", "fragments/enter-basic-information");
         return "index";
     }
 
     @PostMapping("/discipline/{disciplineId}/information/edit-information")
-    public ResponseEntity<Void> editInformation(Model model, @PathVariable String disciplineId, @RequestBody InformationRequest informationRequest) {
-        Discipline discipline = disciplineService.findDisciplineById(Long.parseLong(disciplineId));
+    public ResponseEntity<Void> editInformation(@PathVariable Long disciplineId, @RequestBody InformationRequest informationRequest) {
+        Discipline discipline = disciplineService.findDisciplineById(disciplineId);
         Information information = new Information(
                 informationRequest.getInformationOfDiscipline(),
                 informationRequest.getInformationOfTeacher(),
@@ -354,16 +297,5 @@ public class PortalController {
 
     public boolean getAuthorities(AccessType accessType) {
         return accessType.name().equals("LEADER");
-    }
-
-    public List<Discipline> getDisciplines () {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-
-        List<Discipline> disciplines = user.getDisciplines();
-        Comparator<Discipline> comparator = Comparator.comparing(Discipline::getName);
-
-        disciplines.sort(comparator);
-        return disciplines;
     }
 }

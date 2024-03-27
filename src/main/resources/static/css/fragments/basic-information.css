@@ -2,6 +2,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
+    width: 100%;
 }
 
 .basic-information__discipline-information {

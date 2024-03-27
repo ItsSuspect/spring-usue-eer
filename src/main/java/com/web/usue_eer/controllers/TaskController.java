@@ -29,50 +29,33 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/portal/discipline")
 public class TaskController {
+    private final UserDetailsServiceImpl userDetailsService;
+    private final DisciplineService disciplineService;
+    private final TaskService taskService;
+    private final UserTaskService userTaskService;
+    private final UserDisciplineService userDisciplineService;
+    private final UserNotificationService userNotificationService;
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private DisciplineService disciplineService;
-
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private UserTaskService userTaskService;
-
-    @Autowired
-    private UserDisciplineService userDisciplineService;
-
-    @Autowired
-    private UserNotificationService userNotificationService;
-
-    @GetMapping("/{disciplineId}/task-list/create")
-    public String getTaskCreate(Model model, @PathVariable String disciplineId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
-        model.addAttribute("disciplines", getDisciplines());
-        model.addAttribute("content", "fragments/create-task");
-        return "index";
+    public TaskController(UserDetailsServiceImpl userDetailsService, DisciplineService disciplineService, TaskService taskService, UserTaskService userTaskService, UserDisciplineService userDisciplineService, UserNotificationService userNotificationService) {
+        this.userDetailsService = userDetailsService;
+        this.disciplineService = disciplineService;
+        this.taskService = taskService;
+        this.userTaskService = userTaskService;
+        this.userDisciplineService = userDisciplineService;
+        this.userNotificationService = userNotificationService;
     }
 
-    @GetMapping("/{disciplineId}/task-list")
-    public String getTaskList(Model model, @PathVariable String disciplineId) {
+    @GetMapping("/{disciplineId}/task-list") //Список всех заданий
+    public String getTaskList(Model model, @PathVariable Long disciplineId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        List<Task> tasks = taskService.findTasksByDisciplineId(Long.parseLong(disciplineId));
+        List<Task> tasks = taskService.findTasksByDisciplineId(disciplineId);
         List<UserTask> userTasks = userTaskService.findUserTasksByUserId(user.getId());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
         boolean authorities = getAuthorities(userDiscipline.getAccessType());
 
         List<TaskListResponse> taskListResponses = tasks.stream()
@@ -94,36 +77,59 @@ public class TaskController {
                             }
                         }
                     } else {
-                        taskListResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(Long.parseLong(disciplineId), task.getId()));
+                        taskListResponse.setCountSend(userTaskService.countUserTasksByDisciplineIdAndTaskId(disciplineId, task.getId()));
                         taskListResponse.setCountChecked(userTaskService.countByStatusAndTaskId(task.getId()));
                     }
 
-                    if (taskListResponse.getStatus() == null) {
-                        taskListResponse.setStatus(task.getStatus());
-                    }
+                    if (taskListResponse.getStatus() == null) taskListResponse.setStatus(task.getStatus());
 
                     return taskListResponse;
                 }).sorted(Comparator.comparing(TaskListResponse::getName)).collect(Collectors.toList());
 
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("authorities", authorities);
         model.addAttribute("tasks", taskListResponses);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task-list");
         return "index";
     }
 
+    @GetMapping("/{disciplineId}/task-list/create") //Вывод блока создания задания
+    public String getTaskCreate(Model model, @PathVariable Long disciplineId) {
+        model.addAttribute("content", "fragments/create-task");
+        return "index";
+    }
+
+    //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
+    @PostMapping("/{disciplineId}/task-list/create")
+    public ResponseEntity<Void> createTask(@PathVariable Long disciplineId, @RequestBody TaskRequest taskRequest) {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
+        LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
+        String status = "Не началось";
+        if (dateTimeIssue.isBefore(currentTime)) {
+            status = "В процессе";
+        }
+        if (dateTimeDelivery.isBefore(currentTime)) {
+            status = "Завершено";
+        }
+
+        Discipline discipline = disciplineService.findDisciplineById(disciplineId);
+
+        Task task = new Task(taskRequest.getName(), taskRequest.getMaxScore(), dateTimeIssue, dateTimeDelivery,
+                taskRequest.getInstructionTask(), discipline, status);
+        taskService.saveTask(task);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{disciplineId}/task-list/{taskId}/completed-tasks")
-    public String getSendingTasks(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
-        List<UserTask> userTasks = userTaskService.findUserTasksByTaskId(Long.parseLong(taskId));
+    public String getSendingTasks(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
+        Task task = taskService.findTaskById(taskId);
+        List<UserTask> userTasks = userTaskService.findUserTasksByTaskId(taskId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
         List<CompletedTaskResponse> completedTaskResponses = userTasks.stream()
                 .map(userTask -> new CompletedTaskResponse(
-                        Long.parseLong(taskId),
+                        taskId,
                         userTask.getUser(),
                         userTask.getStatus(),
                         userTask.getResultScore(),
@@ -131,25 +137,19 @@ public class TaskController {
                         userTask.getDateDelivery().format(formatter)
                 )).sorted(Comparator.comparing(CompletedTaskResponse::getStatus)).collect(Collectors.toList());
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("tasks", completedTaskResponses);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/completed-tasks");
         return "index";
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}/{username}/task-check")
-    public String getSendTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @PathVariable String username) {
+    public String getSendTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId, @PathVariable String username) {
         User student = userDetailsService.findUserByUsername(username);
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
-        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(student.getId(), Long.parseLong(taskId)).get();
+        Task task = taskService.findTaskById(taskId);
+        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(student.getId(), taskId).get();
 
         TaskCheckResponse taskCheckResponse = new TaskCheckResponse(
-                Long.parseLong(taskId),
+                taskId,
                 task.getName(),
                 userTask.getResultScore(),
                 task.getMaxScore(),
@@ -159,34 +159,26 @@ public class TaskController {
                 student
         );
 
-        String usernameNotification = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(usernameNotification);
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", taskCheckResponse);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task-check");
         return "index";
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}")
-    public String getTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
+    public String getTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
         long userId = user.getId();
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), userId);
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, userId);
         boolean authorities = getAuthorities(userDiscipline.getAccessType());
 
-        long parsedTaskId = Long.parseLong(taskId);
-
-        Optional<UserTask> userTaskOptional = userTaskService.findUserTaskByUserIdAndTaskId(userId, parsedTaskId);
-        Task task = taskService.findTaskById(parsedTaskId);
+        Optional<UserTask> userTaskOptional = userTaskService.findUserTaskByUserIdAndTaskId(userId, taskId);
+        Task task = taskService.findTaskById(taskId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
         TaskResponse taskResponse = new TaskResponse(
-                parsedTaskId,
+                taskId,
                 task.getInstruction(),
                 task.getName(),
                 task.getStatus(),
@@ -206,22 +198,18 @@ public class TaskController {
             taskResponse.setSending(true);
         });
 
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", taskResponse);
         model.addAttribute("authorities", authorities);
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/task");
         return "index";
     }
 
     @PostMapping("/{disciplineId}/task-list/{taskId}/send")
-    public ResponseEntity<Void> sendingTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody SendTaskRequest sendTaskRequest) {
+    public ResponseEntity<Void> sendingTask(@PathVariable Long disciplineId, @PathVariable Long taskId, @RequestBody SendTaskRequest sendTaskRequest) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        Task task = taskService.findTaskById(taskId);
         LocalDateTime localDateTime = LocalDateTime.now().withSecond(0).withNano(0);
 
         UserTask userTask = new UserTask(user, task, "Сдано", localDateTime, sendTaskRequest.getComment());
@@ -230,14 +218,14 @@ public class TaskController {
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}/edit")
-    public String getEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId) {
+    public String getEditTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
-        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(Long.parseLong(disciplineId), user.getId());
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        Task task = taskService.findTaskById(taskId);
         task.setFormattedDateTimeDelivery(task.getDateTimeDelivery().format(formatter));
         task.setFormattedDateTimeIssue(task.getDateTimeIssue().format(formatter));
 
@@ -249,24 +237,20 @@ public class TaskController {
         Date dateDelivery = Date.from(localDateTimeDelivery.atZone(ZoneId.systemDefault()).toInstant());
         model.addAttribute("formattedDateIssue", dateDelivery);
 
-        List<UserNotification> userNotifications = userNotificationService.findUserNotificationsByUserId(user.getId());
-
-        model.addAttribute("notifications", userNotifications);
         model.addAttribute("task", task);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("disciplines", getDisciplines());
         model.addAttribute("content", "fragments/edit-task");
         return "index";
     }
 
     //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
     @PostMapping("/{disciplineId}/task-list/{taskId}/edit")
-    public ResponseEntity<Void> postEditTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<Void> postEditTask(@PathVariable Long disciplineId, @PathVariable Long taskId, @RequestBody TaskRequest taskRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
         LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
-        Task task = taskService.findTaskById(Long.parseLong(taskId));
+        Task task = taskService.findTaskById(taskId);
 
         if (dateTimeIssue.isBefore(currentTime)) {
             task.setStatus("В процессе");
@@ -286,10 +270,10 @@ public class TaskController {
     }
 
     @PostMapping("/{disciplineId}/task-list/{taskId}/answer-teacher")
-    public ResponseEntity<Void> answerTask(Model model, @PathVariable String disciplineId, @PathVariable String taskId, @RequestBody SendTaskTeacherRequest sendTaskTeacherRequest) {
+    public ResponseEntity<Void> answerTask(@PathVariable Long disciplineId, @PathVariable Long taskId, @RequestBody SendTaskTeacherRequest sendTaskTeacherRequest) {
         User user = userDetailsService.findUserByUsername(sendTaskTeacherRequest.getUsername());
 
-        Optional<UserTask> optionalUserTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), Long.parseLong(taskId));
+        Optional<UserTask> optionalUserTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), taskId);
         System.out.println(optionalUserTask.isPresent());
         if (optionalUserTask.isPresent()) {
             UserTask userTask = optionalUserTask.get();
@@ -306,41 +290,7 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
-    @PostMapping("/{disciplineId}/task-list/create")
-    public ResponseEntity<Void> createTask(@PathVariable String disciplineId, @RequestBody TaskRequest taskRequest) {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
-        LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
-        String status = "Не началось";
-        if (dateTimeIssue.isBefore(currentTime)) {
-            status = "В процессе";
-        }
-        if (dateTimeDelivery.isBefore(currentTime)) {
-            status = "Завершено";
-        }
-
-        Discipline discipline = disciplineService.findDisciplineById(Long.parseLong(disciplineId));
-
-        Task task = new Task(taskRequest.getName(), taskRequest.getMaxScore(), dateTimeIssue, dateTimeDelivery,
-                taskRequest.getInstructionTask(), discipline, status);
-        taskService.saveTask(task);
-        return ResponseEntity.ok().build();
-    }
-
     public boolean getAuthorities(AccessType accessType) {
         return accessType.name().equals("LEADER");
-    }
-
-    public List<Discipline> getDisciplines () {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.findUserByUsername(username);
-
-        List<Discipline> disciplines = user.getDisciplines();
-        Comparator<Discipline> comparator = Comparator.comparing(Discipline::getName);
-
-        disciplines.sort(comparator);
-        return disciplines;
     }
 }

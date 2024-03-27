@@ -59,6 +59,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<UserTask> userTasks = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner")
+    private Set<Discipline> userDisciplineOwner = new HashSet<>();
+
     public User() {
     }
 
@@ -165,6 +169,14 @@ public class User {
 
     public void setUserTasks(Set<UserTask> userTasks) {
         this.userTasks = userTasks;
+    }
+
+    public Set<Discipline> getUserDisciplineOwner() {
+        return userDisciplineOwner;
+    }
+
+    public void setUserDisciplineOwner(Set<Discipline> userDisciplineOwner) {
+        this.userDisciplineOwner = userDisciplineOwner;
     }
 
     public List<Discipline> getDisciplines() {

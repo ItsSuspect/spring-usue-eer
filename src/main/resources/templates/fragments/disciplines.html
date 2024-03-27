@@ -18,7 +18,8 @@
             <div class="discipline-block__discipline-list discipline-list">
                 <div class="discipline-list__item" th:each="discipline : ${disciplines}">
                     <a href="" class="discipline-list__discipline" th:text="${discipline.name}">Название дисциплины</a>
-                    <p class="discipline-list__owner" th:text="${discipline.owner}">Фамилия Имя Отчество</p>
+                    <p class="discipline-list__owner"
+                       th:text="${discipline.owner.surname} + ' ' + ${discipline.owner.name} + ' ' + ${discipline.owner.middleName}">Фамилия Имя Отчество</p>
                 </div>
             </div>
         </div>

@@ -1,7 +1,6 @@
 package com.web.usue_eer.controllers.advice;
 
 import com.web.usue_eer.entities.Task;
-import com.web.usue_eer.repository.TaskRepository;
 import com.web.usue_eer.security.services.TaskService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,11 @@ import java.util.List;
 
 @Component
 public class TaskStatusUpdater {
+    private final TaskService taskService;
     @Autowired
-    private TaskService taskService;
+    public TaskStatusUpdater(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @Transactional
     @Scheduled(fixedRate = 900000)

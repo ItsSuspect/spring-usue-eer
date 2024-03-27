@@ -10,7 +10,8 @@
                 <h3 class="discipline-information__header-text">Информация о дисциплине</h3>
             </div>
             <div class="discipline-information__content">
-                <textarea class="discipline-information__enter-information" id="information-discipline" oninput="autoGrow(this)" placeholder="Краткое описание дисциплины"></textarea>
+                <textarea class="discipline-information__enter-information" id="information-discipline"
+                          oninput="autoGrow(this)" placeholder="Краткое описание дисциплины" th:text="${information.informationOfDiscipline}"></textarea>
             </div>
         </div>
         <div class="basic-information__teacher-information teacher-information">
@@ -19,7 +20,8 @@
                     <h3 class="personal-information__header-text">Информация о преподавателе</h3>
                 </div>
                 <div class="personal-information__content">
-                    <textarea class="personal-information__enter-information" id="information-teacher" oninput="autoGrow(this)" placeholder="Личная информация"></textarea>
+                    <textarea class="personal-information__enter-information" id="information-teacher"
+                              oninput="autoGrow(this)" placeholder="Личная информация" th:text="${information.informationOfTeacher}"></textarea>
                 </div>
             </div>
             <div class="teacher-information__teacher-contacts teacher-contacts">
@@ -27,7 +29,8 @@
                     <h3 class="teacher-contacts__header-text">Контактные данные преподавателя</h3>
                 </div>
                 <div class="teacher-contacts__content">
-                    <textarea class="teacher-contacts__enter-information" id="contacts" oninput="autoGrow(this)" placeholder="Контактные данные"></textarea>
+                    <textarea class="teacher-contacts__enter-information" id="contacts"
+                              oninput="autoGrow(this)" placeholder="Контактные данные" th:text="${information.contacts}"></textarea>
                 </div>
             </div>
             <button class="basic-information__submit-button" th:data-disciplineId="${disciplineId}" onclick="saveMainInformation(this)">Сохранить</button>

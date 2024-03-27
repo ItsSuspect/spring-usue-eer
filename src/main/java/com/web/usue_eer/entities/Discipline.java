@@ -13,13 +13,14 @@ public class Discipline {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String owner;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User owner;
 
     public Discipline() {
     }
 
-    public Discipline(String name, String owner) {
+    public Discipline(String name, User owner) {
         this.name = name;
         this.owner = owner;
     }
@@ -40,11 +41,11 @@ public class Discipline {
         this.name = name;
     }
 
-    public String getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 }

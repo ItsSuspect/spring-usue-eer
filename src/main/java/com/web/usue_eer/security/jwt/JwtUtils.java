@@ -22,7 +22,10 @@ public class JwtUtils {
     private String jwtSecret;
 
     @Value("${usue.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private long jwtExpirationMs;
+
+    @Value("${usue.app.jwtExpirationMsIsRememberMe}")
+    private long jwtExpirationMsRememberMe;
 
     @Value("${usue.app.jwtCookieName}")
     private String jwtCookieName;
@@ -45,6 +48,15 @@ public class JwtUtils {
         return ResponseCookie.from(jwtCookieName, jwt)
                 .path("/")
                 .maxAge(jwtExpirationMs/1000)
+                .httpOnly(true)
+                .build();
+    }
+
+    public ResponseCookie generateJwtCookieRememberMe(UserDetailsImpl userPrincipal) {
+        String jwt = generateJwtTokenFromUsername(userPrincipal.getUsername());
+        return ResponseCookie.from(jwtCookieName, jwt)
+                .path("/")
+                .maxAge(jwtExpirationMsRememberMe/1000)
                 .httpOnly(true)
                 .build();
     }

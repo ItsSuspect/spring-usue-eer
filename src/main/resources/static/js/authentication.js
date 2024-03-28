@@ -1,13 +1,18 @@
 function toggleRememberMe(text) {
-    var checkbox = $(text).siblings('.authorization-form__input_assignment_remember-me');
+    const checkbox = $(text).siblings('.authorization-form__input_assignment_remember-me');
     checkbox.prop('checked', !checkbox.prop('checked'));
-};
+}
 
 function signIn() {
     const username = document.getElementById("username-input").value;
     const password = document.getElementById("password-input").value;
+    const checkbox = document.getElementById("remember-me");
 
-    const signInRequest = { username, password };
+    const signInRequest = {
+        "username": username,
+        "password": password,
+        "rememberMe": checkbox.checked
+    };
 
     fetch("/auth/signIn", {
         method: "POST",

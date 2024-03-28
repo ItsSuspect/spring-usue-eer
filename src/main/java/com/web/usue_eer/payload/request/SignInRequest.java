@@ -9,6 +9,8 @@ public class SignInRequest {
     @NotBlank(message = "Пароль не должен быть пустым")
     private String password;
 
+    private boolean rememberMe;
+
     public String getUsername() {
         return username;
     }
@@ -23,5 +25,13 @@ public class SignInRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 }

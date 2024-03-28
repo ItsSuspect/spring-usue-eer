@@ -45,6 +45,7 @@ public class AuthController {
         if (signInRequest.getUsername() == null || signInRequest.getPassword() == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Ошибка: Неверное имя пользователя или пароль "));
         }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
 
@@ -52,7 +53,9 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        ResponseCookie jwtCookie;
+        if (signInRequest.isRememberMe()) jwtCookie = jwtUtils.generateJwtCookieRememberMe(userDetails);
+        else jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
         String role = String.valueOf(userDetails.getAuthorities());
         return ResponseEntity.ok()

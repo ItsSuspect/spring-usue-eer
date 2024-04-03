@@ -1,0 +1,41 @@
+.add-file {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.add-file__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.add-file__file-attachment-area {
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  font-size: 14px;
+  background-color: #eee;
+}
+
+.add-file__submit-button {
+  margin-left: 16px;
+  padding: 4px 64px;
+  border: none;
+  border-radius: 16px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  text-wrap: nowrap;
+  background-color: #eee;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.add-file__submit-button:hover {
+  background-color: #ddd;
+}

@@ -33,7 +33,7 @@
                               oninput="autoGrow(this)" placeholder="Контактные данные" th:text="${information.contacts}"></textarea>
                 </div>
             </div>
-            <button class="basic-information__submit-button" th:data-disciplineId="${disciplineId}" onclick="saveMainInformation(this)">Сохранить</button>
+            <button class="basic-information__submit-button" th:data-disciplineId="${disciplineId}" th:data-informationId="${information.id}" onclick="saveMainInformation(this)">Сохранить</button>
         </div>
     </div>
 </div>

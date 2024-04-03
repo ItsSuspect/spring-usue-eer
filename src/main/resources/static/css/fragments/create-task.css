@@ -170,4 +170,10 @@
     line-height: 16px;
     letter-spacing: 0.15em;
     text-wrap: nowrap;
+    background-color: #eee;
+    transition: 0.2s ease-out;
+}
+
+.task-instruction__submit-button:hover {
+    background-color: #ddd;
 }

@@ -1,4 +1,4 @@
-<link rel="stylesheet" th:href="@{/css/fragments/basic-information.css}">
+<link rel="stylesheet" th:href="@{/css/fragments/discipline-information.css}">
 <div class="content__header">
     <h2 class="content__header-text">Основная информации</h2>
     <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
@@ -11,30 +11,20 @@
             <div class="discipline-information__header">
                 <h3 class="discipline-information__header-text">Информация о дисциплине</h3>
             </div>
-            <div class="discipline-information__content">
-                <p class="discipline-information__content-text" th:text="${information.informationOfDiscipline}">Информация о дисциплине</p>
-            </div>
+            <textarea class="discipline-information__content" readonly th:text="${information.informationOfDiscipline}"></textarea>
         </div>
         <div class="basic-information__teacher-information teacher-information">
             <div class="teacher-information__personal-information personal-information">
                 <div class="personal-information__header">
                     <h3 class="personal-information__header-text">Информация о преподавателе</h3>
                 </div>
-                <div class="personal-information__content">
-                    <div class="personal-information__text-block">
-                        <p class="personal-information__text" th:text="${information.informationOfTeacher}"></p>
-                    </div>
-                </div>
+                <textarea class="personal-information__content" readonly th:text="${information.informationOfTeacher}"></textarea>
             </div>
             <div class="teacher-information__teacher-contacts teacher-contacts">
                 <div class="teacher-contacts__header">
                     <h3 class="teacher-contacts__header-text">Контактные данные преподавателя</h3>
                 </div>
-                <div class="teacher-contacts__content">
-                    <span class="teacher-contacts__contact">
-                        <p class="teacher-contacts__platform" th:text="${information.contacts}">Электронная почта:</p>
-                    </span>
-                </div>
+                <textarea class="teacher-contacts__content" readonly th:text="${information.contacts}"></textarea>
             </div>
         </div>
     </div>

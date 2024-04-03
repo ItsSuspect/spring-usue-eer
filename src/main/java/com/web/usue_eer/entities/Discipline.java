@@ -1,5 +1,6 @@
 package com.web.usue_eer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -41,6 +42,7 @@ public class Discipline {
         this.name = name;
     }
 
+    @JsonIgnore
     public User getOwner() {
         return owner;
     }

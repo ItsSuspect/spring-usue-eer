@@ -1,5 +1,6 @@
 function saveMainInformation(element) {
     const disciplineId = element.getAttribute('data-disciplineId')
+    const informationId = element.getAttribute('data-informationId')
 
     const informationOfDiscipline = document.getElementById('information-discipline').value;
     const informationOfTeacher = document.getElementById('information-teacher').value;
@@ -7,6 +8,7 @@ function saveMainInformation(element) {
 
 
     const InformationRequest = {
+        id: informationId,
         informationOfDiscipline: informationOfDiscipline,
         informationOfTeacher: informationOfTeacher,
         contacts: contacts

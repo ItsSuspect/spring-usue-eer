@@ -1,0 +1,242 @@
+.basic-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  width: 100%;
+}
+
+.basic-information__teacher-information {
+  margin-left: 32px;
+}
+
+.discipline-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 50%;
+  width: 50%;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+}
+
+.discipline-information__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.discipline-information__header-text {
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.discipline-information__content,
+.personal-information__content,
+.teacher-contacts__content {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    line-height: 16px;
+    background-color: #fff;
+}
+
+.teacher-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  max-width: 50%;
+  width: 50%;
+}
+
+.personal-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+}
+
+.personal-information__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.personal-information__header-text {
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.personal-information__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.personal-information__text-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.personal-information__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.personal-information__text + .personal-information__text {
+  margin-top: 16px;
+}
+
+.personal-information__teacher-image {
+  width: 128px;
+  height: 128px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+}
+
+.teacher-contacts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 32px;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+}
+
+.teacher-contacts__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.teacher-contacts__header-text {
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.teacher-contacts__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.teacher-contacts__contact {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.teacher-contacts__contact + .teacher-contacts__contact {
+  margin-top: 16px;
+}
+
+.teacher-contacts__platform {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.teacher-contacts__link {
+  margin: 0 0 0 8px;
+  font-size: 14px;
+  line-height: 16px;
+}

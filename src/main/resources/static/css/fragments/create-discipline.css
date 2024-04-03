@@ -89,11 +89,24 @@
     border-top: 1px solid #999;    
 }
 
+.group-search__no-results,
+.person-search__no-results {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
 .group-search__group-name,
 .person-search__personal-info {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
+    transition: 0.2s ease-out;
+}
+
+.group-search__group-name:hover,
+.person-search__personal-info:hover {
+    color: #0075ff;
 }
 
 .output-block {
@@ -254,6 +267,11 @@
     line-height: 16px;
     letter-spacing: 0.15em;
     background-color: #fff;
+    transition: 0.2s ease-out;
+}
+
+.member-block__delete-button:hover {
+    color: #f00;
 }
 
 .member-block__delete-button + .member-block__delete-button {

@@ -1,0 +1,54 @@
+.add-folder {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.add-folder__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.add-folder__set-name-area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #eee;
+}
+
+.add-folder__set-name {
+  width: 100%;
+  padding: 4px 8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+.add-folder__submit-button {
+  margin-left: 16px;
+  padding: 4px 64px;
+  border: none;
+  border-radius: 16px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  text-wrap: nowrap;
+  background-color: #eee;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.add-folder__submit-button:hover {
+  background-color: #ddd;
+}

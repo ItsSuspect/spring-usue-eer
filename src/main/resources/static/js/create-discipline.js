@@ -60,7 +60,9 @@ function searchGroups(query) {
         if (filteredGroups.length === 0) {
             const listItem = document.createElement('li');
             listItem.classList.add('group-search__result');
-            listItem.textContent = 'Данной группы не существует';
+            listItem.innerHTML = `
+                    <p class="group-search__no-results">Не найдено</p>
+                `;
             resultsGroupList.appendChild(listItem);
         } else {
             filteredGroups.forEach(group => {
@@ -96,7 +98,9 @@ function searchUsers(query) {
         if (filteredUsers.length === 0) {
             const listItem = document.createElement('li');
             listItem.classList.add('person-search__result');
-            listItem.textContent = 'Данного пользователя не существует';
+            listItem.innerHTML = `
+                    <p class="person-search__no-results">Не найдено</p>
+                `;
             resultsUserList.appendChild(listItem);
         } else {
             filteredUsers.forEach(user => {

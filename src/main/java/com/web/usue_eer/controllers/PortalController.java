@@ -2,21 +2,26 @@ package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.entities.enums.AccessType;
-import com.web.usue_eer.payload.request.AdvertisementRequest;
-import com.web.usue_eer.payload.request.DisciplineRequest;
-import com.web.usue_eer.payload.request.InformationRequest;
-import com.web.usue_eer.payload.request.NotificationRequest;
+import com.web.usue_eer.payload.request.*;
 import com.web.usue_eer.payload.response.UserResponse;
 import com.web.usue_eer.security.services.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,9 +36,11 @@ public class PortalController {
     private final AdvertisementService advertisementService;
     private final UserNotificationService userNotificationService;
     private final InformationService informationService;
+    private final FolderDisciplineService folderDisciplineService;
+    private final FileDisciplineService fileDisciplineService;
 
     @Autowired
-    public PortalController(UserDetailsServiceImpl userDetailsService, GroupService groupService, DisciplineService disciplineService, UserDisciplineService userDisciplineService, AdvertisementService advertisementService, UserNotificationService userNotificationService, InformationService informationService) {
+    public PortalController(UserDetailsServiceImpl userDetailsService, GroupService groupService, DisciplineService disciplineService, UserDisciplineService userDisciplineService, AdvertisementService advertisementService, UserNotificationService userNotificationService, InformationService informationService, FolderDisciplineService folderDisciplineService, FileDisciplineService fileDisciplineService) {
         this.userDetailsService = userDetailsService;
         this.groupService = groupService;
         this.disciplineService = disciplineService;
@@ -41,6 +48,8 @@ public class PortalController {
         this.advertisementService = advertisementService;
         this.userNotificationService = userNotificationService;
         this.informationService = informationService;
+        this.folderDisciplineService = folderDisciplineService;
+        this.fileDisciplineService = fileDisciplineService;
     }
 
 
@@ -137,6 +146,13 @@ public class PortalController {
         if (ownerUser != null) {
             userDisciplineService.saveAccess(new UserDiscipline(ownerUser, discipline, AccessType.LEADER));
         }
+
+        FolderDiscipline folderDiscipline = new FolderDiscipline();
+        folderDiscipline.setFolderName("Основная папка");
+        folderDiscipline.setDiscipline(discipline);
+        folderDiscipline.setParentFolder(null);
+        folderDisciplineService.saveFolder(folderDiscipline);
+
         return ResponseEntity.ok(discipline);
     }
 
@@ -166,7 +182,7 @@ public class PortalController {
         model.addAttribute("usersByGroup", usersByGroup);
         model.addAttribute("users", users);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("content", "fragments/member-list");
+        model.addAttribute("content", "fragments/discipline-members");
         return "index";
     }
 
@@ -188,7 +204,7 @@ public class PortalController {
 
         model.addAttribute("information", information);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("content", "fragments/basic-information");
+        model.addAttribute("content", "fragments/discipline-information");
         return "index";
     }
 
@@ -291,9 +307,110 @@ public class PortalController {
                 informationRequest.getContacts(),
                 discipline
         );
+
+        if (informationRequest.getId() != null) {
+            information.setId(informationRequest.getId());
+        }
+
         informationService.saveInformation(information);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/discipline/{disciplineId}/resources")
+    @Transactional
+    public String getResources(Model model, @PathVariable Long disciplineId) {
+        List<FolderDiscipline> folderDisciplines = folderDisciplineService.findFolderDisciplinesByDisciplineId(disciplineId);
+        List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByDisciplineId(disciplineId);
+
+        model.addAttribute("folders", folderDisciplines);
+        model.addAttribute("files", fileDisciplines);
+        model.addAttribute("content", "fragments/discipline-resources");
+        return "index";
+    }
+
+    @GetMapping("/discipline/{disciplineId}/resources/download/{fileId}")
+    @Transactional
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long disciplineId, @PathVariable Long fileId) {
+        FileDiscipline file = fileDisciplineService.findFileDisciplineById(fileId);
+
+        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(file.getFileSize())
+                .body(resource);
+    }
+
+    @PostMapping("/discipline/{disciplineId}/resources/save-folder")
+    public ResponseEntity<Void> saveFolder(@PathVariable Long disciplineId, @RequestBody FolderRequest folderRequest) {
+        FolderDiscipline folderDiscipline = new FolderDiscipline();
+        folderDiscipline.setFolderName(folderRequest.getName());
+        folderDiscipline.setParentFolder(folderDisciplineService.findFolderDisciplineById(folderRequest.getParentFolder()));
+        folderDiscipline.setDiscipline(disciplineService.findDisciplineById(disciplineId));
+        folderDiscipline.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        folderDisciplineService.saveFolder(folderDiscipline);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/discipline/{disciplineId}/resources/save-file")
+    public ResponseEntity<Void> saveFile(@PathVariable Long disciplineId, @RequestParam("file") MultipartFile file, @RequestParam("parentFolder") Long parentFolderId) {
+        try {
+            String fileName = file.getOriginalFilename();
+            byte[] fileData = file.getBytes();
+            String fileType = file.getContentType();
+            long fileSize = file.getSize();
+
+            FileDiscipline fileDiscipline = new FileDiscipline();
+            fileDiscipline.setFileName(fileName);
+            fileDiscipline.setFileData(fileData);
+            fileDiscipline.setFileType(fileType);
+            fileDiscipline.setFileSize(fileSize);
+            fileDiscipline.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            fileDiscipline.setDiscipline(disciplineService.findDisciplineById(disciplineId));
+            fileDiscipline.setFolder(folderDisciplineService.findFolderDisciplineById(parentFolderId));
+
+            fileDisciplineService.saveFile(fileDiscipline);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/discipline/{disciplineId}/resources/delete-file")
+    public ResponseEntity<Void> deleteFile(@PathVariable Long disciplineId, @RequestParam("fileId") Long fileId) {
+        try {
+            fileDisciplineService.deleteFileDisciplineById(fileId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/discipline/{disciplineId}/resources/delete-folder")
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long disciplineId, @RequestParam("folderId") Long folderId) {
+        try {
+            List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByFolderId(folderId);
+            for (FileDiscipline file : fileDisciplines) {
+                fileDisciplineService.deleteFileDisciplineById(file.getId());
+            }
+            folderDisciplineService.deleteFolderDisciplineById(folderId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+//    @GetMapping("/discipline/{disciplineId}/edit-members")
+//    public String getResources1(Model model, @PathVariable Long disciplineId) {
+//        model.addAttribute("content", "fragments/edit-members");
+//        return "index";
+//    }
 
     public boolean getAuthorities(AccessType accessType) {
         return accessType.name().equals("LEADER");

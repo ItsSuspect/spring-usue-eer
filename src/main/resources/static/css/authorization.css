@@ -159,14 +159,20 @@
 	margin: 0 8px 0 16px;
 	width: 16px;
 	height: 16px;
+	cursor: pointer;
 }
 
 .authorization-form__text {
 	margin: 0;
 	font-size: 14px;
 	line-height: 16px;
+	transition: 0.2s ease-out;
 	cursor: default;
 	user-select: none;
+}
+
+.authorization-form__text:hover {
+	color: #0075ff;
 }
 
 .authorization-form__submit-button {

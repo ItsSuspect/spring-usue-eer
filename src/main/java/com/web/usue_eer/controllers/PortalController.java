@@ -38,9 +38,15 @@ public class PortalController {
     private final InformationService informationService;
     private final FolderDisciplineService folderDisciplineService;
     private final FileDisciplineService fileDisciplineService;
+    private final FolderUserService folderUserService;
+    private final FileUserService fileUserService;
+    private final FileSharingService fileSharingService;
 
     @Autowired
-    public PortalController(UserDetailsServiceImpl userDetailsService, GroupService groupService, DisciplineService disciplineService, UserDisciplineService userDisciplineService, AdvertisementService advertisementService, UserNotificationService userNotificationService, InformationService informationService, FolderDisciplineService folderDisciplineService, FileDisciplineService fileDisciplineService) {
+    public PortalController(UserDetailsServiceImpl userDetailsService, GroupService groupService, DisciplineService disciplineService,
+                            UserDisciplineService userDisciplineService, AdvertisementService advertisementService, UserNotificationService userNotificationService,
+                            InformationService informationService, FolderDisciplineService folderDisciplineService, FileDisciplineService fileDisciplineService,
+                            FolderUserService folderUserService, FileUserService fileUserService, FileSharingService fileSharingService) {
         this.userDetailsService = userDetailsService;
         this.groupService = groupService;
         this.disciplineService = disciplineService;
@@ -50,6 +56,9 @@ public class PortalController {
         this.informationService = informationService;
         this.folderDisciplineService = folderDisciplineService;
         this.fileDisciplineService = fileDisciplineService;
+        this.folderUserService = folderUserService;
+        this.fileUserService = fileUserService;
+        this.fileSharingService = fileSharingService;
     }
 
 
@@ -318,7 +327,7 @@ public class PortalController {
 
     @GetMapping("/discipline/{disciplineId}/resources")
     @Transactional
-    public String getResources(Model model, @PathVariable Long disciplineId) {
+    public String getDisciplineResources(Model model, @PathVariable Long disciplineId) {
         List<FolderDiscipline> folderDisciplines = folderDisciplineService.findFolderDisciplinesByDisciplineId(disciplineId);
         List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByDisciplineId(disciplineId);
 
@@ -406,11 +415,187 @@ public class PortalController {
         }
     }
 
-//    @GetMapping("/discipline/{disciplineId}/edit-members")
-//    public String getResources1(Model model, @PathVariable Long disciplineId) {
-//        model.addAttribute("content", "fragments/edit-members");
-//        return "index";
-//    }
+    @GetMapping("/resources")
+    @Transactional
+    public String getUserResources(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        List<FolderUser> folderUsers = folderUserService.findFolderUsersByUserId(user.getId());
+        List<FileUser> fileUsers = fileUserService.findFileUsersByUserId(user.getId());
+
+        model.addAttribute("folders", folderUsers);
+        model.addAttribute("files", fileUsers);
+        model.addAttribute("content", "fragments/user-resources");
+        return "index";
+    }
+
+    @GetMapping("/resources/download/{fileId}")
+    @Transactional
+    public ResponseEntity<ByteArrayResource> downloadUserFile(@PathVariable Long fileId) {
+        FileUser file = fileUserService.findFileUserById(fileId);
+
+        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(file.getFileSize())
+                .body(resource);
+    }
+
+    @PostMapping("/resources/save-folder")
+    public ResponseEntity<Void> saveUserFolder(@RequestBody FolderRequest folderRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        FolderUser folderUser = new FolderUser();
+        folderUser.setFolderName(folderRequest.getName());
+        folderUser.setParentFolder(folderUserService.findFolderUserById(folderRequest.getParentFolder()));
+        folderUser.setUser(user);
+        folderUser.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        folderUserService.saveFolder(folderUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resources/save-file")
+    public ResponseEntity<Void> saveUserFile(@RequestParam("file") MultipartFile file, @RequestParam("parentFolder") Long parentFolderId) {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userDetailsService.findUserByUsername(username);
+
+            String fileName = file.getOriginalFilename();
+            byte[] fileData = file.getBytes();
+            String fileType = file.getContentType();
+            long fileSize = file.getSize();
+
+            FileUser fileUser = new FileUser();
+            fileUser.setFileName(fileName);
+            fileUser.setFileData(fileData);
+            fileUser.setFileType(fileType);
+            fileUser.setFileSize(fileSize);
+            fileUser.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            fileUser.setUser(user);
+            fileUser.setFolder(folderUserService.findFolderUserById(parentFolderId));
+
+            fileUserService.saveFile(fileUser);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/resources/delete-file")
+    public ResponseEntity<Void> deleteUserFile(@RequestParam("fileId") Long fileId) {
+        try {
+            fileUserService.deleteFileUserById(fileId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/resources/delete-folder")
+    public ResponseEntity<Void> deleteUserFolder(@RequestParam("folderId") Long folderId) {
+        try {
+            List<FileUser> fileUsers = fileUserService.findFileUsersByFolderId(folderId);
+            for (FileUser file : fileUsers) {
+                fileUserService.deleteFileUserById(file.getId());
+            }
+            folderUserService.deleteFolderUserById(folderId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/discipline/{disciplineId}/file-sharing")
+    @Transactional
+    public String getFileSharing(Model model, @PathVariable Long disciplineId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+
+        boolean authorities = getAuthorities(userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId()).getAccessType());
+        if (authorities) {
+            List<UserDiscipline> userDisciplines = userDisciplineService.findUserDisciplinesParticipantByDisciplineId(disciplineId);
+            List<FileSharing> fileSharings = fileSharingService.findFileSharingsByDisciplineId(disciplineId);
+            List<User> users = new ArrayList<>();
+
+            for (UserDiscipline userDiscipline : userDisciplines) {
+                users.add(userDiscipline.getUser());
+            }
+
+            model.addAttribute("folders", users);
+            model.addAttribute("files", fileSharings);
+            model.addAttribute("content", "fragments/discipline-file-sharing-teacher");
+        }
+        else {
+            List<FileSharing> fileSharings = fileSharingService.findFileSharingsByUserIdAndDisciplineId(user.getId(), disciplineId);
+
+            model.addAttribute("files", fileSharings);
+            model.addAttribute("content", "fragments/discipline-file-sharing-student");
+        }
+        return "index";
+    }
+
+    @GetMapping("/discipline/{disciplineId}/file-sharing/download/{fileId}")
+    @Transactional
+    public ResponseEntity<ByteArrayResource> downloadFileSharing(@PathVariable Long fileId, @PathVariable Long disciplineId) {
+        FileSharing file = fileSharingService.findFileSharingById(fileId);
+
+        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(file.getFileSize())
+                .body(resource);
+    }
+
+    @PostMapping("/discipline/{disciplineId}/file-sharing/save-file")
+    public ResponseEntity<Void> saveFileSharing(@RequestParam("file") MultipartFile file, @PathVariable Long disciplineId) {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userDetailsService.findUserByUsername(username);
+
+            String fileName = file.getOriginalFilename();
+            byte[] fileData = file.getBytes();
+            String fileType = file.getContentType();
+            long fileSize = file.getSize();
+
+            FileSharing fileSharing = new FileSharing();
+            fileSharing.setFileName(fileName);
+            fileSharing.setFileData(fileData);
+            fileSharing.setFileType(fileType);
+            fileSharing.setFileSize(fileSize);
+            fileSharing.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            fileSharing.setDiscipline(disciplineService.findDisciplineById(disciplineId));
+            fileSharing.setUser(user);
+
+            fileSharingService.saveFile(fileSharing);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/discipline/{disciplineId}/file-sharing/delete-file")
+    public ResponseEntity<Void> deleteFileSharing(@RequestParam("fileId") Long fileId, @PathVariable Long disciplineId) {
+        try {
+            fileSharingService.deleteFileSharingById(fileId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     public boolean getAuthorities(AccessType accessType) {
         return accessType.name().equals("LEADER");

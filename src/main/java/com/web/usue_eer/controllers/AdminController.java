@@ -1,11 +1,10 @@
 package com.web.usue_eer.controllers;
 
-import com.web.usue_eer.entities.Group;
-import com.web.usue_eer.entities.Role;
-import com.web.usue_eer.entities.User;
+import com.web.usue_eer.entities.*;
 import com.web.usue_eer.payload.request.GroupRequest;
 import com.web.usue_eer.payload.request.SignUpRequest;
 import com.web.usue_eer.payload.response.MessageResponse;
+import com.web.usue_eer.security.services.FolderUserService;
 import com.web.usue_eer.security.services.GroupService;
 import com.web.usue_eer.security.services.RoleService;
 import com.web.usue_eer.security.services.UserDetailsServiceImpl;
@@ -38,6 +37,9 @@ public class AdminController {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    private FolderUserService folderUserService;
 
     @GetMapping("/create")
     public String getSignUp() {
@@ -78,7 +80,14 @@ public class AdminController {
 
         user.setGroups(groups);
 
-        userDetailsService.saveUser(user);
+        User createUser = userDetailsService.saveUser(user);
+
+        FolderUser folderUser = new FolderUser();
+        folderUser.setFolderName("Основная папка");
+        folderUser.setUser(createUser);
+        folderUser.setParentFolder(null);
+        folderUserService.saveFolder(folderUser);
+
         return ResponseEntity.ok(new MessageResponse("Пользователь успешно зарегистрирован"));
     }
 

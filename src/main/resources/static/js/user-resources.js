@@ -1,9 +1,3 @@
-document.querySelector('.overlay').addEventListener('click', function(event) {
-    if (event.target === this) {
-        closePopup();
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function() {
     function renderFolders(parentElement, folders) {
         folders.forEach(folder => {
@@ -89,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentFile = document.createElement('div');
             contentFile.classList.add('file');
             const aElement = document.createElement('a');
-            aElement.href = 'http://localhost:8080/portal/discipline/' + file.discipline.id +'/resources/download/' + file.id;
+            aElement.href = 'http://localhost:8080/portal/resources/download/' + file.id;
             aElement.classList.add('file__name');
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);
@@ -115,9 +109,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    console.log(folders)
+    console.log(files)
     const mainFolderContainer = document.querySelector('.resources__content');
     renderFolders(mainFolderContainer, folders);
     renderFiles(files);
+});
+
+document.querySelector('.overlay').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closePopup();
+    }
 });
 
 function openAddFileWindow(parentFolder) {
@@ -160,7 +162,6 @@ function closePopup() {
 }
 
 function saveFolder(element) {
-    const disciplineId = element.getAttribute('data-disciplineId');
     const parentFolder = element.getAttribute('data-parent-folder');
     const nameFolder = document.getElementById('folder-name').value;
 
@@ -169,7 +170,7 @@ function saveFolder(element) {
         parentFolder: parentFolder
     };
 
-    fetch('/portal/discipline/' + disciplineId + '/resources/save-folder', {
+    fetch('/portal/resources/save-folder', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -182,16 +183,14 @@ function saveFolder(element) {
             }
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/resources";
+            window.location.href = "http://localhost:8080/portal/resources";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);
         });
 }
 
-
 function saveFile(element) {
-    const disciplineId = element.getAttribute('data-disciplineId');
     const parentFolder = element.getAttribute('data-parent-folder');
 
     const fileInput = document.querySelector('.add-file__adding-input');
@@ -206,7 +205,7 @@ function saveFile(element) {
     formData.append('file', file);
     formData.append('parentFolder', parentFolder);
 
-    fetch('/portal/discipline/' + disciplineId + '/resources/save-file', {
+    fetch('/portal/resources/save-file', {
         method: 'POST',
         body: formData
     })
@@ -217,7 +216,7 @@ function saveFile(element) {
             return response.text();
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/resources";
+            window.location.href = "http://localhost:8080/portal/resources";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);
@@ -226,12 +225,11 @@ function saveFile(element) {
 
 function deleteFile(element) {
     const fileId = element.getAttribute('data-fileId');
-    const disciplineId = element.getAttribute('data-disciplineId');
 
     const formData = new FormData();
     formData.append('fileId', fileId);
 
-    fetch('/portal/discipline/' + disciplineId + '/resources/delete-file', {
+    fetch('/portal/resources/delete-file', {
         method: 'POST',
         body: formData
     })
@@ -242,7 +240,7 @@ function deleteFile(element) {
             return response.text();
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/resources";
+            window.location.href = "http://localhost:8080/portal/resources";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);
@@ -251,12 +249,11 @@ function deleteFile(element) {
 
 function deleteFolder(element) {
     const folderId = element.getAttribute('data-folderId');
-    const disciplineId = element.getAttribute('data-disciplineId');
 
     const formData = new FormData();
     formData.append('folderId', folderId);
 
-    fetch('/portal/discipline/' + disciplineId + '/resources/delete-folder', {
+    fetch('/portal/resources/delete-folder', {
         method: 'POST',
         body: formData
     })
@@ -267,7 +264,7 @@ function deleteFolder(element) {
             return response.text();
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/resources";
+            window.location.href = "http://localhost:8080/portal/resources";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

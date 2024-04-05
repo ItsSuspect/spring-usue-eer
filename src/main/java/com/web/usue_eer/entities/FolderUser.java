@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "discipline_folders")
-public class FolderDiscipline {
+@Table(name = "user_folders")
+public class FolderUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,16 +15,16 @@ public class FolderDiscipline {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "discipline_id")
-    private Discipline discipline;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "parent_folder_id")
-    private FolderDiscipline parentFolder;
+    private FolderUser parentFolder;
 
     private String dateAdd;
 
-    public FolderDiscipline() {
+    public FolderUser() {
     }
 
     public Long getId() {
@@ -43,19 +43,19 @@ public class FolderDiscipline {
         this.folderName = folderName;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
+    public User getUser() {
+        return user;
     }
 
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public FolderDiscipline getParentFolder() {
+    public FolderUser getParentFolder() {
         return parentFolder;
     }
 
-    public void setParentFolder(FolderDiscipline parentFolder) {
+    public void setParentFolder(FolderUser parentFolder) {
         this.parentFolder = parentFolder;
     }
 

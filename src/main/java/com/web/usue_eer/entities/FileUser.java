@@ -3,11 +3,9 @@ package com.web.usue_eer.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "discipline_files")
-public class FileDiscipline {
+@Table(name = "user_files")
+public class FileUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,13 +27,14 @@ public class FileDiscipline {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
-    private FolderDiscipline folder;
+    private FolderUser folder;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "discipline_id")
-    private Discipline discipline;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public FileDiscipline() {
+    public FileUser() {
     }
 
     public Long getId() {
@@ -78,27 +77,27 @@ public class FileDiscipline {
         this.fileSize = fileSize;
     }
 
-    public FolderDiscipline getFolder() {
-        return folder;
-    }
-
-    public void setFolder(FolderDiscipline folder) {
-        this.folder = folder;
-    }
-
-    public Discipline getDiscipline() {
-        return discipline;
-    }
-
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
-    }
-
     public String getDateAdd() {
         return dateAdd;
     }
 
     public void setDateAdd(String dateAdd) {
         this.dateAdd = dateAdd;
+    }
+
+    public FolderUser getFolder() {
+        return folder;
+    }
+
+    public void setFolder(FolderUser folder) {
+        this.folder = folder;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

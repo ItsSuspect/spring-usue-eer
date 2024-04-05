@@ -3,11 +3,9 @@ package com.web.usue_eer.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "discipline_files")
-public class FileDiscipline {
+@Table(name = "file_sharing")
+public class FileSharing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,15 +26,12 @@ public class FileDiscipline {
     private String dateAdd;
 
     @ManyToOne
-    @JoinColumn(name = "folder_id")
-    private FolderDiscipline folder;
-
-    @ManyToOne
     @JoinColumn(name = "discipline_id")
     private Discipline discipline;
 
-    public FileDiscipline() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -78,12 +73,12 @@ public class FileDiscipline {
         this.fileSize = fileSize;
     }
 
-    public FolderDiscipline getFolder() {
-        return folder;
+    public String getDateAdd() {
+        return dateAdd;
     }
 
-    public void setFolder(FolderDiscipline folder) {
-        this.folder = folder;
+    public void setDateAdd(String dateAdd) {
+        this.dateAdd = dateAdd;
     }
 
     public Discipline getDiscipline() {
@@ -94,11 +89,11 @@ public class FileDiscipline {
         this.discipline = discipline;
     }
 
-    public String getDateAdd() {
-        return dateAdd;
+    public User getUser() {
+        return user;
     }
 
-    public void setDateAdd(String dateAdd) {
-        this.dateAdd = dateAdd;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

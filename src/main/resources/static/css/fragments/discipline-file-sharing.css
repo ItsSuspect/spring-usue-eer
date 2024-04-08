@@ -110,7 +110,7 @@
 
 .folder__name::before {
   font-family: "icomoon";
-  content: "\e901";
+  content: "\e916";
   position: absolute;
   top: 50%;
   left: 0;
@@ -180,7 +180,7 @@
 
 .file__name::before {
   font-family: "icomoon";
-  content: "\e901";
+  content: "\e91a";
   position: absolute;
   top: 50%;
   left: 0;
@@ -405,7 +405,7 @@
   background-color: #ddd;
 }
 
-.add-folder {
+.delete-confirmation {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -416,24 +416,32 @@
   width: 100%;
 }
 
-.add-folder__set-name {
-  width: 320px;
-  padding: 4px 16px;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
+.delete-confirmation__warning {
+  text-align: center;
+  font-size: 16px;
   line-height: 16px;
-  border: 1px solid #999;
-  border-radius: 8px;
-  outline: none;
 }
 
-.add-folder__submit-button {
-  margin-left: 16px;
-  padding: 4px 64px;
+.delete-confirmation__button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: stretch;
+      -ms-flex-pack: stretch;
+          justify-content: stretch;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.delete-confirmation__save-button {
+  width: 100%;
+  margin-top: 32px;
+  padding: 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 16px;
   font-family: "Montserrat", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
   line-height: 16px;
   letter-spacing: 0.15em;
@@ -442,6 +450,41 @@
   transition: 0.2s ease-out;
 }
 
-.add-folder__submit-button:hover {
+.delete-confirmation__save-button:hover {
+  background-color: #ddd;
+}
+
+.delete-confirmation__button {
+  max-width: 50%;
+  width: 50%;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  background-color: #fff;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.delete-confirmation__button_confirm {
+  border: 1px solid #f00;
+  color: #f00;
+  background-color: #fff0f0;
+}
+
+.delete-confirmation__button_confirm:hover {
+  color: #fff;
+  background-color: #ff8888;
+}
+
+.delete-confirmation__button_decline {
+  margin-left: 16px;
+  border: 1px solid #444;
+}
+
+.delete-confirmation__button_decline:hover {
   background-color: #ddd;
 }

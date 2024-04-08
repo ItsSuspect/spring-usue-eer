@@ -1,4 +1,4 @@
-<link rel="stylesheet" th:href="@{/css/fragments/advertisements.css}">
+<link rel="stylesheet" th:href="@{/css/fragments/discipline-announcements.css}">
 <div class="content__header">
     <h2 class="content__header-text">Объявления</h2>
     <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
@@ -7,6 +7,9 @@
 </div>
 <div class="content__content-block content-block">
     <div class="content-block__advertisements">
+        <div class="no-advertisements content-block__no-advertisements" th:if="${#lists.isEmpty(advertisements)}">
+            <p class="no-advertisements__text">На данный момент объявления отсутствуют</p>
+        </div>
         <article class="content-block__advertisement advertisement" th:each="advertisement : ${advertisements}">
             <div class="advertisement__header">
                 <h3 class="advertisement__header-text" th:text="${advertisement.name}">Тема объявления</h3>

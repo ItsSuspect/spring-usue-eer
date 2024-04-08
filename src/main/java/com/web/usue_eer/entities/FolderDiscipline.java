@@ -23,6 +23,7 @@ public class FolderDiscipline {
     private FolderDiscipline parentFolder;
 
     private String dateAdd;
+    private String author;
 
     public FolderDiscipline() {
     }
@@ -65,5 +66,13 @@ public class FolderDiscipline {
 
     public void setDateAdd(String dateAdd) {
         this.dateAdd = dateAdd;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

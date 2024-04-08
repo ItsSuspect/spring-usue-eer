@@ -8,13 +8,19 @@ $(document).ready(function() {
 
     // Применяем классы к элементам навигации
     let liElement = $('li[data-discipline-id="' + disciplineId + '"]');
-    liElement.removeClass('discipline-list__item_selection_unselected').addClass('discipline-list__item_selection_selected');
+    liElement.addClass('discipline-list__item_selected');
 
     let navElement = $('nav[data-discipline-nav="' + disciplineId + '"]');
-    navElement.toggle();
 
     let aElement = navElement.find('a[data-discipline-category="' + category + '"]');
-    aElement.removeClass('tab-navigation__link tab-navigation__link_selection_unselected').addClass('tab-navigation__link tab-navigation__link_selection_selected');
+    aElement.addClass('tab-navigation__link_selected');
+
+    if (navElement.is(':hidden')) {
+      liElement.addClass('discipline-list__item_selected');
+      navElement.toggle();
+      liElement.prev().addClass('discipline-list__item_round_bottom');
+      liElement.next().addClass('discipline-list__item_round_top');
+    }
   } else {
     switch (true) {
       case currentPageUrl.includes("/portal/calendar"):
@@ -31,6 +37,18 @@ $(document).ready(function() {
         break;
       default:
         break;
+    }
+  }
+});
+
+$(document).ready(function() {
+  const bell = $('.notification-center__bell');
+  const notificationBlock = $('.notification-block');
+
+  if (notificationBlock) {
+    const notifications = notificationBlock.find('.notification-block__notification');
+    if (notifications.length === 0) {
+      bell.addClass('notification-center__bell_empty');
     }
   }
 });
@@ -113,6 +131,8 @@ function deleteNotification(element) {
         parent.remove();
         if ($('.notification-center__notification-block.notification-block').find('.notification-block__notification').length === 0) {
           $('.notification-center__notification-block.notification-block').prepend('<div class="notification-block__no-notification-block"><p class="notification-block__no-notification-text">Уведомления отсутствуют</p></div>');
+          const bell = $('.notification-center__bell');
+          bell.addClass('notification-center__bell_empty');
         }
       })
       .catch(error => {
@@ -146,6 +166,8 @@ function clearNotificationCenter() {
 
         if ($('.notification-center__notification-block.notification-block').find('.notification-block__notification').length === 0 && $('.notification-block__no-notification-block').length === 0) {
           $('.notification-center__notification-block.notification-block').prepend('<div class="notification-block__no-notification-block"><p class="notification-block__no-notification-text">Уведомления отсутствуют</p></div>');
+          const bell = $('.notification-center__bell');
+          bell.addClass('notification-center__bell_empty');
         }
 
       })
@@ -178,16 +200,16 @@ function removeEditButtonTextTwo(editButton) {
   editButton.style.color = '#f4f4f4';
 }
 
-function expandButtonText(button) {
-  button.style.maxWidth = '112px';
-  button.style.padding = '4px 8px 4px 28px';
-  button.style.color = '#444';
+function expandButtonText(element) {
+  const button = $(element);
+  const buttonClasses = button.attr('class').split(' ');
+  button.addClass(buttonClasses[0] + '_expanded');
 }
 
-function hideButtonText(button) {
-  button.style.maxWidth = '24px';
-  button.style.padding = '4px 0 4px 24px';
-  button.style.color = '#eee';
+function hideButtonText(element) {
+  const button = $(element);
+  const buttonClasses = button.attr('class').split(' ');
+  button.removeClass(buttonClasses[0] + '_expanded');
 }
 
 function toggleDisciplineList(button, parent) {

@@ -23,6 +23,14 @@ public class UserDisciplineService {
         return userDisciplineRepository.countStudentsByDisciplineId(disciplineId);
     }
 
+    public void deleteById(Long id) {
+        userDisciplineRepository.deleteById(id);
+    }
+
+    public List<UserDiscipline> findUserDisciplinesByDisciplineId(Long id) {
+        return userDisciplineRepository.findUserDisciplinesByDisciplineId(id);
+    }
+
     public List<UserDiscipline> findUserDisciplinesParticipantByDisciplineId(Long id) {
         return userDisciplineRepository.findUserDisciplinesByAccessTypeAndDisciplineId(AccessType.PARTICIPANT, id);
     }

@@ -26,6 +26,7 @@ public class FileDiscipline {
     private long fileSize;
 
     private String dateAdd;
+    private String author;
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
@@ -100,5 +101,13 @@ public class FileDiscipline {
 
     public void setDateAdd(String dateAdd) {
         this.dateAdd = dateAdd;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

@@ -13,6 +13,8 @@ import java.util.List;
 public interface UserDisciplineRepository extends JpaRepository<UserDiscipline, Long> {
     UserDiscipline findByDisciplineIdAndUserId(Long disciplineId, Long userId);
     List<UserDiscipline> findUserDisciplinesByAccessTypeAndDisciplineId(AccessType accessType, Long id);
+    List<UserDiscipline> findUserDisciplinesByDisciplineId(Long id);
+    void deleteById(Long id);
     @Query("SELECT COUNT(ud) FROM UserDiscipline ud WHERE ud.discipline.id = :disciplineId")
     Long countStudentsByDisciplineId(@Param("disciplineId") Long disciplineId);
 }

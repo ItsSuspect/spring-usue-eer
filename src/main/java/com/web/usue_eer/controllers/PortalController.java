@@ -84,7 +84,7 @@ public class PortalController {
 
     @GetMapping("/disciplines")
     public String disciplines(Model model) {
-        model.addAttribute("content", "fragments/disciplines");
+        model.addAttribute("content", "fragments/user-disciplines");
         return "index";
     }
 
@@ -195,6 +195,78 @@ public class PortalController {
         return "index";
     }
 
+    @GetMapping("/discipline/{disciplineId}/member-list/edit-members")
+    public String getEditMemberList(Model model, @PathVariable Long disciplineId) {
+        List<Group> groupsAll = groupService.findAllGroups();
+        List<User> users = userDetailsService.findAllUsers();
+
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> {
+                    UserResponse dto = new UserResponse();
+                    dto.setId(user.getId());
+                    dto.setUsername(user.getUsername());
+                    dto.setEmail(user.getEmail());
+                    dto.setName(user.getName());
+                    dto.setSurname(user.getSurname());
+                    dto.setMiddleName(user.getMiddleName());
+                    dto.setGroups(user.getGroups());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        model.addAttribute("groupsAll", groupsAll);
+        model.addAttribute("usersAll", userResponses);
+
+        List<User> usersInDiscipline = userDetailsService.findByDisciplinesId(disciplineId);
+        Map<String, List<User>> usersByGroup = usersInDiscipline.stream()
+                .collect(Collectors.groupingBy(user -> user.getGroups().iterator().next().getName()));
+
+        usersInDiscipline.forEach(user -> {
+            AccessType accessType = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId()).getAccessType();
+            user.setAccessType(accessType == AccessType.PARTICIPANT ? "Участник" : "Руководитель");
+        });
+
+        model.addAttribute("usersByGroup", usersByGroup);
+        model.addAttribute("usersInDiscipline", usersInDiscipline);
+        model.addAttribute("content", "fragments/edit-members");
+        return "index";
+    }
+
+    @PostMapping("/discipline/{disciplineId}/member-list/edit-members")
+    @Transactional
+    public ResponseEntity<Void> postEditMemberList(@PathVariable Long disciplineId, @RequestBody DisciplineRequest disciplineRequest) {
+        Discipline discipline = disciplineService.findDisciplineById(disciplineId);
+        Map<String, String> usersWithAccess = disciplineRequest.getUsers();
+
+        List<Long> userIdsToKeep = new ArrayList<>();
+
+        for (Map.Entry<String, String> entry : usersWithAccess.entrySet()) {
+            String username = entry.getKey();
+            AccessType access = AccessType.valueOf(entry.getValue());
+
+            User user = userDetailsService.findUserByUsername(username);
+            if (user != null && user != discipline.getOwner()) {
+                UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
+                if (userDiscipline != null && userDiscipline.getUser() != discipline.getOwner()) {
+                    userDiscipline.setAccessType(access);
+                    userIdsToKeep.add(user.getId());
+                } else {
+                    userDisciplineService.saveAccess(new UserDiscipline(user, discipline, access));
+                    userIdsToKeep.add(user.getId());
+                }
+            }
+        }
+
+        List<UserDiscipline> userDisciplines = userDisciplineService.findUserDisciplinesByDisciplineId(disciplineId);
+        for (UserDiscipline userDiscipline : userDisciplines) {
+            if (!userIdsToKeep.contains(userDiscipline.getUser().getId()) && userDiscipline.getUser() != discipline.getOwner()) {
+                userDisciplineService.deleteById(userDiscipline.getId());
+            }
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/discipline/{disciplineId}/information")
     public String getDisciplineInformation(Model model, @PathVariable Long disciplineId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -237,7 +309,7 @@ public class PortalController {
 
         model.addAttribute("advertisements", sortedAdvertisements);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
-        model.addAttribute("content", "fragments/advertisements");
+        model.addAttribute("content", "fragments/discipline-announcements");
         return "index";
     }
 
@@ -331,6 +403,11 @@ public class PortalController {
         List<FolderDiscipline> folderDisciplines = folderDisciplineService.findFolderDisciplinesByDisciplineId(disciplineId);
         List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByDisciplineId(disciplineId);
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+        UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
+
+        model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("folders", folderDisciplines);
         model.addAttribute("files", fileDisciplines);
         model.addAttribute("content", "fragments/discipline-resources");
@@ -357,11 +434,16 @@ public class PortalController {
 
     @PostMapping("/discipline/{disciplineId}/resources/save-folder")
     public ResponseEntity<Void> saveFolder(@PathVariable Long disciplineId, @RequestBody FolderRequest folderRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.findUserByUsername(username);
+        String author = user.getSurname() + ' ' + user.getName().charAt(0) + '.' + user.getMiddleName().charAt(0);
+
         FolderDiscipline folderDiscipline = new FolderDiscipline();
         folderDiscipline.setFolderName(folderRequest.getName());
         folderDiscipline.setParentFolder(folderDisciplineService.findFolderDisciplineById(folderRequest.getParentFolder()));
         folderDiscipline.setDiscipline(disciplineService.findDisciplineById(disciplineId));
         folderDiscipline.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        folderDiscipline.setAuthor(author);
         folderDisciplineService.saveFolder(folderDiscipline);
         return ResponseEntity.ok().build();
     }
@@ -374,12 +456,17 @@ public class PortalController {
             String fileType = file.getContentType();
             long fileSize = file.getSize();
 
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userDetailsService.findUserByUsername(username);
+            String author = user.getSurname() + ' ' + user.getName().charAt(0) + '.' + user.getMiddleName().charAt(0);
+
             FileDiscipline fileDiscipline = new FileDiscipline();
             fileDiscipline.setFileName(fileName);
             fileDiscipline.setFileData(fileData);
             fileDiscipline.setFileType(fileType);
             fileDiscipline.setFileSize(fileSize);
             fileDiscipline.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            fileDiscipline.setAuthor(author);
             fileDiscipline.setDiscipline(disciplineService.findDisciplineById(disciplineId));
             fileDiscipline.setFolder(folderDisciplineService.findFolderDisciplineById(parentFolderId));
 
@@ -523,13 +610,21 @@ public class PortalController {
         if (authorities) {
             List<UserDiscipline> userDisciplines = userDisciplineService.findUserDisciplinesParticipantByDisciplineId(disciplineId);
             List<FileSharing> fileSharings = fileSharingService.findFileSharingsByDisciplineId(disciplineId);
-            List<User> users = new ArrayList<>();
+            List<User> usersWithFiles = new ArrayList<>();
 
-            for (UserDiscipline userDiscipline : userDisciplines) {
-                users.add(userDiscipline.getUser());
+            Set<Long> userIdsWithFiles = new HashSet<>();
+
+            for (FileSharing fileSharing : fileSharings) {
+                userIdsWithFiles.add(fileSharing.getUser().getId());
             }
 
-            model.addAttribute("folders", users);
+            for (UserDiscipline userDiscipline : userDisciplines) {
+                if (userIdsWithFiles.contains(userDiscipline.getUser().getId())) {
+                    usersWithFiles.add(userDiscipline.getUser());
+                }
+            }
+
+            model.addAttribute("folders", usersWithFiles);
             model.addAttribute("files", fileSharings);
             model.addAttribute("content", "fragments/discipline-file-sharing-teacher");
         }

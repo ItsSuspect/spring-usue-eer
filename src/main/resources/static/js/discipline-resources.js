@@ -17,45 +17,61 @@ document.addEventListener('DOMContentLoaded', function() {
             const folderNameElement = document.createElement('p');
             folderNameElement.classList.add('folder__name');
             folderNameElement.textContent = folder.folderName;
+            if (folder.parentFolder !== null) {
+                folderNameElement.onclick = function () {
+                    hiddenFolder(folder.id);
+                }
+            }
             folderElement.appendChild(folderNameElement);
 
-            const actionListElement = document.createElement('div');
-            actionListElement.classList.add('folder__action-list', 'action-list');
+            if (authorities) {
+                const actionListElement = document.createElement('div');
+                actionListElement.classList.add('folder__action-list', 'action-list');
 
-            const attachFileButton = document.createElement('button');
-            attachFileButton.classList.add('action-list__button', 'action-list__button_purpose_attach-file');
-            attachFileButton.setAttribute("data-parent-folder", folder.id);
-            attachFileButton.onclick = function() {
-                openAddFileWindow(this.getAttribute("data-parent-folder"));
-            };
-            actionListElement.appendChild(attachFileButton);
-
-            const attachFolderButton = document.createElement('button');
-            attachFolderButton.classList.add('action-list__button', 'action-list__button_purpose_attach-folder');
-            attachFolderButton.setAttribute("data-parent-folder", folder.id);
-            attachFolderButton.onclick = function() {
-                openAddFolderWindow(this.getAttribute("data-parent-folder"));
-            };
-            actionListElement.appendChild(attachFolderButton);
-
-            if (folder.parentFolder !== null) {
-                const attachDeleteButton = document.createElement('button');
-                attachDeleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
-                attachDeleteButton.setAttribute("data-parent-folder", folder.id);
-                attachDeleteButton.onclick = function() {
-                    openDeleteFolderWindow(this.getAttribute("data-parent-folder"));
+                const attachFileButton = document.createElement('button');
+                attachFileButton.classList.add('action-list__button', 'action-list__button_purpose_attach-file');
+                attachFileButton.setAttribute("data-parent-folder", folder.id);
+                attachFileButton.onclick = function() {
+                    openAddFileWindow(this.getAttribute("data-parent-folder"));
                 };
-                actionListElement.appendChild(attachDeleteButton)
+                actionListElement.appendChild(attachFileButton);
+
+                const attachFolderButton = document.createElement('button');
+                attachFolderButton.classList.add('action-list__button', 'action-list__button_purpose_attach-folder');
+                attachFolderButton.setAttribute("data-parent-folder", folder.id);
+                attachFolderButton.onclick = function() {
+                    openAddFolderWindow(this.getAttribute("data-parent-folder"));
+                };
+                actionListElement.appendChild(attachFolderButton);
+
+                if (folder.parentFolder !== null) {
+                    const attachDeleteButton = document.createElement('button');
+                    attachDeleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
+                    attachDeleteButton.setAttribute("data-parent-folder", folder.id);
+                    attachDeleteButton.onclick = function() {
+                        openDeleteFolderWindow(this.getAttribute("data-parent-folder"));
+                    };
+                    actionListElement.appendChild(attachDeleteButton)
+                }
+                folderElement.appendChild(actionListElement);
             }
-            folderElement.appendChild(actionListElement);
 
             const addDateElement = document.createElement('p');
+            const authorElement = document.createElement('p');
             addDateElement.classList.add('folder__add-date');
-            if (folder.parentFolder !== null) addDateElement.textContent = folder.dateAdd;
+            authorElement.classList.add('folder__author');
+            if (folder.parentFolder !== null) {
+                addDateElement.textContent = folder.dateAdd;
+                authorElement.textContent = folder.author;
+            }
+            folderElement.appendChild(authorElement);
             folderElement.appendChild(addDateElement);
 
             const folderContentUl = document.createElement('div');
             folderContentUl.classList.add('folder-container__folder-content', 'folder-content');
+            if (folder.parentFolder !== null) {
+                folderContentUl.style.display = "none";
+            }
             const nestedListElement = document.createElement('ul');
             nestedListElement.classList.add('folder-content__nested-list');
             folderContentUl.appendChild(nestedListElement);
@@ -94,20 +110,27 @@ document.addEventListener('DOMContentLoaded', function() {
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);
 
-            const divElementDelete = document.createElement('div');
-            divElementDelete.classList.add('file__action-list', 'action-list');
-            const deleteButton = document.createElement('button');
-            deleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
-            deleteButton.setAttribute("data-fileId", file.id);
-            deleteButton.onclick = function() {
-                openDeleteFileWindow(this.getAttribute("data-fileId"));
-            };
-            divElementDelete.appendChild(deleteButton);
-            contentFile.appendChild(divElementDelete);
+            if (authorities) {
+                const divElementDelete = document.createElement('div');
+                divElementDelete.classList.add('file__action-list', 'action-list');
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
+                deleteButton.setAttribute("data-fileId", file.id);
+                deleteButton.onclick = function() {
+                    openDeleteFileWindow(this.getAttribute("data-fileId"));
+                };
+                divElementDelete.appendChild(deleteButton);
+                contentFile.appendChild(divElementDelete);
+            }
 
             const pElement = document.createElement('p');
             pElement.classList.add('file__add-date');
             pElement.textContent = file.dateAdd;
+
+            const authorElement = document.createElement('p');
+            authorElement.classList.add('file__author');
+            authorElement.textContent = file.author;
+            contentFile.appendChild(authorElement);
             contentFile.appendChild(pElement);
 
             folderContentLi.appendChild(contentFile);
@@ -119,6 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
     renderFolders(mainFolderContainer, folders);
     renderFiles(files);
 });
+
+function hiddenFolder(folderId) {
+    const $folderContainer = $('.resources__folder-container.folder-container[data-folderId="' + folderId + '"]');
+
+    if ($folderContainer.length > 0) {
+        const $folderContent = $folderContainer.children('.folder-container__folder-content.folder-content').first();
+
+        const currentDisplay = $folderContent.css('display');
+        $folderContent.css('display', currentDisplay === 'block' ? 'none' : 'block');
+    }
+}
 
 function openAddFileWindow(parentFolder) {
     document.getElementById('addFilePopup').style.display = 'block';

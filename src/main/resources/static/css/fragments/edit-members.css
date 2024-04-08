@@ -304,7 +304,6 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  overflow: hidden;
   border: 1px solid #999;
   border-radius: 8px;
 }
@@ -324,6 +323,7 @@
       -ms-flex-align: center;
           align-items: center;
   padding: 4px 16px;
+  border-radius: 8px 8px 0 0;
   background-color: #fafafa;
 }
 
@@ -342,6 +342,7 @@
 .member-list__group-members {
   margin: 0;
   padding: 0 24px;
+  border-radius: 0 0 8px 8px;
   list-style: none;
   background-color: #fff;
 }
@@ -368,8 +369,13 @@
   padding: 2px 20px 2px 8px;
   border: none;
   border-radius: 8px;
-  font-size: 12px;
-  line-height: 12px;
+  padding: 2px 20px 2px 8px;
+  border: none;
+  border-radius: 9px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 300;
   color: #666;
   background-color: #fff;
 }

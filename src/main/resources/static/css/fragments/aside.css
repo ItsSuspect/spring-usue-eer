@@ -1,91 +1,138 @@
 .sidebar {
-    display: flex;
-    flex-direction: column;
-    max-width: 288px;
-    width: max-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 288px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .sidebar__header {
-    display: block;
-    margin: 0;
-    padding: 16px;
-    border-radius: 0 16px 0 0;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    background-color: #ddd;
+  display: block;
+  margin: 0;
+  padding: 16px 0 0;
+  border-radius: 0 16px 0 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background-color: #ddd;
 }
 
 .discipline-navigation {
-    display: flex;
-    flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .discipline-navigation__discipline-list {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background-color: #ddd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.discipline-list__item_selection_selected {
-    padding: 16px 8px 16px 16px;
-    background-color: #f4f4f4;
+.discipline-list__upper-margin {
+  height: 16px;
+  background-color: #ddd;
 }
 
-.discipline-list__item_selection_unselected {
-    padding: 8px 16px;
+.discipline-list__upper-margin_round_bottom {
+  border-radius: 0 0 16px 0;
 }
 
-.discipline-list__discipline-name {
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
+.discipline-list__lower-margin {
+  height: 32px;
+  border-radius: 0 0 16px 0;
+  background-color: #ddd;
+}
+
+.discipline-list__lower-margin_round_top {
+  border-radius: 0 16px 16px 0;
+}
+
+.discipline-list__item {
+  padding: 8px 16px;
+  background-color: #ddd;
+}
+
+.discipline-list__item_selected {
+  padding: 16px;
+  background-color: #f4f4f4;
+}
+
+.discipline-list__item_selected .discipline-list__discipline-name {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #999;
+}
+
+.discipline-list__item_round_top {
+  border-top-right-radius: 16px;
+}
+
+.discipline-list__item_round_bottom {
+  border-bottom-right-radius: 16px;
 }
 
 .discipline-list__item_selection_selected .discipline-list__discipline-name {
-    padding-bottom: 16px;
-    border-bottom: 1px solid #999;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #999;
+}
+
+.discipline-list__discipline-name {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.upper-margin {
+  height: 16px;
+  background-color: #ddd;
+}
+
+.lower-margin {
+  height: 32px;
+  border-bottom-right-radius: 16px;
+  background-color: #ddd;
 }
 
 .tab-navigation {
-    display: none;
-    margin-top: 16px;
+  display: none;
+  margin-top: 16px;
 }
 
 .tab-navigation__tab-list {
-    padding: 0 0 0 16px;
-    list-style: none;
+  padding: 0 0 0 16px;
+  list-style: none;
 }
 
 .tab-navigation__tab + .tab-navigation__tab {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .tab-navigation__link {
-    padding: 0;
-    font-size: 14px;
-    line-height: 16px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 16px;
 }
 
-.tab-navigation__link_selection_unselected {
-    font-weight: 400;
-    text-decoration: none;
-}
-
-.tab-navigation__link_selection_selected {
-    font-weight: 600;
-    text-decoration: underline;
-}
-
-.sidebar__footer {
-    display: block;
-    margin: 0;
-    padding: 16px;
-    border-radius: 0 0 16px 0;
-    background-color: #ddd;
+.tab-navigation__link_selected {
+  font-weight: 600;
+  text-decoration: underline;
 }

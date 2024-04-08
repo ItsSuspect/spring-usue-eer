@@ -22,6 +22,9 @@
             </span>
         </div>
         <div class="task-block__content">
+            <div class="no-tasks task-block__no-tasks" th:if="${#lists.isEmpty(tasks)}">
+                <p class="no-tasks__text">На данный момент задания отсутствуют</p>
+            </div>
             <div class="task-block__task task-container" th:each="task : ${tasks}">
                 <a class="task-container__task-name"
                    th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list/' + ${task.id}"

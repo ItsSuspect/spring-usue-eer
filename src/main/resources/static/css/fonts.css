@@ -106,6 +106,30 @@
 .icon-cancel:before {
   content: "\e905";
 }
+.icon-file-text-o:before {
+  content: "\e917";
+}
+.icon-file-o:before {
+  content: "\e918";
+}
+.icon-file-text:before {
+  content: "\e919";
+}
+.icon-file:before {
+  content: "\e91a";
+}
+.icon-folder-open-o:before {
+  content: "\e913";
+}
+.icon-folder-o:before {
+  content: "\e914";
+}
+.icon-folder-open:before {
+  content: "\e915";
+}
+.icon-folder:before {
+  content: "\e916";
+}
 .icon-bell-o:before {
   content: "\e90a";
 }

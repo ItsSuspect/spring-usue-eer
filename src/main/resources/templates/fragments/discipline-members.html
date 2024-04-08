@@ -2,7 +2,7 @@
 <div class="content__header">
     <h2 class="content__header-text">Список участников</h2>
     <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
-        <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
+        <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/member-list/edit-members'" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
     </span>
 </div>
 <div class="content__content-block content-block">

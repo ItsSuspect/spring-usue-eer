@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderFolders(parentElement, folders) {
         folders.forEach(folder => {
             const mainFolderElement = document.createElement('div');
-            mainFolderElement.classList.add('resources__folder-container', 'folder-container');
+            mainFolderElement.classList.add('file-sharing__folder-container', 'folder-container');
+            mainFolderElement.setAttribute("data-folderId", folder.id);
 
             const folderElement = document.createElement('div');
             folderElement.classList.add('folder-container__folder', 'folder');
@@ -10,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const folderNameElement = document.createElement('p');
             folderNameElement.classList.add('folder__name');
             folderNameElement.textContent = folder.surname + ' ' + folder.name + ' ' + folder.middleName;
+            folderNameElement.onclick = function () {
+                hiddenFolder(folder.id);
+            }
             folderElement.appendChild(folderNameElement);
 
             const addDateElement = document.createElement('p');
@@ -18,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const folderContentUl = document.createElement('div');
             folderContentUl.classList.add('folder-container__folder-content', 'folder-content');
+            folderContentUl.style.display = "none";
             const nestedListElement = document.createElement('ul');
             nestedListElement.setAttribute("userId", folder.id);
             nestedListElement.classList.add('folder-content__nested-list');
@@ -57,8 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    console.log(files)
     const mainFolderContainer = document.querySelector('.file-sharing__content');
     renderFolders(mainFolderContainer, folders);
     renderFiles(files);
 });
+
+function hiddenFolder(folderId) {
+    const $folderContainer = $('.file-sharing__folder-container.folder-container[data-folderId="' + folderId + '"]');
+
+    if ($folderContainer.length > 0) {
+        const $folderContent = $folderContainer.children('.folder-container__folder-content.folder-content').first();
+
+        const currentDisplay = $folderContent.css('display');
+        $folderContent.css('display', currentDisplay === 'block' ? 'none' : 'block');
+    }
+}

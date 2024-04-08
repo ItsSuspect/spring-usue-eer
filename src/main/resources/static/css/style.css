@@ -19,8 +19,14 @@ a {
 }
 
 .main {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
     flex-direction: row;
+    -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
     margin-top: 64px;
 }
@@ -31,8 +37,15 @@ a {
 }
 
 .content {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
     justify-content: flex-start;
     max-width: 1360px;
     min-height: 784px;
@@ -43,15 +56,21 @@ a {
 }
 
 .content__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     position: relative;
 }
 
 .content__header-text {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 24px;
     line-height: 48px;
     font-weight: 600;
@@ -62,14 +81,17 @@ a {
     position: absolute;
     top: 50%;
     left: 0;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     padding: 4px 12px 4px 32px;
     border-radius: 12px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 16px;
     line-height: 16px;
     font-weight: 300;
     background-color: #fff;
+    -webkit-transition: 0.2s ease-out;
     transition: 0.2s ease-out;
 }
 
@@ -78,7 +100,7 @@ a {
 }
 
 .content__return-button::before {
-    font-family: 'icomoon';
+    font-family: "icomoon";
     content: "\e911";
     position: absolute;
     top: 50%;
@@ -89,48 +111,62 @@ a {
 }
 
 .content__interaction-buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
     justify-content: end;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     position: absolute;
     top: 50%;
     right: 0;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 
 .interaction-buttons__button {
-    display: flex;
     position: relative;
     max-width: 24px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
     height: 24px;
     padding: 4px 0 4px 24px;
     border-radius: 12px;
     overflow: hidden;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 16px;
     line-height: 16px;
     font-weight: 300;
     color: #eee;
+    -webkit-transition: 0.3s ease-out;
     transition: 0.3s ease-out;
     background-color: #eee;
 }
 
-.interaction-buttons__button + .interaction-buttons__button {
-    margin-left: 16px;
-}
-
 .interaction-buttons__button::before {
-    font-family: 'icomoon';
+    font-family: "icomoon";
     position: absolute;
     top: 50%;
     left: 4px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
     text-align: center;
     font-size: 16px;
     line-height: 16px;
+    color: #444;
+}
+
+.interaction-buttons__button_expanded {
+    max-width: 128px;
+    padding: 4px 8px 4px 28px;
     color: #444;
 }
 
@@ -145,12 +181,26 @@ a {
 
 .interaction-buttons__button_purpose_delete::before {
     content: "\e901";
+    -webkit-transform: translateY(-50%) rotate(45deg);
+    -ms-transform: translateY(-50%) rotate(45deg);
     transform: translateY(-50%) rotate(45deg);
 }
 
+.interaction-buttons__button_purpose_requests::before {
+    content: "\e900";
+}
+
+.interaction-buttons__button + .interaction-buttons__button {
+    margin-left: 16px;
+}
+
 .content-block {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: start;
     width: 100%;
     margin-top: 16px;
 }

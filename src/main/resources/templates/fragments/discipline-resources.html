@@ -11,8 +11,9 @@
         <p class="resources__column-name resources__column-name_content_files">Файлы</p>
       </span>
       <span class="resources__additional-columns">
-        <p class="resources__column-name resources__column-name_content_actions">Действия</p>
-        <p class="resources__column-name resources__column-name_content_add-date">Дата добавления</p>
+        <p class="resources__column-name resources__column-name_content_actions" th:if="${authorities}">Действия</p>
+        <p class="resources__column-name resources__column-name_content_author">Автор</p>
+        <p class="resources__column-name resources__column-name_content_add-date">Добавлено</p>
       </span>
     </div>
     <div class="resources__content"></div>
@@ -21,7 +22,7 @@
 
 <div class="overlay"></div>
 
-<div class="popup popup_add_file" id="addFilePopup">
+<div class="popup popup_add_file" id="addFilePopup" th:if="${authorities}">
   <div class="popup__container">
     <button class="popup__close-button" onclick="closePopup()"></button>
     <div class="add-file popup__add-file">
@@ -33,7 +34,7 @@
   </div>
 </div>
 
-<div class="popup popup_add_folder" id="addFolderPopup">
+<div class="popup popup_add_folder" id="addFolderPopup" th:if="${authorities}">
   <div class="popup__container">
     <button class="popup__close-button" onclick="closePopup()"></button>
     <div class="add-folder popup__add-folder">
@@ -43,7 +44,7 @@
   </div>
 </div>
 
-<div class="popup popup_delete-confirmation" id="deleteFilePopup">
+<div class="popup popup_delete-confirmation" id="deleteFilePopup" th:if="${authorities}">
   <div class="popup__container">
     <button class="popup__close-button" onclick="closePopup()"></button>
     <div class="delete-confirmation popup__delete-confirmation">
@@ -57,7 +58,7 @@
   </div>
 </div>
 
-<div class="popup popup_delete-confirmation" id="deleteFolderPopup">
+<div class="popup popup_delete-confirmation" id="deleteFolderPopup" th:if="${authorities}">
   <div class="popup__container">
     <button class="popup__close-button" onclick="closePopup()"></button>
     <div class="delete-confirmation popup__delete-confirmation">
@@ -74,6 +75,7 @@
 <script th:src="@{/js/discipline-resources.js}"></script>
 <script th:inline="javascript">
   /*<![CDATA[*/
+  const authorities = /*[[${authorities}]]*/ [];
   const folders = /*[[${folders}]]*/ [];
   const files = /*[[${files}]]*/ [];
   /*]]>*/

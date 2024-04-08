@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const folderNameElement = document.createElement('p');
             folderNameElement.classList.add('folder__name');
             folderNameElement.textContent = folder.folderName;
+            folderNameElement.onclick = function () {
+                hiddenFolder(folder.id);
+            }
             folderElement.appendChild(folderNameElement);
 
             const actionListElement = document.createElement('div');
@@ -50,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const folderContentUl = document.createElement('div');
             folderContentUl.classList.add('folder-container__folder-content', 'folder-content');
+            if (folder.parentFolder !== null) {
+                folderContentUl.style.display = "none";
+            }
             const nestedListElement = document.createElement('ul');
             nestedListElement.classList.add('folder-content__nested-list');
             folderContentUl.appendChild(nestedListElement);
@@ -109,12 +115,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    console.log(folders)
-    console.log(files)
     const mainFolderContainer = document.querySelector('.resources__content');
     renderFolders(mainFolderContainer, folders);
     renderFiles(files);
 });
+
+function hiddenFolder(folderId) {
+    const $folderContainer = $('.resources__folder-container.folder-container[data-folderId="' + folderId + '"]');
+
+    if ($folderContainer.length > 0) {
+        const $folderContent = $folderContainer.children('.folder-container__folder-content.folder-content').first();
+
+        const currentDisplay = $folderContent.css('display');
+        $folderContent.css('display', currentDisplay === 'block' ? 'none' : 'block');
+    }
+}
 
 document.querySelector('.overlay').addEventListener('click', function(event) {
     if (event.target === this) {

@@ -2,13 +2,8 @@
 <link rel="stylesheet" th:href="@{/css/fragments/edit-members.css}">
 
 <div class="content__header">
-  <a href="" class="content__return-button">Назад</a>
+  <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/member-list'" class="content__return-button">Назад</a>
   <h2 class="content__header-text">Редактирование списка участников</h2>
-  <span class="content__interaction-buttons interaction-buttons">
-    <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_create" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Создать</a>
-    <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
-    <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_delete" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Удалить</a>
-  </span>
 </div>
 
 <div class="content__content-block content-block">
@@ -16,41 +11,12 @@
     <div class="edit-members__input-block input-block">
       <div class="input-block__search-block">
         <div class="search-block__group-search group-search">
-          <input class="group-search__input" type="text" name="group" placeholder="Название группы" autocomplete="off">
-          <ul class="group-search__results-list">
-            <li class="group-search__result">
-              <p class="group-search__group-name">ИВТ-21-1</p>
-            </li>
-            <li class="group-search__result">
-              <p class="group-search__group-name">ИВТ-21-2</p>
-            </li>
-            <li class="group-search__result">
-              <p class="group-search__group-name">ИВТ-20-1</p>
-            </li>
-            <li class="group-search__result">
-              <p class="group-search__group-name">ИВТ-20-2</p>
-            </li>
-            <li class="group-search__result">
-              <p class="group-search__no-results">Не найдено</p>
-            </li>
-          </ul>
+          <input class="group-search__input" type="text" name="group" autocomplete="off" placeholder="Название группы" oninput="searchGroups(this.value)">
+          <ul class="group-search__results-list" id="group-results"></ul>
         </div>
         <div class="search-block__person-search person-search">
-          <input class="person-search__input" type="text" name="person" placeholder="ФИО пользователя" autocomplete="off">
-          <ul class="person-search__results-list">
-            <li class="person-search__result">
-              <p class="person-search__personal-info">Маслов Глеб Олегович</p>
-            </li>
-            <li class="person-search__result">
-              <p class="person-search__personal-info">Сидоров Сергей Александрович</p>
-            </li>
-            <li class="person-search__result">
-              <p class="person-search__personal-info">Сорокин Михаил Александрович</p>
-            </li>
-            <li class="person-search__result">
-              <p class="person-search__no-results">Не найдено</p>
-            </li>
-          </ul>
+          <input class="person-search__input" type="text" name="person" autocomplete="off" placeholder="ФИО пользователя" oninput="searchUsers(this.value)">
+          <ul class="person-search__results-list" id="user-results"></ul>
         </div>
       </div>
     </div>
@@ -60,37 +26,37 @@
           <p class="member-block__header-text member-block__header-text_members">Участники</p>
           <p class="member-block__header-text member-block__header-text_access">Права</p>
         </div>
-        <div class="member-block__member-list member-list">
-          <div class="member-list__grouping-block">
+        <div class="member-block__member-list member-list" id="result-discipline">
+          <div class="member-list__grouping-block" th:each="entry : ${usersByGroup.entrySet()}">
             <div class="member-list__grouping-header">
-              <p class="member-list__group-name">ИВТ-21-2</p>
+              <p class="member-list__group-name" th:text="${entry.key}">ИВТ-21-2</p>
               <input class="member-list__group-checkbox checkbox" type="checkbox">
             </div>
             <ul class="member-list__group-members">
-              <li class="member-list__member member">
-                <p class="member__personal-info">Маслов Глеб Олегович</p>
-                <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
-                <input class="member__member-checkbox checkbox" type="checkbox">                                                
-              </li>
-              <li class="member-list__member member">
-                <p class="member__personal-info">Сидоров Сергей Александрович</p>
-                <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
-                <input class="member__member-checkbox checkbox" type="checkbox">                                                
-              </li>
-              <li class="member-list__member member">
-                <p class="member__personal-info">Сорокин Михаил Александрович</p>
-                <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
-                <input class="member__member-checkbox checkbox" type="checkbox">                                                
+              <li class="member-list__member member" th:each="user : ${entry.value}">
+                <p class="member__personal-info" th:data-user-username="${user.username}"
+                   th:text="${user.getSurname() + ' ' + user.getName() + ' ' + user.getMiddleName()}">Маслов Глеб Олегович</p>
+                <button class="member__member-access" onclick="toggleAccessButton(this)" th:text="${user.accessType}">Участник</button>
+                <input class="member__member-checkbox checkbox" type="checkbox">
               </li>
             </ul>
           </div>
         </div>
         <div class="member-block__footer">
-          <button class="member-block__delete-button member-block__delete-button_target_selected">Удалить выбранное</button>
-          <button class="member-block__delete-button member-block__delete-button_target_all">Удалить все</button>
+          <button class="member-block__delete-button member-block__delete-button_target_selected" onclick="deleteSelected()">Удалить выбранное</button>
+          <button class="member-block__delete-button member-block__delete-button_target_all" onclick="deleteAll()">Удалить все</button>
         </div>
       </div>
-      <button class="output-block__save-button">Сохранить</button>
+      <button class="output-block__save-button" onclick="saveDiscipline()">Сохранить</button>
     </div>
   </div>
 </div>
+
+<script th:src="@{/js/edit-members.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const disciplineId = /*[[${disciplineId}]]*/ [];
+  const groups = /*[[${groupsAll}]]*/ [];
+  const users = /*[[${usersAll}]]*/ [];
+  /*]]>*/
+</script>

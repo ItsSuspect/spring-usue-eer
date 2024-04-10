@@ -247,7 +247,7 @@ public class PortalController {
             User user = userDetailsService.findUserByUsername(username);
             if (user != null && user != discipline.getOwner()) {
                 UserDiscipline userDiscipline = userDisciplineService.findByDisciplineIdAndUserId(disciplineId, user.getId());
-                if (userDiscipline != null && userDiscipline.getUser() != discipline.getOwner()) {
+                if (userDiscipline != null && !(userDiscipline.getUser().getUsername().equals(discipline.getOwner().getUsername()))) {
                     userDiscipline.setAccessType(access);
                     userIdsToKeep.add(user.getId());
                 } else {
@@ -259,7 +259,7 @@ public class PortalController {
 
         List<UserDiscipline> userDisciplines = userDisciplineService.findUserDisciplinesByDisciplineId(disciplineId);
         for (UserDiscipline userDiscipline : userDisciplines) {
-            if (!userIdsToKeep.contains(userDiscipline.getUser().getId()) && userDiscipline.getUser() != discipline.getOwner()) {
+            if (!(userIdsToKeep.contains(userDiscipline.getUser().getId())) && !userDiscipline.getUser().getUsername().equals(discipline.getOwner().getUsername())) {
                 userDisciplineService.deleteById(userDiscipline.getId());
             }
         }
@@ -414,24 +414,6 @@ public class PortalController {
         return "index";
     }
 
-    @GetMapping("/discipline/{disciplineId}/resources/download/{fileId}")
-    @Transactional
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long disciplineId, @PathVariable Long fileId) {
-        FileDiscipline file = fileDisciplineService.findFileDisciplineById(fileId);
-
-        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(file.getFileSize())
-                .body(resource);
-    }
-
     @PostMapping("/discipline/{disciplineId}/resources/save-folder")
     public ResponseEntity<Void> saveFolder(@PathVariable Long disciplineId, @RequestBody FolderRequest folderRequest) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -492,9 +474,20 @@ public class PortalController {
     public ResponseEntity<Void> deleteFolder(@PathVariable Long disciplineId, @RequestParam("folderId") Long folderId) {
         try {
             List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByFolderId(folderId);
+            List<FolderDiscipline> subFolders = folderDisciplineService.findAllSubFolders(folderId);
+            subFolders.sort(Comparator.comparing(FolderDiscipline::getId).reversed());
+
             for (FileDiscipline file : fileDisciplines) {
                 fileDisciplineService.deleteFileDisciplineById(file.getId());
             }
+
+            for (FolderDiscipline subFolder : subFolders) {
+                for (FileDiscipline fileDiscipline : fileDisciplineService.findFileDisciplinesByFolderId(subFolder.getId())) {
+                    fileDisciplineService.deleteFileDisciplineById(fileDiscipline.getId());
+                }
+                folderDisciplineService.deleteFolderDisciplineById(subFolder.getId());
+            }
+
             folderDisciplineService.deleteFolderDisciplineById(folderId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -515,24 +508,6 @@ public class PortalController {
         model.addAttribute("files", fileUsers);
         model.addAttribute("content", "fragments/user-resources");
         return "index";
-    }
-
-    @GetMapping("/resources/download/{fileId}")
-    @Transactional
-    public ResponseEntity<ByteArrayResource> downloadUserFile(@PathVariable Long fileId) {
-        FileUser file = fileUserService.findFileUserById(fileId);
-
-        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(file.getFileSize())
-                .body(resource);
     }
 
     @PostMapping("/resources/save-folder")
@@ -590,9 +565,20 @@ public class PortalController {
     public ResponseEntity<Void> deleteUserFolder(@RequestParam("folderId") Long folderId) {
         try {
             List<FileUser> fileUsers = fileUserService.findFileUsersByFolderId(folderId);
+            List<FolderUser> subFolders = folderUserService.findAllSubFolders(folderId);
+            subFolders.sort(Comparator.comparing(FolderUser::getId).reversed());
+
             for (FileUser file : fileUsers) {
                 fileUserService.deleteFileUserById(file.getId());
             }
+
+            for (FolderUser subFolder : subFolders) {
+                for (FileUser fileUser : fileUserService.findFileUsersByFolderId(subFolder.getId())) {
+                    fileUserService.deleteFileUserById(fileUser.getId());
+                }
+                folderUserService.deleteFolderUserById(subFolder.getId());
+            }
+
             folderUserService.deleteFolderUserById(folderId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -635,24 +621,6 @@ public class PortalController {
             model.addAttribute("content", "fragments/discipline-file-sharing-student");
         }
         return "index";
-    }
-
-    @GetMapping("/discipline/{disciplineId}/file-sharing/download/{fileId}")
-    @Transactional
-    public ResponseEntity<ByteArrayResource> downloadFileSharing(@PathVariable Long fileId, @PathVariable Long disciplineId) {
-        FileSharing file = fileSharingService.findFileSharingById(fileId);
-
-        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                new String(file.getFileName().getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"; charset=UTF-8");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(file.getFileSize())
-                .body(resource);
     }
 
     @PostMapping("/discipline/{disciplineId}/file-sharing/save-file")

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,7 +28,7 @@ public class FileSharingService {
         return fileSharingRepository.findFileSharingsByDisciplineId(disciplineId);
     }
 
-    public FileSharing findFileSharingById(Long id) {
+    public Optional<FileSharing> findFileSharingById(Long id) {
         return fileSharingRepository.findFileSharingById(id);
     }
 

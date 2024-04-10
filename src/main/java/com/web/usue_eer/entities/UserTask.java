@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_tasks")
@@ -23,10 +25,15 @@ public class UserTask {
     private String status;
 
     private LocalDateTime dateDelivery;
+
     private String commentStudent;
+
     private String commentTeacher;
 
     private Integer resultScore;
+
+    @OneToMany(mappedBy = "userTask")
+    private Set<UserTaskFiles> userTaskFiles = new HashSet<>();
 
     public UserTask() {
     }
@@ -101,5 +108,13 @@ public class UserTask {
 
     public void setCommentTeacher(String commentTeacher) {
         this.commentTeacher = commentTeacher;
+    }
+
+    public Set<UserTaskFiles> getUserTaskFiles() {
+        return userTaskFiles;
+    }
+
+    public void setUserTaskFiles(Set<UserTaskFiles> userTaskFiles) {
+        this.userTaskFiles = userTaskFiles;
     }
 }

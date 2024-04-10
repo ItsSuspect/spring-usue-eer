@@ -1,7 +1,10 @@
 package com.web.usue_eer.payload.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class TaskRequest {
     private String name;

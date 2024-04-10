@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentFile = document.createElement('div');
             contentFile.classList.add('file');
             const aElement = document.createElement('a');
-            aElement.href = 'http://localhost:8080/portal/resources/download/' + file.id;
+            aElement.href = 'http://localhost:8080/portal/download-file/user-file/' + file.id;
             aElement.classList.add('file__name');
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);

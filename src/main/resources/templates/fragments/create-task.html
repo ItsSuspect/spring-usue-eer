@@ -6,25 +6,36 @@
 <div class="content__content-block content-block">
     <div class="content-block__task-block task-block">
         <div class="task-block__header">
-            <input class="task-block__task-name-input" id="name_task" type="text" placeholder="Название задания">
-            <input class="task-block__task-mark-input" id="score_number" type="number" placeholder="Оценка">
+            <div class="task-block__header-top">
+                <input class="task-block__task-name-input" type="text" placeholder="Название задания" id="name_task">
+                <input class="task-block__task-mark-input" type="number" placeholder="Баллы" id="score_number">
+            </div>
+            <div class="task-block__header-bottom">
+                <span class="task-block__issue">
+                  <p class="task-block__issue-text">Начало:</p>
+                  <input id="date_issue" type="date" class="task-block__issue-date">
+                  <input id="time_issue" type="time" class="task-block__issue-time">
+                </span>
+                <span class="task-block__delivery">
+                  <p class="task-block__delivery-text">Окончание:</p>
+                  <input id="date_delivery" type="date" class="task-block__delivery-date">
+                  <input id="time_delivery" type="time" class="task-block__delivery-time">
+                </span>
+            </div>
         </div>
         <div class="task-block__content">
             <div class="task-block__task-instruction task-instruction">
-                <div class="task-instruction__due-dates">
-                    <span class="task-instruction__issue">
-                        <input type="date" class="task-instruction__issue-date" id="date_issue">
-                        <input type="time" class="task-instruction__issue-time" id="time_issue">
-                    </span>
-                    <span class="task-instruction__delivery">
-                        <input type="date" class="task-instruction__delivery-date" id="date_delivery">
-                        <input type="time" class="task-instruction__delivery-time" id="time_delivery">
-                    </span>
-                </div>
                 <p class="task-instruction__header">Инструкции к заданию</p>
                 <textarea class="task-instruction__content" name="" id="instruction-task" oninput="autoGrow(this)"></textarea>
-                <div class="task-instruction__file-attachment-area">+ Прикрепить файл</div>
-                <button class="task-instruction__submit-button" th:data-disciplineId="${disciplineId}" onclick="createTask(this)">Создать задание</button>
+                <div class="task-instruction__action-block action-block">
+                    <div class="action-block__file-attachment-container file-attachment-container">
+                        <div class="file-attachment-container__file-attachment-area">
+                            <input id="file-input" type="file" class="file-attachment-container__input" title=" " multiple onchange="addFile(this)">
+                        </div>
+                        <div class="file-attachment-container__file-list"></div>
+                    </div>
+                    <button class="action-block__submit-button" th:data-disciplineId="${disciplineId}" onclick="createTask(this)">Создать задание</button>
+                </div>
             </div>
         </div>
     </div>

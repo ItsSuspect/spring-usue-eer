@@ -14,7 +14,11 @@
         <p class="file-sharing__column-name file-sharing__column-name_content_add-date">Дата добавления</p>
       </span>
     </div>
-    <div class="file-sharing__content"></div>
+    <div class="file-sharing__content">
+      <div class="no-files content-block__no-files" th:if="${#lists.isEmpty(files)}">
+        <p class="no-files__text">На данный момент отправленные файлы отсутствуют</p>
+      </div>
+    </div>
   </div>
 </div>
 

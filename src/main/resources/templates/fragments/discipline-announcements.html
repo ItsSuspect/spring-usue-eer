@@ -18,7 +18,7 @@
                    class="advertisement__edit-button" onmouseenter="addEditButtonTextTwo(this)" onmouseleave="removeEditButtonTextTwo(this)">Редактировать</a>
             </div>
             <div class="advertisement__content">
-                <p class="advertisement__content-text" th:text="${advertisement.content}"></p>
+                <textarea class="advertisement__content-text" readonly th:text="${advertisement.content}"></textarea>
             </div>
             <div class="advertisement__footer">
                 <p class="advertisement__author"

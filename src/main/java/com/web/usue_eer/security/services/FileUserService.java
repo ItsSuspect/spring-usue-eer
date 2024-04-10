@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,7 +27,7 @@ public class FileUserService {
         return fileUserRepository.findFileUsersByFolderId(id);
     }
 
-    public FileUser findFileUserById(Long id) {
+    public Optional<FileUser> findFileUserById(Long id) {
         return fileUserRepository.findFileUserById(id);
     }
 

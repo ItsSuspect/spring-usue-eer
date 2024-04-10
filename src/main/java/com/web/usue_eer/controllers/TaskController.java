@@ -1,5 +1,6 @@
 package com.web.usue_eer.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.entities.enums.AccessType;
 import com.web.usue_eer.payload.request.SendTaskRequest;
@@ -10,20 +11,26 @@ import com.web.usue_eer.payload.response.TaskCheckResponse;
 import com.web.usue_eer.payload.response.TaskListResponse;
 import com.web.usue_eer.payload.response.TaskResponse;
 import com.web.usue_eer.security.services.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,14 +42,18 @@ public class TaskController {
     private final UserTaskService userTaskService;
     private final UserDisciplineService userDisciplineService;
     private final UserNotificationService userNotificationService;
+    private final FilesTaskService filesTaskService;
+    private final UserTaskFilesService userTaskFilesService;
     @Autowired
-    public TaskController(UserDetailsServiceImpl userDetailsService, DisciplineService disciplineService, TaskService taskService, UserTaskService userTaskService, UserDisciplineService userDisciplineService, UserNotificationService userNotificationService) {
+    public TaskController(UserDetailsServiceImpl userDetailsService, DisciplineService disciplineService, TaskService taskService, UserTaskService userTaskService, UserDisciplineService userDisciplineService, UserNotificationService userNotificationService, FilesTaskService filesTaskService, UserTaskFilesService userTaskFilesService) {
         this.userDetailsService = userDetailsService;
         this.disciplineService = disciplineService;
         this.taskService = taskService;
         this.userTaskService = userTaskService;
         this.userDisciplineService = userDisciplineService;
         this.userNotificationService = userNotificationService;
+        this.filesTaskService = filesTaskService;
+        this.userTaskFilesService = userTaskFilesService;
     }
 
     @GetMapping("/{disciplineId}/task-list") //Список всех заданий
@@ -100,11 +111,19 @@ public class TaskController {
 
     //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
     @PostMapping("/{disciplineId}/task-list/create")
-    public ResponseEntity<Void> createTask(@PathVariable Long disciplineId, @RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<Void> createTask(@PathVariable Long disciplineId,
+                                           @RequestParam("files") List<MultipartFile> files,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("maxScore") Integer maxScore,
+                                           @RequestParam("dateIssue") LocalDate dateIssue,
+                                           @RequestParam("timeIssue") LocalTime timeIssue,
+                                           @RequestParam("dateDelivery") LocalDate dateDelivery,
+                                           @RequestParam("timeDelivery") LocalTime timeDelivery,
+                                           @RequestParam("instructionTask") String instructionTask) throws IOException {
         LocalDateTime currentTime = LocalDateTime.now();
 
-        LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
-        LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
+        LocalDateTime dateTimeIssue = LocalDateTime.of(dateIssue, timeIssue);
+        LocalDateTime dateTimeDelivery = LocalDateTime.of(dateDelivery, timeDelivery);
         String status = "Не началось";
         if (dateTimeIssue.isBefore(currentTime)) {
             status = "В процессе";
@@ -115,9 +134,18 @@ public class TaskController {
 
         Discipline discipline = disciplineService.findDisciplineById(disciplineId);
 
-        Task task = new Task(taskRequest.getName(), taskRequest.getMaxScore(), dateTimeIssue, dateTimeDelivery,
-                taskRequest.getInstructionTask(), discipline, status);
+        Task task = new Task(name, maxScore, dateTimeIssue, dateTimeDelivery, instructionTask, discipline, status);
         taskService.saveTask(task);
+
+        for (MultipartFile file : files) {
+            FilesTask filesTask = new FilesTask();
+            filesTask.setTask(task);
+            filesTask.setFileName(file.getOriginalFilename());
+            filesTask.setFileData(file.getBytes());
+            filesTask.setFileType(file.getContentType());
+            filesTask.setFileSize(file.getSize());
+            filesTaskService.saveFileTask(filesTask);
+        }
         return ResponseEntity.ok().build();
     }
 
@@ -165,7 +193,7 @@ public class TaskController {
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}")
-    public String getTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
+    public String getTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) throws IOException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
         long userId = user.getId();
@@ -189,15 +217,24 @@ public class TaskController {
                 false
         );
 
-        userTaskOptional.ifPresent(userTask -> {
+        List<UserTaskFiles> userTaskFiles = null;
+        if (userTaskOptional.isPresent()) {
+            UserTask userTask = userTaskOptional.get();
+
             taskResponse.setDateDelivery(userTask.getDateDelivery().format(formatter));
             taskResponse.setStatus(userTask.getStatus());
             taskResponse.setCommentStudent(userTask.getCommentStudent());
             taskResponse.setCommentTeacher(userTask.getCommentTeacher());
             taskResponse.setResultScore(userTask.getResultScore());
             taskResponse.setSending(true);
-        });
 
+            userTaskFiles = userTaskFilesService.findUserTaskFilesByUserTaskId(userTask.getId());
+        }
+        //Использовать DTO для файлов. Получать файлы через task.getFilesTasks
+        List<FilesTask> filesTasks = filesTaskService.findFilesTasksByTaskId(taskId);
+
+        model.addAttribute("filesTasks", filesTasks);
+        model.addAttribute("userTaskFiles", userTaskFiles);
         model.addAttribute("task", taskResponse);
         model.addAttribute("authorities", authorities);
         model.addAttribute("content", "fragments/task");
@@ -205,15 +242,29 @@ public class TaskController {
     }
 
     @PostMapping("/{disciplineId}/task-list/{taskId}/send")
-    public ResponseEntity<Void> sendingTask(@PathVariable Long disciplineId, @PathVariable Long taskId, @RequestBody SendTaskRequest sendTaskRequest) {
+    public ResponseEntity<Void> sendingTask(@PathVariable Long disciplineId,
+                                            @PathVariable Long taskId,
+                                            @RequestParam("files") List<MultipartFile> files,
+                                            @RequestParam("comment") String comment) throws IOException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
 
         Task task = taskService.findTaskById(taskId);
         LocalDateTime localDateTime = LocalDateTime.now().withSecond(0).withNano(0);
 
-        UserTask userTask = new UserTask(user, task, "Сдано", localDateTime, sendTaskRequest.getComment());
+        UserTask userTask = new UserTask(user, task, "Сдано", localDateTime, comment);
         userTaskService.saveUserTask(userTask);
+
+        for (MultipartFile file : files) {
+            UserTaskFiles filesTask = new UserTaskFiles();
+            filesTask.setUserTask(userTask);
+            filesTask.setFileName(file.getOriginalFilename());
+            filesTask.setFileData(file.getBytes());
+            filesTask.setFileType(file.getContentType());
+            filesTask.setFileSize(file.getSize());
+            userTaskFilesService.saveUserTaskFile(filesTask);
+        }
+
         return ResponseEntity.ok().build();
     }
 
@@ -274,7 +325,6 @@ public class TaskController {
         User user = userDetailsService.findUserByUsername(sendTaskTeacherRequest.getUsername());
 
         Optional<UserTask> optionalUserTask = userTaskService.findUserTaskByUserIdAndTaskId(user.getId(), taskId);
-        System.out.println(optionalUserTask.isPresent());
         if (optionalUserTask.isPresent()) {
             UserTask userTask = optionalUserTask.get();
             userTask.setCommentTeacher(sendTaskTeacherRequest.getCommentTeacher());

@@ -38,6 +38,9 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private Set<UserTask> userTasks = new HashSet<>();
 
+    @OneToMany(mappedBy = "task")
+    private Set<FilesTask> filesTasks = new HashSet<>();
+
     public Task() {
     }
 
@@ -137,5 +140,13 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<FilesTask> getFilesTasks() {
+        return filesTasks;
+    }
+
+    public void setFilesTasks(Set<FilesTask> filesTasks) {
+        this.filesTasks = filesTasks;
     }
 }

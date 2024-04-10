@@ -265,7 +265,7 @@
       -ms-flex-align: center;
           align-items: center;
   position: relative;
-  padding-left: 22px;
+  padding-left: 16px;
 }
 
 .notification-block__header::before {
@@ -276,10 +276,10 @@
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: #999;
+  background-color: #ff8030;
 }
 
 .notification-block__subject {

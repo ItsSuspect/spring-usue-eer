@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface UserDisciplineRepository extends JpaRepository<UserDiscipline, Long> {
     UserDiscipline findByDisciplineIdAndUserId(Long disciplineId, Long userId);
+    boolean existsByDisciplineIdAndUserId(Long disciplineId, Long userId);
+    List<UserDiscipline> findUserDisciplinesByUserId(Long id);
     List<UserDiscipline> findUserDisciplinesByAccessTypeAndDisciplineId(AccessType accessType, Long id);
     List<UserDiscipline> findUserDisciplinesByDisciplineId(Long id);
     void deleteById(Long id);

@@ -1,0 +1,47 @@
+<link rel="stylesheet" th:href="@{/css/top-navigation/user-disciplines/create-discipline.css}">
+<div class="content__header">
+    <a href="http://localhost:8080/portal/disciplines"
+       class="content__return-button">Назад</a>
+    <h2 class="content__header-text">Создание дисциплины</h2>
+</div>
+<div class="content__content-block content-block">
+    <div class="content-block__input-block input-block">
+        <input class="input-block__discipline-title" type="text" name="disciplineTitle"
+               placeholder="Название дисциплины" id="discipline-name">
+        <div class="input-block__search-block">
+            <div class="search-block__group-search group-search">
+                <input class="group-search__input" type="text" name="group" autocomplete="off" placeholder="Название группы" oninput="searchGroups(this.value)">
+                <ul class="group-search__results-list" id="group-results"></ul>
+            </div>
+            <div class="search-block__person-search person-search">
+                <input class="person-search__input" type="text" name="person" autocomplete="off" placeholder="ФИО пользователя" oninput="searchUsers(this.value)">
+                <ul class="person-search__results-list" id="user-results"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="discipline-creation__output-block output-block">
+        <div class="output-block__member-block member-block">
+            <div class="member-block__header">
+                <p class="member-block__header_text member-block__header_text_members">Участники</p>
+                <p class="member-block__header_text member-block__header_text_access">Права</p>
+            </div>
+            <div class="member-block__member-list member-list" id="result-discipline"></div>
+            <div class="member-block__footer">
+                <button class="member-block__delete-button member-block__delete-button_target_selected" onclick="deleteSelected()">Удалить выбранное</button>
+                <button class="member-block__delete-button member-block__delete-button_target_all" onclick="deleteAll()">Удалить все</button>
+            </div>
+        </div>
+        <div class="output-block__openness-container openness-container">
+            <input type="checkbox" class="openness-container__checkbox" id="input-access">
+            <p class="openness-container__text">Доступность дисциплины</p>
+        </div>
+        <button class="output-block__save-button" onclick="createDiscipline()">Сохранить</button>
+    </div>
+</div>
+<script th:src="@{/js/create-discipline.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const groups = /*[[${groups}]]*/ [];
+    const users = /*[[${users}]]*/ [];
+    /*]]>*/
+</script>

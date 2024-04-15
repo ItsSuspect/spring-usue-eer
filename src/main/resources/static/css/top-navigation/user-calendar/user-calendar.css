@@ -1,0 +1,391 @@
+.task-calendar {
+  width: 100%;
+}
+
+.task-calendar__calendar-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.task-calendar__calendar {
+  max-width: 60%;
+  width: 60%;
+}
+
+.task-calendar__task-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 40%;
+  width: 40%;
+  margin-left: 16px;
+  padding: 16px 8px;
+  border-radius: 8px;
+}
+
+.calendar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.calendar__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.calendar__month-navigation {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 16px;
+}
+
+.calendar__prev-month,
+.calendar__next-month {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.calendar__prev-month:hover,
+.calendar__next-month:hover {
+  background-color: #ddd;
+}
+
+.calendar__prev-month::after,
+.calendar__next-month::after {
+  font-family: "icomoon";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.calendar__prev-month::after {
+  content: "\e91d";
+}
+
+.calendar__next-month::after {
+  content: "\e91c";
+}
+
+.calendar__current-month {
+  width: 100%;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.calendar__weekdays {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 8px 0;
+  border: 1px solid #999;
+  border-radius: 8px;
+}
+
+.calendar__weekday {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 0;
+  border: 0 solid #999;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.calendar__weekday + .calendar__weekday {
+  border-width: 0 0 0 1px;
+}
+
+.calendar__calendar-content {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 32px 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 32px 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row-gap: 4px;
+}
+
+.calendar__week {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  min-height: 32px;
+  border: 1px solid #999;
+  border-radius: 8px;
+}
+
+.calendar__date {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  background-color: #fff;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.calendar__date:hover {
+  border: solid #999;
+  border-width: 1px 0;
+}
+
+.calendar__date:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.calendar__date:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.calendar__date_weekend {
+  background-color: #ffe2e2;
+}
+
+.calendar__date_weekend .calendar__date-day {
+  color: rgb(100, 25, 25);
+}
+
+.calendar__date_today .calendar__date-day {
+  text-decoration: overline;
+}
+
+.calendar__date_selected .calendar__date-day {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.calendar__date_has-tasks {
+  position: relative;
+}
+
+.calendar__date_has-tasks::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgb(255, 60, 60);
+}
+
+.calendar__date_secondary {
+  background-color: #eee;
+}
+
+.calendar__date_secondary.calendar__date_weekend {
+  background-color: rgb(250, 165, 165);
+}
+
+.calendar__date_secondary .calendar__date-day {
+  color: #666;
+}
+
+.calendar__date_secondary.calendar__date_weekend .calendar__date-day {
+  color: rgb(75, 50, 50);
+}
+
+.calendar__date + .calendar__date .calendar__date-day {
+  border-left: 1px solid #999;
+}
+
+.calendar__date-day {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  -webkit-transition: 0.1s ease-out;
+  transition: 0.1s ease-out;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.task-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #fff;
+}
+
+.task-list__placeholder {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  color: #999;
+  cursor: default;
+}
+
+.task-list__selected-date {
+  margin: 0 10% 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #999;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.task-list__task {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 8px;
+}
+
+.task-list__task + .task-list__task {
+  border-top: 1px solid #999;
+}
+
+.task-list__task-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.task-list__discipline {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+  color: #666;
+}
+
+.task-list__task-name {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 16px;
+  color: #888;
+  transition: 0.2s ease-out;
+}
+.task-list__task-name:hover {
+  color: #0075ff;
+}
+
+.task-list__delivery-time {
+  position: relative;
+  margin: 0 0 0 16px;
+  padding-right: 24px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.task-list__delivery-time::after {
+  font-family: "icomoon";
+  content: "\e91f";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.no-tasks {
+  padding: 8px;
+}
+
+.no-tasks__text {
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}

@@ -1,5 +1,17 @@
+$(document).ready(function() {
+    $('.expand-textarea').each(function() {
+        if ($(this).val().trim() !== '') {
+            autoGrow(this);
+        } else {
+            $(this).next().css('margin-top', '0');
+            $(this).hide();
+        }
+    });
+});
+
 function addFile(fileInput) {
     let filesList = document.querySelector('.file-attachment-container__file-list');
+    filesList.style.display = 'flex';
 
     for (let i = 0; i < fileInput.files.length; i++) {
         let file = fileInput.files[i];
@@ -39,6 +51,11 @@ function removeFile(fileElement) {
     }
 
     fileElement.remove();
+
+    let filesList = document.querySelector('.file-attachment-container__file-list');
+    if (filesList.children.length === 0) {
+        filesList.style.display = 'none';
+    }
 }
 
 let finalFiles = [];

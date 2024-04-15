@@ -1,0 +1,41 @@
+<!-- Список заявок -->
+<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-members/discipline-requests.css}">
+
+<div class="content__header">
+  <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/member-list'" class="content__return-button">Назад</a>
+  <h2 class="content__header-text">Список заявок</h2>
+</div>
+
+<div class="content__content-block content-block">
+  <div class="content-block__request-block request-block">
+    <div class="request-block__header request-header">
+      <h3 class="request-header__column-name request-header__column-name_text_members">Участник</h3>
+      <h3 class="request-header__column-name request-header__column-name_text_access">Права</h3>
+      <h3 class="request-header__column-name request-header__column-name_text_actions">Действия</h3>
+    </div>
+    <div class="request-block__request-list request-list">
+      <div class="no-requests request-list__no-requests" th:if="${usersByGroup.size() == 0}">
+        <p class="no-requests__text">На данный момент заявки отсутствуют</p>
+      </div>
+
+      <div class="request-list__grouping-block" th:each="entry : ${usersByGroup.entrySet()}">
+        <div class="request-list__grouping-header">
+          <p class="request-list__group-name" th:text="${entry.key}">Имя группы</p>
+        </div>
+        <ul class="request-list__group-members">
+          <li class="request-list__member member" th:each="user : ${entry.value}">
+            <p class="member__personal-info" th:text="${user.getSurname() + ' ' + user.getName() + ' ' + user.getMiddleName()}">ФИО пользователя</p>
+            <button class="member__member-access" onclick="toggleAccessButton(this)">Участник</button>
+            <div class="member__decision-buttons">
+              <button class="member__button member__button_purpose_confirm" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)"
+                      th:data-userId="${user.getId()}" th:data-disciplineId="${disciplineId}" onclick="acceptUser(this)">Одобрить</button>
+              <button class="member__button member__button_purpose_decline" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)"
+                      th:data-userId="${user.getId()}" th:data-disciplineId="${disciplineId}" onclick="declineUser(this)">Отклонить</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/discipline-requests.js}"></script>

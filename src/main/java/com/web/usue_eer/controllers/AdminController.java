@@ -26,20 +26,20 @@ import java.util.Set;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final RoleService roleService;
+    private final GroupService groupService;
+    private final PasswordEncoder encoder;
+    private final FolderUserService folderUserService;
 
     @Autowired
-    RoleService roleService;
-
-    @Autowired
-    GroupService groupService;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    private FolderUserService folderUserService;
+    public AdminController(UserDetailsServiceImpl userDetailsService, RoleService roleService, GroupService groupService, PasswordEncoder encoder, FolderUserService folderUserService) {
+        this.userDetailsService = userDetailsService;
+        this.roleService = roleService;
+        this.groupService = groupService;
+        this.encoder = encoder;
+        this.folderUserService = folderUserService;
+    }
 
     @GetMapping("/create")
     public String getSignUp() {
@@ -80,11 +80,11 @@ public class AdminController {
 
         user.setGroups(groups);
 
-        User createUser = userDetailsService.saveUser(user);
+        userDetailsService.saveUser(user);
 
         FolderUser folderUser = new FolderUser();
         folderUser.setFolderName("Основная папка");
-        folderUser.setUser(createUser);
+        folderUser.setUser(user);
         folderUser.setParentFolder(null);
         folderUserService.saveFolder(folderUser);
 

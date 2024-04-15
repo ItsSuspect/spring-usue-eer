@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <link rel="stylesheet" th:href="@{/css/fragments/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/fonts.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
     <title>Электронный Образовательный Ресурс | УрГЭУ</title>
 </head>
 <body>
-<div th:replace="~{fragments/header}"></div>
+<div th:replace="~{common/header}"></div>
 <main class="main">
     <aside class="main__aside">
         <sidebar class="main__sidebar sidebar">
@@ -28,7 +28,7 @@
                         th:each="discipline : ${disciplines}"
                         th:data-discipline-id="${discipline.id}">
                         <p class="discipline-list__discipline-name" th:text="${discipline.name}" th:data-discipline-id="${discipline.id}" onclick="disciplineSelection(this)"></p>
-                        <div th:replace="~{fragments/discipline-navigation}"></div>
+                        <div th:replace="~{common/discipline-navigation}"></div>
                     </li>
                     <li class="lower-margin discipline-list__item"></li>
                 </ul>

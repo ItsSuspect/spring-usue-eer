@@ -1,0 +1,123 @@
+<!-- Отдельное задание -->
+<link rel="stylesheet" href="">
+
+<div class="content__header">
+  <a href="" class="content__return-button">Назад</a>
+  <h2 class="content__header-text">Задание</h2>
+</div>
+
+<div class="content__content-block content-block">
+  <div class="content-block__task-block task-block">
+    <div class="task-block__header">
+      <div class="task-block__header-top">
+        <p class="task-block__task-name">Лабораторная работа №1</p>
+
+        <!-- Для преподавателя -->
+        <span class="task-block__task-mark task-mark">
+          <input class="task-mark__student-mark-input" type="number" placeholder="Балл">
+          <p class="task-mark__separator"> / </p>
+          <p class="task-mark__max-mark">10</p>
+        </span>
+        <!-- Для преподавателя -->
+
+        <!-- Для студента -->
+        <!-- <span class="task-block__task-mark task-mark">
+          <p class="task-mark__student-mark">10</p>
+          <p class="task-mark__separator"> / </p>
+          <p class="task-mark__max-mark">10</p>
+        </span> -->
+        <!-- Для студента -->
+      </div>
+
+      <div class="task-block__header-bottom">
+        <span class="task-block__issue">
+          <p class="task-block__issue-text">Начало:</p>
+          <p class="task-block__issue-date">дд.мм.гг чч:мм</p>
+        </span>
+        <span class="task-block__delivery">
+          <p class="task-block__delivery-text">Окончание:</p>
+          <p class="task-block__delivery-date">дд.мм.гг чч:мм</p>
+        </span>
+      </div>
+    </div>
+    <div class="task-block__content">
+      <div class="task-block__task-instruction task-instruction">
+        <div class="task-instruction__header">
+          <p class="task-instruction__header-text">Инструкции к заданию</p>
+        </div>
+        <div class="task-instruction__content">
+          <textarea class="task-instruction__text expand-textarea" readonly>
+            Для выполнения задания вам потребуется проделать следующие шаги:
+          </textarea>
+          <div class="task-instruction__file-list file-list">
+            <a href="" class="file-list__file">Лабораторная работа №1.docx</a>
+            <a href="" class="file-list__file">Лабораторная работа №1.docx</a>
+          </div>
+        </div>
+      </div>
+      <div class="task-block__student-response student-response">
+        <div class="student-response__header">
+          <span class="student-response__header-container">
+            <p class="student-response__header-text">Ответ студента</p>
+            <!-- Для преподавателя и студента после отправления работы -->
+            <p class="student-response__student-info">Маслов Глеб Олегович</p>
+            <p class="student-response__student-group">ИВТ-21-2</p>
+            <!-- Для преподавателя и студента после отправления работы -->
+          </span>
+          <!-- Для преподавателя и студента после отправления работы -->
+          <p class="student-response__date">дд.мм чч:мм</p>
+          <!-- Для преподавателя и студента после отправления работы -->
+        </div>
+
+        <!-- Для преподавателя и студента после отправления работы -->
+        <div class="student-response__content student-response__content_submitted">
+          <textarea class="student-response__feedback expand-textarea" readonly></textarea>
+          <div class="student-response__file-list file-list">
+            <a href="" class="file-list__file">Лабораторная работа №1.docx</a>
+            <a href="" class="file-list__file">Лабораторная работа №1.docx</a>
+          </div>
+        </div>
+        <!-- Для преподавателя и студента после отправления работы -->
+
+        <!-- Для студента до отправления работы -->
+        <div class="student-response__content">
+          <textarea class="student-response__feedback" oninput="autoGrow(this)" placeholder="Комментарий к работе"></textarea>
+          <div class="student-response__action-block action-block">
+            <div class="action-block__file-attachment-container file-attachment-container">
+              <div class="file-attachment-container__file-attachment-area">
+                <input id="file-input" type="file" class="file-attachment-container__input" multiple onchange="addFile(this)">
+              </div>
+              <div class="file-attachment-container__file-list">
+                <span class="file-attachment-container__file">
+                  <a class="file-attachment-container__file-name">Лабораторная работа №1.docx</a>
+                  <button class="file-attachment-container__delete-button" onclick="removeFile(this)"></button>
+                </span>
+              </div>
+            </div>
+            <button class="action-block__submit-button">Сдать</button>
+          </div>
+        </div>
+        <!-- Для студента до отправления работы -->
+      </div>
+
+      <div class="task-block__teacher-response teacher-response">
+        <div class="teacher-response__header">
+          <p class="teacher-response__header-text">Ответ преподавателя</p>
+        </div>
+
+        <!-- Для преподавателя до оценивания работы -->
+        <div class="teacher-response__content">
+          <textarea class="teacher-response__feedback" oninput="autoGrow(this)" placeholder="Комментарий к работе студента"></textarea>
+          <button class="teacher-response__submit-button">Оценить</button>
+        </div>
+        <!-- Для преподавателя до оценивания работы -->
+
+        <!-- Для студента и преподавателя после оценивания работы -->
+        <div class="teacher-response__content teacher-response__content_submitted">
+          <textarea class="teacher-response__feedback expand-textarea" readonly></textarea>
+        </div>
+        <!-- Для студента и преподавателя после оценивания работы -->
+      </div>
+    </div>
+  </div>
+</div>

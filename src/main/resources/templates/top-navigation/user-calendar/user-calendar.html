@@ -1,0 +1,32 @@
+<!-- Календарь -->
+<link rel="stylesheet" th:href="@{/css/top-navigation/user-calendar/user-calendar.css}">
+
+<div class="content__header">
+  <h2 class="content__header-text">Календарь</h2>
+</div>
+
+<div class="content__content-block content-block">
+  <div class="content-block__task-calendar task-calendar">
+    <div class="task-calendar__calendar-container">
+      <div id="calendar" class="task-calendar__calendar calendar">
+        <div class="calendar__header">
+          <div class="calendar__month-navigation">
+            <button class="calendar__prev-month"  onclick="prevMonth()"></button>
+            <p class="calendar__current-month" data-month="" data-year=""></p>
+            <button class="calendar__next-month" onclick="nextMonth()"></button>
+          </div>
+        </div>
+        <div class="calendar__calendar-content"></div>
+      </div>
+      <div class="task-calendar__task-list task-list" id="main">
+         <p class="task-list__placeholder">Выберите дату</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/user-calendar.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const tasks = /*[[${tasks}]]*/ [];
+  /*]]>*/
+</script>

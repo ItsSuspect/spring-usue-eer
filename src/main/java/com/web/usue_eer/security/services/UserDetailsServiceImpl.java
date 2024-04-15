@@ -26,8 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + userId + " не найден"));
     }
 
     public User findUserByUsername(String username) {

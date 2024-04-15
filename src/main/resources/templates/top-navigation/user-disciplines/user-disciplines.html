@@ -1,0 +1,55 @@
+<link rel="stylesheet" th:href="@{/css/top-navigation/user-disciplines/user-disciplines.css}">
+<div class="content__header">
+    <h2 class="content__header-text">Список дисциплин</h2>
+    <span class="content__interaction-buttons interaction-buttons" th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'') or hasRole(''ROLE_ADMIN'')')}">
+        <a href="http://localhost:8080/portal/disciplines/create" class="interaction-buttons__button interaction-buttons__button_purpose_create" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Создать</a>
+    </span>
+</div>
+<div class="content__content-block content-block">
+    <div class="content-block__discipline-block discipline-block">
+        <div class="discipline-block__your-disciplines">
+            <div class="discipline-block__header">
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_discipline">Ваши дисциплины</h3>
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_owner">Преподаватель</h3>
+                <button class="discipline-block__toggle-list discipline-block__toggle-list_state_unfolded" onclick="toggleYourDisciplineList(this)"></button>
+            </div>
+            <div class="discipline-block__user-disciplines user-disciplines">
+                <div class="user-disciplines__item" th:each="discipline : ${disciplines}">
+                    <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/information'" class="user-disciplines__discipline" th:text="${discipline.name}">Название дисциплины</a>
+                    <p class="user-disciplines__owner"
+                       th:text="${discipline.owner.surname} + ' ' + ${discipline.owner.name} + ' ' + ${discipline.owner.middleName}">Фамилия Имя Отчество</p>
+                </div>
+            </div>
+        </div>
+        <div class="discipline-block__open-disciplines">
+            <div class="discipline-block__header">
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_discipline">Открытые дисциплина</h3>
+                <h3 class="discipline-block__column-name discipline-block__column-name_content_owner">Преподаватель</h3>
+                <button class="discipline-block__toggle-list discipline-block__toggle-list_state_folded" onclick="toggleDisciplineList(this)"></button>
+            </div>
+            <div class="discipline-block__available-disciplines available-disciplines">
+                <div class="available-disciplines__item" th:each="discipline : ${openDisciplines}">
+                    <p class="available-disciplines__discipline" th:text="${discipline.name}" th:data-disciplineId="${discipline.id}" onclick="openWindow(this)">Название дисциплины</p>
+                    <p class="available-disciplines__owner"
+                       th:text="${discipline.owner.surname} + ' ' + ${discipline.owner.name} + ' ' + ${discipline.owner.middleName}">Фамилия Имя Отчество</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay"></div>
+<div class="popup popup_filing-confirmation" id="popup-main">
+    <div class="popup__container">
+        <button class="popup__close-button" onclick="closePopup()"></button>
+        <div class="filing-confirmation popup__filing-confirmation">
+            <p class="filing-confirmation__warning">Вы уверены, что хотите подать заявку на вступление?</p>
+            <div class="filing-confirmation__button-container">
+                <button class="filing-confirmation__button filing-confirmation__button_confirm" id="confirm_button" onclick="confirmRequest(this)">Да</button>
+                <button class="filing-confirmation__button filing-confirmation__button_decline" onclick="closePopup()">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/disciplines.js}"></script>

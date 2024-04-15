@@ -14,10 +14,13 @@ public class DisciplineService {
     @Autowired
     private DisciplineRepository disciplineRepository;
 
-    public Discipline saveDiscipline(Discipline discipline) {
-        return disciplineRepository.save(discipline);
+    public void saveDiscipline(Discipline discipline) {
+        disciplineRepository.save(discipline);
     }
     public Discipline findDisciplineById(Long id) {
         return disciplineRepository.findById(id).get();
+    }
+    public List<Discipline> findDisciplinesByAccess(boolean access) {
+        return disciplineRepository.findDisciplinesByAccess(access);
     }
 }

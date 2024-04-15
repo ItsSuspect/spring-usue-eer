@@ -1,0 +1,82 @@
+<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-resources/discipline-resources.css}">
+
+<div class="content__header">
+  <h2 class="content__header-text">Ресурсы</h2>
+</div>
+
+<div class="content-block content">
+  <div class="content__resources resources">
+    <div class="resources__header">
+      <span class="resources__main-column">
+        <p class="resources__column-name resources__column-name_content_files">Файлы</p>
+      </span>
+      <span class="resources__additional-columns">
+        <p class="resources__column-name resources__column-name_content_actions" th:if="${authorities}">Действия</p>
+        <p class="resources__column-name resources__column-name_content_author">Автор</p>
+        <p class="resources__column-name resources__column-name_content_add-date">Добавлено</p>
+      </span>
+    </div>
+    <div class="resources__content"></div>
+  </div>
+</div>
+
+<div class="overlay"></div>
+
+<div class="popup popup_add_file" id="addFilePopup" th:if="${authorities}">
+  <div class="popup__container">
+    <button class="popup__close-button" onclick="closePopup()"></button>
+    <div class="add-file popup__add-file">
+      <div class="add-file__file-attachment-area">
+        <input type="file" class="add-file__adding-input">
+      </div>
+      <button class="add-file__submit-button" id="saveFileButton" th:data-disciplineId="${disciplineId}" onclick="saveFile(this)">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="popup popup_add_folder" id="addFolderPopup" th:if="${authorities}">
+  <div class="popup__container">
+    <button class="popup__close-button" onclick="closePopup()"></button>
+    <div class="add-folder popup__add-folder">
+      <input type="text" class="add-folder__set-name" placeholder="Название папки" id="folder-name">
+      <button class="add-file__submit-button" id="saveFolderButton" th:data-disciplineId="${disciplineId}" onclick="saveFolder(this)">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="popup popup_delete-confirmation" id="deleteFilePopup" th:if="${authorities}">
+  <div class="popup__container">
+    <button class="popup__close-button" onclick="closePopup()"></button>
+    <div class="delete-confirmation popup__delete-confirmation">
+      <p class="delete-confirmation__warning">Вы уверены, что хотите удалить этот элемент?</p>
+      <div class="delete-confirmation__button-container">
+        <button class="delete-confirmation__button delete-confirmation__button_confirm"
+                id="deleteFileButtonConfirm" th:data-disciplineId="${disciplineId}" onclick="deleteFile(this)">Да</button>
+        <button class="delete-confirmation__button delete-confirmation__button_decline" onclick="closePopup()">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popup popup_delete-confirmation" id="deleteFolderPopup" th:if="${authorities}">
+  <div class="popup__container">
+    <button class="popup__close-button" onclick="closePopup()"></button>
+    <div class="delete-confirmation popup__delete-confirmation">
+      <p class="delete-confirmation__warning">Вы уверены, что хотите удалить эту папку? <br> Удаление папки также удалит все внутренние файлы.</p>
+      <div class="delete-confirmation__button-container">
+        <button class="delete-confirmation__button delete-confirmation__button_confirm"
+                id="deleteFolderButtonConfirm" th:data-disciplineId="${disciplineId}" onclick="deleteFolder(this)">Да</button>
+        <button class="delete-confirmation__button delete-confirmation__button_decline" onclick="closePopup()">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/discipline-resources.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const authorities = /*[[${authorities}]]*/ [];
+  const folders = /*[[${folders}]]*/ [];
+  const files = /*[[${files}]]*/ [];
+  /*]]>*/
+</script>

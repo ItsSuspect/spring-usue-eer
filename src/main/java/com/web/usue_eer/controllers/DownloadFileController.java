@@ -2,20 +2,17 @@ package com.web.usue_eer.controllers;
 
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.security.services.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,9 +22,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/portal/download-file")
 public class DownloadFileController {
-    private static final String CONTENT_DISPOSITION = "attachment; filename=\"%s\"; charset=UTF-8";
-    private static final String OCTET_STREAM_VALUE = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-    private static final int INTERNAL_SERVER_ERROR = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+    private static final Logger logger = Logger.getLogger(DownloadFileController.class.getName());
     private final FilesTaskService filesTaskService;
     private final UserTaskFilesService userTaskFilesService;
     private final FileDisciplineService fileDisciplineService;
@@ -93,18 +88,18 @@ public class DownloadFileController {
         else response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    public static void download(HttpServletResponse response, String fileName, byte[] fileData, long fileSize) {
+    public void download(HttpServletResponse response, String fileName, byte[] fileData, long fileSize) {
         try {
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format(CONTENT_DISPOSITION, new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
-            response.setContentType(OCTET_STREAM_VALUE);
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"; charset=UTF-8", new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             response.setContentLengthLong(fileSize);
 
             try (OutputStream out = response.getOutputStream()) {
                 out.write(fileData);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            response.setStatus(INTERNAL_SERVER_ERROR);
+            logger.log(Level.SEVERE, "Ошибка при отправке файла", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

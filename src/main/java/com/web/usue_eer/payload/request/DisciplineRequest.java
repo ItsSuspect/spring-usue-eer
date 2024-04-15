@@ -11,6 +11,7 @@ public class DisciplineRequest {
     private String name;
 
     private Map<String, String> users;
+    private boolean access;
 
     public String getName() {
         return name;
@@ -26,5 +27,13 @@ public class DisciplineRequest {
 
     public void setUsers(Map<String, String> users) {
         this.users = users;
+    }
+
+    public boolean isAccess() {
+        return access;
+    }
+
+    public void setAccess(boolean access) {
+        this.access = access;
     }
 }

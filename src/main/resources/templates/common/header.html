@@ -1,0 +1,55 @@
+<link rel="stylesheet" th:href="@{/css/common/header.css}">
+<header class="header">
+    <div class="header__logo logo">
+        <a href="http://localhost:8080/portal" class="logo__link">
+            <img class="logo__image" th:src="@{/images/logo.png}" alt="">
+            <div class="logo__name">
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Э</em>лектронный</p>
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">О</em>бразовательный</p>
+                <p class="logo__text logo__text_font_lowercase"><em class="logo__text_font_uppercase">Р</em>есурс</p>
+            </div>
+        </a>
+    </div>
+    <nav class="header__navigation navigation">
+        <a href="http://localhost:8080/portal/calendar" class="navigation__link navigation__link_selection_unselected">Календарь</a>
+        <a href="http://localhost:8080/portal/resources" class="navigation__link navigation__link_selection_unselected">Ресурсы</a>
+        <a href="http://localhost:8080/portal/disciplines" class="navigation__link navigation__link_selection_unselected">Дисциплины</a>
+        <a href="" class="navigation__link navigation__link_selection_unselected">Сведения</a>
+    </nav>
+    <div class="header__icons icons">
+        <span class="icons__theme-changer theme-changer theme-changer_light" onclick="changeTheme(this)"></span>
+        <div class="icons__notification-center notification-center">
+            <span class="notification-center__bell notification-center__bell_notification_empty" onclick="displayNotificationBlock()"></span>
+            <div class="notification-center__notification-block notification-block">
+                <div th:if="${#lists.isEmpty(notifications)}" class="notification-block__no-notification-block">
+                    <p class="notification-block__no-notification-text">Уведомления отсутствуют</p>
+                </div>
+                <div th:each="notification : ${notifications}"
+                     class="notification-block__notification"
+                     onmouseenter="displayDeleteButton(this)" onmouseleave="hideDeleteButton(this)">
+                    <div class="notification-block__header">
+                        <p class="notification-block__subject" th:text="${notification.name}">Название уведомления</p>
+                        <span class="notification-block__result" th:if="${notification.type == 'task'}">
+                            <p class="notification-block__mark_affliction_student" th:text="${notification.userTask.resultScore}">90</p>
+                            <p class="notification-block__separator">/</p>
+                            <p class="notification-block__mark_affliction_teacher" th:text="${notification.userTask.task.maxScore}">100</p>
+                        </span>
+                        <button class="notification-block__delete-button" th:data-notificationId="${notification.id}" onclick="deleteNotification(this)">✖</button>
+                    </div>
+                    <p class="notification-block__discipline" th:if="${notification.type == 'advertisement'}" th:text="${notification.advertisement.discipline.name}">Название дисциплины</p>
+                    <p class="notification-block__discipline" th:if="${notification.type == 'task'}" th:text="${notification.userTask.task.discipline.name}">Название дисциплины</p>
+                    <p class="notification-block__task" th:if="${notification.type == 'task'}" th:text="${notification.userTask.task.name}">Лабораторная работа №1</p>
+                </div>
+                <button class="notification-block__clear-button" onclick="clearNotificationCenter()">Удалить все</button>
+            </div>
+        </div>
+        <div class="icons__profile profile">
+            <span class="profile__icon" onclick="displayProfileFunctions()"></span>
+            <div class="profile__functions-block">
+                <a href="" class="profile__function">Профиль</a>
+                <a href="" class="profile__function">Настройки</a>
+                <a href="http://localhost:8080/auth/logout" class="profile__function">Выйти</a>
+            </div>
+        </div>
+    </div>
+</header>

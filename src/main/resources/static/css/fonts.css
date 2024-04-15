@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?incfg0');
-  src:  url('../fonts/icomoon.eot?incfg0#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?incfg0') format('truetype'),
-    url('../fonts/icomoon.woff?incfg0') format('woff'),
-    url('../fonts/icomoon.svg?incfg0#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?f7llea');
+  src:  url('../fonts/icomoon.eot?f7llea#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?f7llea') format('truetype'),
+    url('../fonts/icomoon.woff?f7llea') format('woff'),
+    url('../fonts/icomoon.svg?f7llea#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -66,6 +66,21 @@
 }
 .icon-pencil:before {
   content: "\e909";
+}
+.icon-access_time:before {
+  content: "\e91f";
+}
+.icon-keyboard_arrow_up:before {
+  content: "\e91b";
+}
+.icon-keyboard_arrow_right:before {
+  content: "\e91c";
+}
+.icon-keyboard_arrow_left:before {
+  content: "\e91d";
+}
+.icon-keyboard_arrow_down:before {
+  content: "\e91e";
 }
 .icon-compare_arrows:before {
   content: "\e90d";

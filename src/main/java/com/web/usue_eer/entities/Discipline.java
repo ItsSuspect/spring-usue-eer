@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "disciplines")
 public class Discipline {
@@ -18,12 +20,18 @@ public class Discipline {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    private boolean access;
+
+    @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL)
+    private Set<RequestDiscipline> requestDisciplines;
+
     public Discipline() {
     }
 
-    public Discipline(String name, User owner) {
+    public Discipline(String name, User owner, boolean access) {
         this.name = name;
         this.owner = owner;
+        this.access = access;
     }
 
     public Long getId() {
@@ -49,5 +57,21 @@ public class Discipline {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public boolean isAccess() {
+        return access;
+    }
+
+    public void setAccess(boolean access) {
+        this.access = access;
+    }
+
+    public Set<RequestDiscipline> getRequestDisciplines() {
+        return requestDisciplines;
+    }
+
+    public void setRequestDisciplines(Set<RequestDiscipline> requestDisciplines) {
+        this.requestDisciplines = requestDisciplines;
     }
 }

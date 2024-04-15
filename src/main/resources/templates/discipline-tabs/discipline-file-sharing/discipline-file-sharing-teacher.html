@@ -1,0 +1,31 @@
+<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-file-sharing/discipline-file-sharing.css}">
+
+<div class="content__header">
+  <h2 class="content__header-text">Обмен файлами</h2>
+</div>
+
+<div class="content-block content">
+  <div class="content__file-sharing file-sharing">
+    <div class="file-sharing__header">
+      <span class="file-sharing__main-column">
+        <p class="file-sharing__column-name file-sharing__column-name_content_files">Файлы</p>
+      </span>
+      <span class="file-sharing__additional-columns">
+        <p class="file-sharing__column-name file-sharing__column-name_content_add-date">Дата добавления</p>
+      </span>
+    </div>
+    <div class="file-sharing__content">
+      <div class="no-files content-block__no-files" th:if="${#lists.isEmpty(files)}">
+        <p class="no-files__text">На данный момент отправленные файлы отсутствуют</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/discipline-file-sharing-teacher.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const files = /*[[${files}]]*/ [];
+  const folders = /*[[${folders}]]*/ [];
+  /*]]>*/
+</script>

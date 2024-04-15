@@ -19,8 +19,8 @@ public class UserDisciplineService {
         userDisciplineRepository.save(disciplineAccess);
     }
 
-    public Long countStudentsByDisciplineId (Long disciplineId) {
-        return userDisciplineRepository.countStudentsByDisciplineId(disciplineId);
+    public List<UserDiscipline> findUserDisciplinesByUserId (Long userId) {
+        return userDisciplineRepository.findUserDisciplinesByUserId(userId);
     }
 
     public void deleteById(Long id) {
@@ -37,5 +37,9 @@ public class UserDisciplineService {
 
     public UserDiscipline findByDisciplineIdAndUserId(Long disciplineId, Long userId) {
         return userDisciplineRepository.findByDisciplineIdAndUserId(disciplineId, userId);
+    }
+
+    public boolean existsByDisciplineIdAndUserId(Long disciplineId, Long userId) {
+        return userDisciplineRepository.existsByDisciplineIdAndUserId(disciplineId, userId);
     }
 }

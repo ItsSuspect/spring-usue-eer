@@ -1,0 +1,162 @@
+<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-tasks/task.css}">
+
+<div class="content__header">
+    <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list'"
+       class="content__return-button">Назад</a>
+    <h2 class="content__header-text">Задание</h2>
+    <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
+        <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list/' + ${task.id} + '/edit'" class="interaction-buttons__button interaction-buttons__button_purpose_edit" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Изменить</a>
+        <a href="" class="interaction-buttons__button interaction-buttons__button_purpose_delete" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Удалить</a>
+    </span>
+</div>
+<div class="content__content-block content-block">
+    <div class="content-block__task-block task-block">
+        <div class="task-block__header">
+            <div class="task-block__header-top">
+                <p class="task-block__task-name" th:text="${task.name}">Название работы</p>
+                <!-- TODO: if прописать для балла студента. -->
+                <span class="task-block__task-mark task-mark">
+                  <p class="task-mark__student-mark" th:text="${task.resultScore}">Балл студента</p>
+                  <p class="task-mark__separator"> / </p>
+                  <p class="task-mark__max-mark" th:text="${task.maxScore}">Макс. балл</p>
+                </span>
+            </div>
+            <div class="task-block__header-bottom">
+                <span class="task-block__issue">
+                  <p class="task-block__issue-text">Начало:</p>
+                  <p class="task-block__issue-date" th:text="${task.formattedDateTimeIssue}">дд.мм.гг чч:мм</p>
+                </span>
+                <span class="task-block__delivery">
+                  <p class="task-block__delivery-text">Окончание:</p>
+                  <p class="task-block__delivery-date" th:text="${task.formattedDateTimeDelivery}">дд.мм.гг чч:мм</p>
+                </span>
+            </div>
+        </div>
+        <div class="task-block__content">
+            <div class="task-block__task-instruction task-instruction">
+                <div class="task-instruction__header">
+                    <p class="task-instruction__header-text">Инструкции к заданию</p>
+                </div>
+                <div class="task-instruction__content">
+                    <textarea class="task-instruction__text expand-textarea" readonly th:text="${task.instruction}">Инструкция к заданию</textarea>
+                    <div class="task-instruction__file-list file-list" th:each="file : ${filesTasks}">
+                        <a th:href="'http://localhost:8080/portal/download-file/task-file/' + ${file.id}"
+                           class="file-list__file" th:text="${file.fileName}">Лабораторная работа №1.docx</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Блок студента для отправления работы -->
+            <div class="task-block__student-response student-response" th:if="${!task.sending and !authorities}">
+                <div class="student-response__header">
+                  <span class="student-response__header-container">
+                    <p class="student-response__header-text">Ответ студента</p>
+                  </span>
+                </div>
+                <div class="student-response__content">
+                    <textarea class="student-response__feedback" id="comment-to-task" oninput="autoGrow(this)" placeholder="Комментарий к работе"></textarea>
+                    <div class="student-response__action-block action-block">
+                        <div class="action-block__file-attachment-container file-attachment-container">
+                            <div class="file-attachment-container__file-attachment-area">
+                                <input id="file-input" type="file" class="file-attachment-container__input" onchange="addFile(this)" title=" " multiple>
+                            </div>
+                            <div class="file-attachment-container__file-list"></div>
+                        </div>
+                        <button class="action-block__submit-button" th:data-taskId="${task.id}" th:data-disciplineId="${disciplineId}" onclick="sendTask(this)">Сдать работу</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Блок студента после отправления работы -->
+            <div class="task-block__student-response student-response" th:if="${task.sending}">
+                <div class="student-response__header">
+                    <span class="student-response__header-container">
+                        <p class="student-response__header-text">Ответ студента</p>
+                        <p class="student-response__student-info"
+                           th:text="${task.user.surname} + ' ' + ${task.user.name} + ' ' + ${task.user.middleName}">ФИО студента</p>
+                        <p class="student-response__student-group"
+                           th:text="${task.user.groups[0].name}">Учебная группа</p>
+                    </span>
+                    <p class="student-response__date" th:text="'Дата сдачи: ' + ${task.dateDelivery}">дд.мм чч:мм</p>
+                </div>
+                <div class="student-response__content student-response__content_submitted">
+                    <textarea class="student-response__feedback expand-textarea" readonly
+                              th:text="${task.commentStudent}">Ответ студента</textarea>
+                    <div class="student-response__file-list file-list" th:each="file : ${userTaskFiles}">
+                        <a th:href="'http://localhost:8080/portal/download-file/user-task-file/' + ${file.id}"
+                           class="file-list__file" th:text="${file.fileName}">Работа студента</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Ответ преподавателя -->
+            <div class="task-block__teacher-response teacher-response" th:if="${not #strings.isEmpty(task.resultScore)}">
+                <div class="teacher-response__header">
+                    <p class="teacher-response__header-text">Ответ преподавателя</p>
+                </div>
+                <div class="teacher-response__content teacher-response__content_submitted">
+                    <textarea class="teacher-response__feedback expand-textarea" readonly th:text="${task.commentTeacher}">Ответ преподавателя</textarea>
+                </div>
+            </div>
+
+            <!--                &lt;!&ndash;Блок когда работа отправлена&ndash;&gt;-->
+            <!--                <div th:if="${task.sending}">-->
+            <!--                    <div class="task-block__student-response student-response">-->
+            <!--                        <div class="student-response__header">-->
+            <!--                      <span class="student-response__header-container">-->
+            <!--                        <p class="student-response__header-text">Ответ студента</p>-->
+            <!--                          &lt;!&ndash; Для преподавателя и студента после отправления работы &ndash;&gt;-->
+            <!--                        <p class="student-response__student-info">Маслов Глеб Олегович</p>-->
+            <!--                        <p class="student-response__student-group">ИВТ-21-2</p>-->
+            <!--                          &lt;!&ndash; Для преподавателя и студента после отправления работы &ndash;&gt;-->
+            <!--                      </span>-->
+            <!--                            &lt;!&ndash; Для преподавателя и студента после отправления работы &ndash;&gt;-->
+            <!--                            <p class="student-response__date">дд.мм чч:мм</p>-->
+            <!--                            &lt;!&ndash; Для преподавателя и студента после отправления работы &ndash;&gt;-->
+            <!--                        </div>-->
+            <!--                        <div class="student-response__header">-->
+            <!--                            <span class="student-response__header-container">-->
+            <!--                                <p class="student-response__header-text">Ответ студента</p>-->
+            <!--                                <p class="student-response__student-group" th:text="${task.user.groups[0].name}">Учебная группа</p>-->
+            <!--                                <p class="student-response__student-info"-->
+            <!--                                   th:text="${task.user.surname} + ' ' + ${task.user.name} + ' ' + ${task.user.middleName}">ФИО студента</p>-->
+            <!--                            </span>-->
+            <!--                            <p class="student-response__date" th:text="'Дата сдачи: ' + ${task.dateDelivery}">дд.мм чч:мм</p>-->
+            <!--                        </div>-->
+            <!--                        <div class="student-response__content">-->
+            <!--                            <p class="student-response__text" th:text="${task.commentStudent}">Ответ студента</p>-->
+            <!--                            <br>-->
+            <!--                            <div class="task-instruction__file-list" th:each="file : ${userTaskFiles}">-->
+            <!--                                <a th:href="'http://localhost:8080/portal/download-file/user-task-file/' + ${file.id}" class="task-instruction__file" th:text="${file.fileName}">Лабораторная работа №1.docx</a>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                &lt;!&ndash;Блок когда работа проверена&ndash;&gt;-->
+            <!--                <div th:if="${not #strings.isEmpty(task.resultScore)}">-->
+            <!--                    <div class="checked-task-block__teacher-response teacher-response">-->
+            <!--                        <div class="teacher-response__header">-->
+            <!--                            <p class="teacher-response__header-text">Ответ преподавателя</p>-->
+            <!--                        </div>-->
+            <!--                        <div class="teacher-response__content">-->
+            <!--                            <p class="teacher-response__text" th:text="${task.commentTeacher}">Ответ преподавателя</p>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div th:unless="${authorities or task.sending or task.status == 'Не началось' or task.status == 'Завершено'}" class="task-block__student-response student-response">-->
+            <!--                <p class="student-response__header">Сдача задания</p>-->
+            <!--                <div class="student-response__content">-->
+            <!--                    <textarea id="comment-to-task" class="student-response__feedback" oninput="autoGrow(this)" placeholder="Комментарий к заданию для преподавателя"></textarea>-->
+            <!--                    <div class="student-response__action-block action-block">-->
+            <!--                        <div class="action-block__file-attachment-container file-attachment-container">-->
+            <!--                            <div class="file-attachment-container__file-attachment-area">-->
+            <!--                                <input id="file-input" type="file" class="file-attachment-container__input" multiple onchange="addFile(this)">-->
+            <!--                            </div>-->
+            <!--                            <div class="file-attachment-container__file-list"></div>-->
+            <!--                        </div>-->
+            <!--                        <button class="action-block__submit-button" th:data-taskId="${task.id}" th:data-disciplineId="${disciplineId}" onclick="sendTask(this)">Сдать работу</button>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/task.js}"></script>

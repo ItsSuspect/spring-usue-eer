@@ -174,7 +174,7 @@ function addUserToList(user) {
 }
 
 function addGroupToList(group) {
-    fetch('/portal/disciplines/create-getUserGroup', {
+    fetch('/portal/disciplines/create/getUserGroup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -240,6 +240,7 @@ function addGroupToList(group) {
 function createDiscipline() {
     const resultDiscipline = document.getElementById('result-discipline');
     const disciplineName = document.getElementById('discipline-name').value;
+    const access = document.getElementById('input-access').checked;
 
     const userList = resultDiscipline.querySelectorAll('.member__personal-info');
     const users = {};
@@ -250,7 +251,8 @@ function createDiscipline() {
 
     const DisciplineRequest = {
         name: disciplineName,
-        users: users
+        users: users,
+        access: access
     };
 
     fetch('/portal/disciplines/create', {

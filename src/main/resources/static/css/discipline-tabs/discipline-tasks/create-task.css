@@ -1,0 +1,293 @@
+@charset "UTF-8";
+
+.task-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+}
+
+.task-block__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.task-block__header-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 16px;
+}
+
+.task-block__task-name-input {
+  min-width: 196px;
+  width: 50%;
+  padding: 0 8px;
+  border-width: 0 0 1px 0;
+  border-color: #999;
+  outline: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input {
+  max-width: 80px;
+  padding: 0 8px;
+  border-width: 0 0 1px 0;
+  border-color: #999;
+  outline: none;
+  text-align: right;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.task-block__task-mark-input::-webkit-outer-spin-button,
+.task-block__task-mark-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.task-block__header-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 8px;
+  padding: 4px 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.task-block__issue,
+.task-block__delivery {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.task-block__issue-text,
+.task-block__delivery-text {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.task-block__issue-date,
+.task-block__delivery-date,
+.task-block__issue-time,
+.task-block__delivery-time {
+  max-height: 16px;
+  margin-left: 8px;
+  padding: 0 0 0 4px;
+  border-width: 0 0 1px 0;
+  border-color: #999;
+  outline: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+.task-block__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.task-instruction__header {
+  margin: 0;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.task-instruction__content {
+  min-height: 64px;
+  max-height: 448px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 8px;
+  resize: none;
+  overflow: hidden;
+  border: 1px solid #999;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.task-instruction__action-block {
+  margin-top: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+
+.action-block__file-attachment-container {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+}
+
+.action-block__submit-button {
+  margin-left: 16px;
+  padding: 8px 32px;
+  border: none;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  text-wrap: nowrap;
+  background-color: #eee;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.action-block__submit-button:hover {
+  background-color: #ddd;
+}
+
+.file-attachment-container__file-attachment-area {
+  position: relative;
+  width: 100%;
+  height: 32px;
+  border: 2px dashed #999;
+  border-radius: 8px;
+}
+
+.file-attachment-container__file-attachment-area::after {
+  content: "+ Прикрепить файлы";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+}
+
+.file-attachment-container__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.file-attachment-container__file-list {
+  display: none;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding: 0 4px 8px;
+}
+
+.file-attachment-container__file {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 8px 4px 0;
+  padding: 4px 4px 4px 8px;
+  border: 1px solid #999;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.file-attachment-container__file-name {
+  margin: 0;
+  font-size: 12px;
+  line-height: 12px;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.file-attachment-container__file-name:hover {
+  color: #0075ff;
+}
+
+.file-attachment-container__delete-button {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.file-attachment-container__delete-button::after {
+  font-family: "icomoon";
+  content: "\e904";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 14px;
+  line-height: 14px;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.file-attachment-container__delete-button:hover::after {
+  color: #f00;
+}

@@ -211,19 +211,3 @@ function hideButtonText(element) {
   const buttonClasses = button.attr('class').split(' ');
   button.removeClass(buttonClasses[0] + '_expanded');
 }
-
-function toggleDisciplineList(button, parent) {
-  const toggleButton = $(button);
-  const header = toggleButton.parent();
-  const disciplinesBlock = header.parent();
-  const disciplineList = disciplinesBlock.find('.discipline-block__discipline-list');
-
-  toggleButton.toggleClass('discipline-block__toggle-list_state_unfolded').toggleClass('discipline-block__toggle-list_state_folded');
-
-
-  if (toggleButton.hasClass('discipline-block__toggle-list_state_folded')) {
-    disciplineList.hide();
-  } else {
-    disciplineList.show();
-  }
-}

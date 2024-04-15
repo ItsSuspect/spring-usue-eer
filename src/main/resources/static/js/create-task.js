@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function addFile(fileInput) {
     let filesList = document.querySelector('.file-attachment-container__file-list');
+    filesList.style.display = 'flex';
 
     for (let i = 0; i < fileInput.files.length; i++) {
         let file = fileInput.files[i];
@@ -54,6 +55,11 @@ function removeFile(fileElement) {
     }
 
     fileElement.remove();
+
+    let filesList = document.querySelector('.file-attachment-container__file-list');
+    if (filesList.children.length === 0) {
+        filesList.style.display = 'none';
+    }
 }
 
 function autoGrow(element) {

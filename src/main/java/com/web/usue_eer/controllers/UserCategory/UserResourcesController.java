@@ -21,13 +21,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/portal")
-public class ResourcesController {
+public class UserResourcesController {
     private final FolderUserService folderUserService;
     private final FileUserService fileUserService;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public ResourcesController(FolderUserService folderUserService, FileUserService fileUserService, UserDetailsServiceImpl userDetailsService) {
+    public UserResourcesController(FolderUserService folderUserService, FileUserService fileUserService, UserDetailsServiceImpl userDetailsService) {
         this.folderUserService = folderUserService;
         this.fileUserService = fileUserService;
         this.userDetailsService = userDetailsService;
@@ -68,16 +68,11 @@ public class ResourcesController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userDetailsService.findUserByUsername(username);
 
-            String fileName = file.getOriginalFilename();
-            byte[] fileData = file.getBytes();
-            String fileType = file.getContentType();
-            long fileSize = file.getSize();
-
             FileUser fileUser = new FileUser();
-            fileUser.setFileName(fileName);
-            fileUser.setFileData(fileData);
-            fileUser.setFileType(fileType);
-            fileUser.setFileSize(fileSize);
+            fileUser.setFileName(file.getOriginalFilename());
+            fileUser.setFileData(file.getBytes());
+            fileUser.setFileType(file.getContentType());
+            fileUser.setFileSize(file.getSize());
             fileUser.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             fileUser.setUser(user);
             fileUser.setFolder(folderUserService.findFolderUserById(parentFolderId));

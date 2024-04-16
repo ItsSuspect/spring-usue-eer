@@ -1,21 +1,21 @@
 function editAdvertisement(element) {
     const disciplineId = element.getAttribute('data-disciplineId');
-    const advertisementId = element.getAttribute('data-advertisementId');
+    const announcementId = element.getAttribute('data-announcementId');
 
-    const name = document.getElementById('name-advertisement').value;
-    const content = document.getElementById('text-advertisement').value;
+    const name = document.getElementById('name-announcement').value;
+    const content = document.getElementById('text-announcement').value;
 
-    const AdvertisementRequest = {
+    const AnnouncementRequest = {
         name: name,
         content: content
     };
 
-    fetch('/portal/discipline/' + disciplineId + '/advertisements/' + advertisementId + '/edit-advertisement', {
+    fetch('/portal/discipline/' + disciplineId + '/announcements/' + announcementId + '/edit-announcement', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(AdvertisementRequest)
+        body: JSON.stringify(AnnouncementRequest)
     })
         .then(response => {
             if (!response.ok) {
@@ -23,7 +23,7 @@ function editAdvertisement(element) {
             }
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/advertisements";
+            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/announcements";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

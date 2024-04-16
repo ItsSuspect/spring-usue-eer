@@ -3,7 +3,6 @@ package com.web.usue_eer.security.services;
 import com.web.usue_eer.entities.UserTask;
 import com.web.usue_eer.repository.UserTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +10,12 @@ import java.util.Optional;
 
 @Service
 public class UserTaskService {
+    private final UserTaskRepository userTaskRepository;
+
     @Autowired
-    private UserTaskRepository userTaskRepository;
+    public UserTaskService(UserTaskRepository userTaskRepository) {
+        this.userTaskRepository = userTaskRepository;
+    }
 
     public List<UserTask> findUserTasksByUserId (Long id) {
         return userTaskRepository.findUserTasksByUserId(id);

@@ -13,8 +13,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class FileSharingService {
+    private final FileSharingRepository fileSharingRepository;
+
     @Autowired
-    private FileSharingRepository fileSharingRepository;
+    public FileSharingService(FileSharingRepository fileSharingRepository) {
+        this.fileSharingRepository = fileSharingRepository;
+    }
 
     public void saveFile(FileSharing file) {
         fileSharingRepository.save(file);

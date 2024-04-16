@@ -12,11 +12,19 @@ import java.util.Optional;
 @Service
 @Transactional
 public class FilesTaskService {
+    private final FilesTaskRepository filesTaskRepository;
+
     @Autowired
-    private FilesTaskRepository filesTaskRepository;
+    public FilesTaskService(FilesTaskRepository filesTaskRepository) {
+        this.filesTaskRepository = filesTaskRepository;
+    }
 
     public void saveFileTask(FilesTask filesTask) {
         filesTaskRepository.save(filesTask);
+    }
+
+    public void deleteFilesTaskById(Long filesTaskId) {
+        filesTaskRepository.deleteFilesTaskById(filesTaskId);
     }
 
     public List<FilesTask> findFilesTasksByTaskId (Long id) {

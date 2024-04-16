@@ -14,6 +14,9 @@
                 <button class="discipline-block__toggle-list discipline-block__toggle-list_state_unfolded" onclick="toggleYourDisciplineList(this)"></button>
             </div>
             <div class="discipline-block__user-disciplines user-disciplines">
+                <div class="no-disciplines user-disciplines__no-disciplines" th:if="${#lists.isEmpty(disciplines)}">
+                    <p class="no-disciplines__text">Отсутствуют дисциплины</p>
+                </div>
                 <div class="user-disciplines__item" th:each="discipline : ${disciplines}">
                     <a th:href="'http://localhost:8080/portal/discipline/' + ${discipline.id} + '/information'" class="user-disciplines__discipline" th:text="${discipline.name}">Название дисциплины</a>
                     <p class="user-disciplines__owner"
@@ -28,6 +31,9 @@
                 <button class="discipline-block__toggle-list discipline-block__toggle-list_state_folded" onclick="toggleDisciplineList(this)"></button>
             </div>
             <div class="discipline-block__available-disciplines available-disciplines">
+                <div class="no-disciplines available-disciplines__no-disciplines" th:if="${#lists.isEmpty(openDisciplines)}">
+                    <p class="no-disciplines__text">Отсутствуют доступные дисциплины</p>
+                </div>
                 <div class="available-disciplines__item" th:each="discipline : ${openDisciplines}">
                     <p class="available-disciplines__discipline" th:text="${discipline.name}" th:data-disciplineId="${discipline.id}" onclick="openWindow(this)">Название дисциплины</p>
                     <p class="available-disciplines__owner"

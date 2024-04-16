@@ -12,8 +12,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserTaskFilesService {
+    private final UserTaskFilesRepository userTaskFilesRepository;
+
     @Autowired
-    private UserTaskFilesRepository userTaskFilesRepository;
+    public UserTaskFilesService(UserTaskFilesRepository userTaskFilesRepository) {
+        this.userTaskFilesRepository = userTaskFilesRepository;
+    }
 
     public void saveUserTaskFile(UserTaskFiles userTaskFiles) {
         userTaskFilesRepository.save(userTaskFiles);

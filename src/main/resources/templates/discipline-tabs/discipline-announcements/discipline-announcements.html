@@ -2,29 +2,29 @@
 <div class="content__header">
     <h2 class="content__header-text">Объявления</h2>
     <span class="content__interaction-buttons interaction-buttons" th:if="${authorities}">
-        <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements/create-advertisement'" class="interaction-buttons__button interaction-buttons__button_purpose_create" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Создать</a>
+        <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/announcements/create'" class="interaction-buttons__button interaction-buttons__button_purpose_create" onmouseenter="expandButtonText(this)" onmouseleave="hideButtonText(this)">Создать</a>
     </span>
 </div>
 <div class="content__content-block content-block">
     <div class="content-block__advertisements">
-        <div class="no-advertisements content-block__no-advertisements" th:if="${#lists.isEmpty(advertisements)}">
+        <div class="no-advertisements content-block__no-advertisements" th:if="${#lists.isEmpty(announcements)}">
             <p class="no-advertisements__text">На данный момент объявления отсутствуют</p>
         </div>
 
-        <article class="content-block__advertisement advertisement" th:each="advertisement : ${advertisements}">
+        <article class="content-block__advertisement advertisement" th:each="announcement : ${announcements}">
             <div class="advertisement__header">
-                <h3 class="advertisement__header-text" th:text="${advertisement.name}">Тема объявления</h3>
+                <h3 class="advertisement__header-text" th:text="${announcement.name}">Тема объявления</h3>
                 <a th:if="${authorities}"
-                   th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements/' + ${advertisement.id} +'/edit-advertisement'"
+                   th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/announcements/' + ${announcement.id} +'/edit-announcement'"
                    class="advertisement__edit-button" onmouseenter="addEditButtonTextTwo(this)" onmouseleave="removeEditButtonTextTwo(this)">Редактировать</a>
             </div>
             <div class="advertisement__content">
-                <textarea class="advertisement__content-text expand-textarea" readonly th:text="${advertisement.content}"></textarea>
+                <textarea class="advertisement__content-text expand-textarea" readonly th:text="${announcement.content}"></textarea>
             </div>
             <div class="advertisement__footer">
                 <p class="advertisement__author"
-                   th:text="'Автор: ' + ${advertisement.user.surname} + ' ' + ${advertisement.user.name} + ' ' + ${advertisement.user.middleName}">Автор: ФИО</p>
-                <p class="advertisement__date" th:text="${advertisement.formattedDate}">01 января 2024г.</p>
+                   th:text="'Автор: ' + ${announcement.owner}">ФИО автора</p>
+                <p class="advertisement__date" th:text="${announcement.date}">01 января 2024г.</p>
             </div>
         </article>
     </div>

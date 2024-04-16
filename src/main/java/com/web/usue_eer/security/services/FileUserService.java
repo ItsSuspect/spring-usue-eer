@@ -12,8 +12,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class FileUserService {
+    private final FileUserRepository fileUserRepository;
+
     @Autowired
-    private FileUserRepository fileUserRepository;
+    public FileUserService(FileUserRepository fileUserRepository) {
+        this.fileUserRepository = fileUserRepository;
+    }
 
     public void saveFile(FileUser file) {
         fileUserRepository.save(file);

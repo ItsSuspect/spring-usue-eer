@@ -15,8 +15,12 @@ import java.util.List;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,11 +35,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + userId + " не найден"));
+        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Ошибка: Пользователь с id " + userId + " не найден"));
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Ошибка: Пользователь с именем " + username + " не найден"));
     }
 
     public List<User> findAllUsers() {

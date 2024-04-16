@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const folderNameElement = document.createElement('p');
             folderNameElement.classList.add('folder__name');
-            folderNameElement.textContent = folder.surname + ' ' + folder.name + ' ' + folder.middleName;
+            folderNameElement.textContent = folder.user;
             folderNameElement.onclick = function () {
                 hiddenFolder(folder.id);
             }
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderFiles(files) {
         files.forEach(file => {
-            const ulElement = document.querySelector(`ul[userId="${file.user.id}"]`);
+            const ulElement = document.querySelector(`ul[userId="${file.userId}"]`);
 
             const folderContentLi = document.createElement('li');
             folderContentLi.classList.add('folder-content__nested-item');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentFile = document.createElement('div');
             contentFile.classList.add('file');
             const aElement = document.createElement('a');
-            aElement.href = 'http://localhost:8080/portal/download-file/file-sharing/' + file.id;
+            aElement.href = 'http://localhost:8080/portal/download-file/file-sharing/' + file.fileId;
             aElement.classList.add('file__name');
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);

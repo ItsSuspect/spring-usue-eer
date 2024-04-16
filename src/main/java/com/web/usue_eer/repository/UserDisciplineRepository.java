@@ -8,10 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserDisciplineRepository extends JpaRepository<UserDiscipline, Long> {
-    UserDiscipline findByDisciplineIdAndUserId(Long disciplineId, Long userId);
+    Optional<UserDiscipline> findByDisciplineIdAndUserId(Long disciplineId, Long userId);
     boolean existsByDisciplineIdAndUserId(Long disciplineId, Long userId);
     List<UserDiscipline> findUserDisciplinesByUserId(Long id);
     List<UserDiscipline> findUserDisciplinesByAccessTypeAndDisciplineId(AccessType accessType, Long id);

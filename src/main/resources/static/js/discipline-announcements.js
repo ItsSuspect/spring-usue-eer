@@ -3,7 +3,6 @@ $(document).ready(function() {
         if ($(this).val().trim() !== '') {
             autoGrow(this);
         } else {
-            $(this).next().css('margin-top', '0');
             $(this).hide();
         }
     });

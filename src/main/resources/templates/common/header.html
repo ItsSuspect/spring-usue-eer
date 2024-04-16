@@ -36,7 +36,7 @@
                         </span>
                         <button class="notification-block__delete-button" th:data-notificationId="${notification.id}" onclick="deleteNotification(this)">✖</button>
                     </div>
-                    <p class="notification-block__discipline" th:if="${notification.type == 'advertisement'}" th:text="${notification.advertisement.discipline.name}">Название дисциплины</p>
+                    <p class="notification-block__discipline" th:if="${notification.type == 'announcement'}" th:text="${notification.announcement.discipline.name}">Название дисциплины</p>
                     <p class="notification-block__discipline" th:if="${notification.type == 'task'}" th:text="${notification.userTask.task.discipline.name}">Название дисциплины</p>
                     <p class="notification-block__task" th:if="${notification.type == 'task'}" th:text="${notification.userTask.task.name}">Лабораторная работа №1</p>
                 </div>

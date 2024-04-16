@@ -10,8 +10,12 @@ import java.util.List;
 
 @Service
 public class RequestDisciplineService {
+    private final RequestDisciplineRepository requestDisciplineRepository;
+
     @Autowired
-    private RequestDisciplineRepository requestDisciplineRepository;
+    public RequestDisciplineService(RequestDisciplineRepository requestDisciplineRepository) {
+        this.requestDisciplineRepository = requestDisciplineRepository;
+    }
 
     public void saveRequestDiscipline (RequestDiscipline requestDiscipline) {
         requestDisciplineRepository.save(requestDiscipline);

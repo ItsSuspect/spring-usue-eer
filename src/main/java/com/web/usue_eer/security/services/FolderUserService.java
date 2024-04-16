@@ -13,8 +13,12 @@ import java.util.List;
 
 @Service
 public class FolderUserService {
+    private final FolderUserRepository folderUserRepository;
+
     @Autowired
-    private FolderUserRepository folderUserRepository;
+    public FolderUserService(FolderUserRepository folderUserRepository) {
+        this.folderUserRepository = folderUserRepository;
+    }
 
     public void saveFolder(FolderUser folder) {
         folderUserRepository.save(folder);

@@ -1,3 +1,29 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const scoreInput = document.getElementById('score_number');
+
+    scoreInput.addEventListener('input', function(event) {
+        let value = event.target.value;
+        value = value.replace(/\D/g, '');
+        event.target.value = value;
+    });
+});
+
+$(document).ready(function() {
+    $('.expand-textarea').each(function() {
+        if ($(this).val().trim() !== '') {
+            autoGrow(this);
+        } else {
+            $(this).next().css('margin-top', '0');
+            $(this).hide();
+        }
+    });
+});
+
+function autoGrow(element) {
+    element.style.height = "16px";
+    element.style.height = (element.scrollHeight) + "px";
+}
+
 function addFile(fileInput) {
     let filesList = document.querySelector('.file-attachment-container__file-list');
     filesList.style.display = 'flex';
@@ -47,11 +73,6 @@ function removeFile(fileElement) {
     }
 }
 
-function autoGrow(element) {
-    element.style.height = "16px";
-    element.style.height = (element.scrollHeight) + "px";
-}
-
 let finalFiles = [];
 
 function editTask(element) {
@@ -69,22 +90,22 @@ function editTask(element) {
 
     const instructionTask = document.getElementById('instruction-task').value;
 
-    const TaskRequest = {
-        name: name,
-        maxScore: score,
-        dateIssue: dateIssue,
-        timeIssue: timeIssue,
-        dateDelivery: dateDelivery,
-        timeDelivery: timeDelivery,
-        instructionTask: instructionTask
-    };
+    let formData = new FormData();
+    finalFiles.forEach(function(file) {
+        formData.append('files', file);
+    });
+
+    formData.append('name', name);
+    formData.append('maxScore', score);
+    formData.append('dateIssue', dateIssue);
+    formData.append('timeIssue', timeIssue);
+    formData.append('dateDelivery', dateDelivery);
+    formData.append('timeDelivery', timeDelivery);
+    formData.append('instructionTask', instructionTask);
 
     fetch('/portal/discipline/' + disciplineId + '/task-list/' + taskId + "/edit", {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(TaskRequest)
+        body: formData
     })
         .then(response => {
             if (!response.ok) {
@@ -92,7 +113,7 @@ function editTask(element) {
             }
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/task-list";
+            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/task-list/" + taskId;
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

@@ -1,212 +1,417 @@
-.task-check-block {
+.task-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   width: 100%;
   padding: 8px;
-  border-radius: 10px;
+  border-radius: 16px;
   background-color: #f4f4f4;
 }
 
-.task-check-block__header {
+.task-block__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 8px 0;
 }
 
-.task-check-block__student-mark-input {
-  max-width: 96px;
-  padding: 4px 8px;
-  border-width: 0 0 1px 0;
-  border-color: #999;
-  border-radius: 8px 8px 0 0;
-  outline: none;
-  text-align: right;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  line-height: 16px;
-  letter-spacing: 0.1em;
-  background-color: rgba(255, 255, 255, 0);
-}
-
-.task-check-block__student-mark-input::-webkit-outer-spin-button,
-.task-check-block__student-mark-input::-webkit-inner-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-
-.task-check-block__content {
+.task-block__header-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  padding: 8px 16px;
-  border-radius: 10px;
-  background-color: #fff;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 16px;
 }
 
-.task-mark__student-mark,
-.task-mark__separator,
-.task-mark__max-mark
-{
+.task-block__task-name {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  line-height: 16px;
-  letter-spacing: 0.1em;
-}
-
-
-.task-check-block__task-name {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
   line-height: 16px;
   font-weight: 400;
   letter-spacing: 0.1em;
 }
 
-.task-check-block__task-mark {
+.task-block__task-mark {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.task-check-block__task-instruction {
+.task-block__header-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 8px;
+  padding: 4px 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.task-block__issue,
+.task-block__delivery {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.task-block__issue-text,
+.task-block__delivery-text,
+.task-block__issue-date,
+.task-block__delivery-date {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.task-block__issue-date,
+.task-block__delivery-date {
+  margin-left: 8px;
+  font-weight: 300;
+}
+
+.task-block__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.task-block__task-instruction {
   padding: 8px 0;
 }
 
+.task-block__student-response {
+  margin-top: 8px;
+  padding: 16px 0 8px;
+  border-top: 1px solid #999;
+}
+
+.task-block__teacher-response {
+  margin-top: 8px;
+  padding: 16px 0 8px;
+  border-top: 1px solid #999;
+}
+
+.task-mark__student-mark-input,
+.task-mark__student-mark,
+.task-mark__separator,
+.task-mark__max-mark {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+}
+
+.task-mark__student-mark-input {
+  max-width: 56px;
+  height: 16px;
+  padding: 0 4px;
+  border-width: 0 0 1px 0;
+  border-color: #999;
+  outline: none;
+  text-align: right;
+  color: #444;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.task-mark__student-mark-input::-webkit-outer-spin-button,
+.task-mark__student-mark-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.task-mark__separator {
+  margin: 0 4px;
+}
+
 .task-instruction__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .task-instruction__header-text {
   margin: 0;
   font-size: 16px;
   line-height: 16px;
+  letter-spacing: 0.05em;
 }
 
 .task-instruction__content {
-  margin-top: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 16px 16px 0;
 }
 
 .task-instruction__text {
-  margin: 0;
+  width: 100%;
+  resize: none;
+  padding: 0;
+  border: none;
+  outline: none;
+  font-family: "Open Sans", sans-serif;
   font-size: 14px;
   line-height: 16px;
+  overflow: hidden;
 }
 
-.task-check-block__student-response {
-  margin-top: 12px;
-  padding: 20px 0 8px;
-  border-top: 1px solid #999;
-}
-
-.student-response__header {
+.task-instruction__file-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-}
-
-.student-response__header-text {
-  margin: 0;
-  font-size: 16px;
-  line-height: 16px;
-}
-
-.student-response__student-group {
-  margin: 0 0 0 16px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  line-height: 16px;
-  color: #666;
-}
-
-.student-response__student-info {
-  margin: 0 0 0 16px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  line-height: 16px;
-  color: #666;
-}
-
-.student-response__content {
-  display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin-top: 16px;
 }
 
-.student-response__text {
+.student-response__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.student-response__header-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.student-response__header-text,
+.student-response__student-info,
+.student-response__student-group,
+.student-response__date {
   margin: 0;
-  font-size: 14px;
   line-height: 16px;
 }
 
-.task-check-block__teacher-response {
-  margin-top: 12px;
-  padding: 20px 0 8px;
-  border-top: 1px solid #999;
+.student-response__header-text {
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
+.student-response__student-info,
+.student-response__student-group,
+.student-response__date {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.student-response__student-info {
+  margin-left: 24px;
+}
+
+.student-response__student-group {
+  margin-left: 8px;
+}
+
+.student-response__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 16px;
+}
+
+.student-response__content_submitted {
+  margin: 16px 16px 0;
+}
+
+.student-response__feedback {
+  width: 100%;
+  min-height: 64px;
+  resize: none;
+  padding: 8px 16px;
+  border: 1px solid #999;
+  border-radius: 8px;
+  outline: none;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.student-response__content_submitted .student-response__feedback {
+  min-height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.student-response__file-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 16px;
 }
 
 .teacher-response__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .teacher-response__header-text {
   margin: 0;
   font-size: 16px;
   line-height: 16px;
+  letter-spacing: 0.05em;
 }
 
 .teacher-response__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin-top: 16px;
+}
+
+.teacher-response__content_submitted {
+  margin: 16px 16px 0;
 }
 
 .teacher-response__feedback {
   width: 100%;
   min-height: 64px;
-  max-height: 448px;
-  padding: 8px;
+  resize: none;
+  padding: 8px 16px;
   border: 1px solid #999;
   border-radius: 8px;
-  resize: none;
-  overflow: hidden;
-  font-size: 14px;
   outline: none;
-  line-height: 16px;
-}
-
-.teacher-response__container {
-  display: flex;
-  margin-top: 16px;
-}
-
-.teacher-response__file-attachment-area {
-  width: 100%;
-  padding: 8px 16px;
-  border-radius: 10px;
+  font-family: "Open Sans", sans-serif;
   font-size: 14px;
-  background-color: #f4f4f4;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.teacher-response__content_submitted .teacher-response__feedback {
+  min-height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
 }
 
 .teacher-response__submit-button {
-  margin-left: 16px;
-  padding: 4px 32px;
+  margin-top: 16px;
+  padding: 8px 0;
   border: none;
-  border-radius: 10px;
-  font-family: 'Montserrat', sans-serif;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 16px;
   letter-spacing: 0.15em;
-  text-wrap: nowrap;
   background-color: #eee;
+  -webkit-transition: 0.2s ease-out;
   transition: 0.2s ease-out;
 }
 
 .teacher-response__submit-button:hover {
   background-color: #ddd;
+}
+
+.file-list__header {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.file-list__file {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 24px;
+  font-size: 14px;
+  line-height: 16px;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.file-list__file:hover {
+  color: #0075ff;
+}
+
+.file-list__file::before {
+  font-family: "icomoon";
+  content: "\e91a";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  font-size: 16px;
+  line-height: 16px;
+  color: #444;
+}
+
+.file-list__file + .file-list__file {
+  margin-top: 8px;
 }

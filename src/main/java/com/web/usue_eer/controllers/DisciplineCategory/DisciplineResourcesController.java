@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/portal/discipline")
-public class ResourceController {
+public class DisciplineResourcesController {
     private final FolderDisciplineService folderDisciplineService;
     private final FileDisciplineService fileDisciplineService;
     private final UserDetailsServiceImpl userDetailsService;
@@ -31,7 +31,7 @@ public class ResourceController {
     private final DisciplineService disciplineService;
 
     @Autowired
-    public ResourceController(FolderDisciplineService folderDisciplineService, FileDisciplineService fileDisciplineService, UserDetailsServiceImpl userDetailsService, UserDisciplineService userDisciplineService, DisciplineService disciplineService) {
+    public DisciplineResourcesController(FolderDisciplineService folderDisciplineService, FileDisciplineService fileDisciplineService, UserDetailsServiceImpl userDetailsService, UserDisciplineService userDisciplineService, DisciplineService disciplineService) {
         this.folderDisciplineService = folderDisciplineService;
         this.fileDisciplineService = fileDisciplineService;
         this.userDetailsService = userDetailsService;
@@ -75,20 +75,15 @@ public class ResourceController {
     @PostMapping("/{disciplineId}/resources/save-file")
     public ResponseEntity<Void> saveFile(@PathVariable Long disciplineId, @RequestParam("file") MultipartFile file, @RequestParam("parentFolder") Long parentFolderId) {
         try {
-            String fileName = file.getOriginalFilename();
-            byte[] fileData = file.getBytes();
-            String fileType = file.getContentType();
-            long fileSize = file.getSize();
-
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userDetailsService.findUserByUsername(username);
             String author = user.getSurname() + ' ' + user.getName().charAt(0) + '.' + user.getMiddleName().charAt(0);
 
             FileDiscipline fileDiscipline = new FileDiscipline();
-            fileDiscipline.setFileName(fileName);
-            fileDiscipline.setFileData(fileData);
-            fileDiscipline.setFileType(fileType);
-            fileDiscipline.setFileSize(fileSize);
+            fileDiscipline.setFileName(file.getOriginalFilename());
+            fileDiscipline.setFileData(file.getBytes());
+            fileDiscipline.setFileType(file.getContentType());
+            fileDiscipline.setFileSize(file.getSize());
             fileDiscipline.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             fileDiscipline.setAuthor(author);
             fileDiscipline.setDiscipline(disciplineService.findDisciplineById(disciplineId));

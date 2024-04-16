@@ -19,7 +19,7 @@ $(document).ready(function() {
     $('.expand-textarea').each(function() {
         if ($(this).val().trim() !== '') {
             autoGrow(this);
-        } else {
+        } else if ($(this).prop("readonly")) {
             $(this).next().css('margin-top', '0');
             $(this).hide();
         }

@@ -1,20 +1,20 @@
 <link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-announcements/create-announcement.css}">
 <div class="content__header">
-    <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/advertisements'" class="content__return-button">Назад</a>
+    <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/announcements'" class="content__return-button">Назад</a>
     <h2 class="content__header-text">Редактирование объявления</h2>
 </div>
 <div class="content__content-block content-block">
     <div class="content-block__advertisement-creation advertisement-creation">
         <div class="advertisement-creation__header">
             <input class="advertisement-creation__advertisement-subject-input"
-                   id="name-advertisement" type="text" placeholder="Тема объявления" th:value="${advertisement.name}">
+                   id="name-announcement" type="text" placeholder="Тема объявления" th:value="${announcement.name}">
         </div>
         <div class="advertisement-creation__content">
-            <textarea class="advertisement-creation__advertisement-content" oninput="autoGrow(this)" id="text-advertisement"
-                      placeholder="Текст объявления" th:text="${advertisement.content}"></textarea>
+            <textarea class="advertisement-creation__advertisement-content" oninput="autoGrow(this)" id="text-announcement"
+                      placeholder="Текст объявления" th:text="${announcement.content}"></textarea>
             <button class="advertisement-creation__submit-button" th:data-disciplineId="${disciplineId}"
-                    th:data-advertisementId="${advertisement.id}" onclick="editAdvertisement(this)">Изменить объявление</button>
+                    th:data-announcementId="${announcement.id}" onclick="editAdvertisement(this)">Изменить объявление</button>
         </div>
     </div>
 </div>
-<script th:src="@{/js/edit-advertisements.js}"></script>
+<script th:src="@{/js/edit-announcement.js}"></script>

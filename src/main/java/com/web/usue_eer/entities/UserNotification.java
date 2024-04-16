@@ -16,7 +16,7 @@ public class UserNotification {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id")
-    private Advertisement advertisement;
+    private Announcement announcement;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userTask_id")
@@ -54,12 +54,12 @@ public class UserNotification {
         this.user = user;
     }
 
-    public Advertisement getAdvertisement() {
-        return advertisement;
+    public Announcement getAnnouncement() {
+        return announcement;
     }
 
-    public void setAdvertisement(Advertisement advertisement) {
-        this.advertisement = advertisement;
+    public void setAnnouncement(Announcement announcement) {
+        this.announcement = announcement;
     }
 
     public UserTask getUserTask() {

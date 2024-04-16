@@ -10,9 +10,12 @@ public class TaskCheckResponse {
     private String commentStudent;
     private String commentTeacher;
     private String instruction;
+    private String formattedDateTimeDelivery;
+    private String formattedDateTimeIssue;
+    private String dateDelivery;
     private User user;
 
-    public TaskCheckResponse(Long id, String name, Integer resultScore, Integer maxScore, String commentStudent, String commentTeacher, String instruction, User user) {
+    public TaskCheckResponse(Long id, String name, Integer resultScore, Integer maxScore, String commentStudent, String commentTeacher, String instruction, String formattedDateTimeDelivery, String formattedDateTimeIssue, String dateDelivery, User user) {
         this.id = id;
         this.name = name;
         this.resultScore = resultScore;
@@ -20,6 +23,9 @@ public class TaskCheckResponse {
         this.commentStudent = commentStudent;
         this.commentTeacher = commentTeacher;
         this.instruction = instruction;
+        this.formattedDateTimeDelivery = formattedDateTimeDelivery;
+        this.formattedDateTimeIssue = formattedDateTimeIssue;
+        this.dateDelivery = dateDelivery;
         this.user = user;
     }
 
@@ -77,6 +83,30 @@ public class TaskCheckResponse {
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
+    }
+
+    public String getFormattedDateTimeDelivery() {
+        return formattedDateTimeDelivery;
+    }
+
+    public void setFormattedDateTimeDelivery(String formattedDateTimeDelivery) {
+        this.formattedDateTimeDelivery = formattedDateTimeDelivery;
+    }
+
+    public String getFormattedDateTimeIssue() {
+        return formattedDateTimeIssue;
+    }
+
+    public void setFormattedDateTimeIssue(String formattedDateTimeIssue) {
+        this.formattedDateTimeIssue = formattedDateTimeIssue;
+    }
+
+    public String getDateDelivery() {
+        return dateDelivery;
+    }
+
+    public void setDateDelivery(String dateDelivery) {
+        this.dateDelivery = dateDelivery;
     }
 
     public User getUser() {

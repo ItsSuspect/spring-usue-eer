@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {
+    private final RoleRepository roleRepository;
+
     @Autowired
-    private RoleRepository roleRepository;
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     public Role findRoleByName(String name) {
-        return roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Ошибка: Роль не найдена"));
+        return roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Ошибка: Роль " + name + " не найдена"));
     }
 }

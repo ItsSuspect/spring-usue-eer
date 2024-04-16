@@ -57,7 +57,7 @@ public class InformationController {
         return "index";
     }
 
-    @GetMapping("/{disciplineId}/information/edit-information")
+    @GetMapping("/{disciplineId}/information/edit")
     public String getEditInformation(Model model, @PathVariable Long disciplineId) {
         Optional<Information> informationOptional = informationService.findInformationByDisciplineId(disciplineId);
         Information information = informationOptional.orElse(new Information());
@@ -67,7 +67,7 @@ public class InformationController {
         return "index";
     }
 
-    @PostMapping("/{disciplineId}/information/edit-information")
+    @PostMapping("/{disciplineId}/information/edit")
     public ResponseEntity<Void> editInformation(@PathVariable Long disciplineId, @RequestBody InformationRequest informationRequest) {
         Discipline discipline = disciplineService.findDisciplineById(disciplineId);
         Information information = new Information(

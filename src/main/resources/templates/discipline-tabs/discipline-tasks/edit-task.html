@@ -1,4 +1,5 @@
-<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-tasks/create-task.css}">
+<link rel="stylesheet" th:href="@{/css/discipline-tabs/discipline-tasks/edit-task.css}">
+
 <div class="content__header">
   <a th:href="'http://localhost:8080/portal/discipline/' + ${disciplineId} + '/task-list/' + ${task.id}" class="content__return-button">Назад</a>
   <h2 class="content__header-text">Редактирование задания</h2>
@@ -10,38 +11,66 @@
 </div>
 <div class="content__content-block content-block">
   <div class="content-block__task-block task-block">
+
     <div class="task-block__header">
-      <input class="task-block__task-name-input" id="name_task" type="text" placeholder="Название задания" th:value="${task.name}">
-      <input class="task-block__task-mark-input" id="score_number" type="number" placeholder="Оценка" th:value="${task.maxScore}">
+      <div class="task-block__header-top">
+        <input id="name_task" type="text" class="task-block__task-name-input" placeholder="Название задания" th:value="${task.name}">
+        <input id="score_number" type="number" class="task-block__task-mark-input" placeholder="Баллы" th:value="${task.maxScore}">
+      </div>
+      <div class="task-block__header-bottom">
+        <span class="task-block__issue">
+          <p class="task-block__issue-text">Начало:</p>
+          <input id="date_issue" type="date" class="task-block__issue-date"
+                 th:if="${formattedDateIssue != null}"
+                 th:value="${#dates.format(formattedDateIssue, 'yyyy-MM-dd')}">
+          <input id="time_issue" type="time" class="task-block__issue-time"
+                 th:if="${task.formattedDateTimeIssue != null}"
+                 th:value="${#strings.substringAfter(task.formattedDateTimeIssue, ' ')}">
+        </span>
+        <span class="task-block__delivery">
+          <p class="task-block__delivery-text">Окончание:</p>
+          <input id="date_delivery" type="date" class="task-block__delivery-date"
+                 th:if="${formattedDateDelivery != null}"
+                 th:value="${#dates.format(formattedDateDelivery, 'yyyy-MM-dd')}">
+          <input id="time_delivery" type="time" class="task-block__delivery-time"
+                 th:if="${task.formattedDateTimeDelivery != null}"
+                 th:value="${#strings.substringAfter(task.formattedDateTimeDelivery, ' ')}">
+        </span>
+      </div>
     </div>
     <div class="task-block__content">
       <div class="task-block__task-instruction task-instruction">
-        <div class="task-instruction__due-dates">
-          <span class="task-instruction__issue">
-            <input type="date" class="task-instruction__issue-date" id="date_issue"
-                   th:if="${formattedDateIssue != null}"
-                   th:value="${#dates.format(formattedDateIssue, 'yyyy-MM-dd')}">
-            <input type="time" class="task-instruction__issue-time" id="time_issue"
-                   th:if="${task.formattedDateTimeIssue != null}"
-                   th:value="${#strings.substringAfter(task.formattedDateTimeIssue, ' ')}">
-          </span>
-          <span class="task-instruction__delivery">
-            <input type="date" class="task-instruction__delivery-date" id="date_delivery"
-                   th:if="${formattedDateIssue != null}"
-                   th:value="${#dates.format(formattedDateIssue, 'yyyy-MM-dd')}">
-            <input type="time" class="task-instruction__delivery-time" id="time_delivery"
-                   th:if="${task.formattedDateTimeDelivery != null}"
-                   th:value="${#strings.substringAfter(task.formattedDateTimeDelivery, ' ')}">
-          </span>
+        <div class="task-instruction__header">
+          <p class="task-instruction__header-text">Инструкции к заданию</p>
         </div>
-        <p class="task-instruction__header">Инструкции к заданию</p>
-        <textarea class="task-instruction__content" name="" id="instruction-task" oninput="autoGrow(this)" th:text="${task.instruction}"></textarea>
-        <div class="task-instruction__file-attachment-area">+ Прикрепить файл</div>
-        <button class="task-instruction__submit-button" th:data-disciplineId="${disciplineId}"
-                th:data-taskId="${task.id}" onclick="editTask(this)">Сохранить</button>
+        <textarea id="instruction-task" class="task-instruction__content expand-textarea" oninput="autoGrow(this)" th:text="${task.instruction}"></textarea>
+        <div class="task-instruction__action-block action-block">
+          <div class="action-block__file-attachment-container file-attachment-container">
+            <div class="file-attachment-container__file-attachment-area">
+              <input id="file-input" type="file" class="file-attachment-container__input" onchange="addFile(this)" title=" " multiple>
+            </div>
+            <div class="file-attachment-container__file-list"></div>
+          </div>
+          <button class="action-block__submit-button"
+                  th:data-disciplineId="${disciplineId}" th:data-taskId="${task.id}" onclick="editTask(this)">Сохранить</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <script th:src="@{/js/edit-task.js}"></script>
-<script th:src="@{/js/create-task.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const filesTasks = /*[[${filesTasks}]]*/ [];
+  const filesArray = filesTasks.map(task => {
+    const decodedFileData = atob(task.fileData);
+    const bytes = new Uint8Array(decodedFileData.length);
+    for (let i = 0; i < decodedFileData.length; i++) {
+      bytes[i] = decodedFileData.charCodeAt(i);
+    }
+    const blob = new Blob([bytes], { type: task.fileType });
+    return new File([blob], task.fileName);
+  });
+  addFile({ files: filesArray });
+  /*]]>*/
+</script>

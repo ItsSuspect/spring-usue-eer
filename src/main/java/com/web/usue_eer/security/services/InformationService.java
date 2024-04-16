@@ -9,8 +9,12 @@ import java.util.Optional;
 
 @Service
 public class InformationService {
+    private final InformationRepository informationRepository;
+
     @Autowired
-    private InformationRepository informationRepository;
+    public InformationService(InformationRepository informationRepository) {
+        this.informationRepository = informationRepository;
+    }
 
     public void saveInformation (Information information) {
         informationRepository.save(information);

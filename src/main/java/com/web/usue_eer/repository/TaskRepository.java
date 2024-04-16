@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findTasksByDisciplineId(Long id);
-    Task findTaskById(Long id);
+    Optional<Task> findTaskById(Long id);
     List<Task> findByStatus(String status);
 }

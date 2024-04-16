@@ -1,6 +1,6 @@
 package com.web.usue_eer.payload.request;
 
-public class AdvertisementRequest {
+public class AnnouncementRequest {
     private String name;
     private String content;
 

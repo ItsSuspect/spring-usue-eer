@@ -55,7 +55,6 @@ public class MemberListController {
         Discipline discipline = disciplineService.findDisciplineById(disciplineId);
         model.addAttribute("access", discipline.isAccess());
         model.addAttribute("usersByGroup", usersByGroup);
-        model.addAttribute("users", users);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("content", "discipline-tabs/discipline-members/discipline-members");
         return "index";

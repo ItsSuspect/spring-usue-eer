@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "advertisements")
-public class Advertisement {
+public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,14 +24,19 @@ public class Advertisement {
 
     private LocalDate date;
 
-    @Transient
-    private String formattedDate;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Advertisement() {
+    public Announcement() {
+    }
+
+    public Announcement(Discipline discipline, String name, String content, LocalDate date, User user) {
+        this.discipline = discipline;
+        this.name = name;
+        this.content = content;
+        this.date = date;
+        this.user = user;
     }
 
     public Long getId() {
@@ -81,13 +85,5 @@ public class Advertisement {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getFormattedDate() {
-        return formattedDate;
-    }
-
-    public void setFormattedDate(String formattedDate) {
-        this.formattedDate = formattedDate;
     }
 }

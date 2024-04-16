@@ -4,6 +4,8 @@ import com.web.usue_eer.entities.FileSharing;
 import com.web.usue_eer.entities.User;
 import com.web.usue_eer.entities.UserDiscipline;
 import com.web.usue_eer.entities.enums.AccessType;
+import com.web.usue_eer.payload.response.FileSharingResponse;
+import com.web.usue_eer.payload.response.FileSharingUserResponse;
 import com.web.usue_eer.security.services.DisciplineService;
 import com.web.usue_eer.security.services.FileSharingService;
 import com.web.usue_eer.security.services.UserDetailsServiceImpl;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/portal/discipline")
@@ -50,28 +53,44 @@ public class FileSharingController {
         if (authorities) {
             List<UserDiscipline> userDisciplines = userDisciplineService.findUserDisciplinesParticipantByDisciplineId(disciplineId);
             List<FileSharing> fileSharings = fileSharingService.findFileSharingsByDisciplineId(disciplineId);
-            List<User> usersWithFiles = new ArrayList<>();
+
+            List<FileSharingUserResponse> usersWithFiles = new ArrayList<>();
+            List<FileSharingResponse> fileSharingResponses = new ArrayList<>();
 
             Set<Long> userIdsWithFiles = new HashSet<>();
 
             for (FileSharing fileSharing : fileSharings) {
                 userIdsWithFiles.add(fileSharing.getUser().getId());
+                fileSharingResponses.add(new FileSharingResponse(
+                        fileSharing.getUser().getId(),
+                        fileSharing.getId(),
+                        fileSharing.getFileName(),
+                        fileSharing.getDateAdd()
+                ));
             }
 
             for (UserDiscipline userDiscipline : userDisciplines) {
                 if (userIdsWithFiles.contains(userDiscipline.getUser().getId())) {
-                    usersWithFiles.add(userDiscipline.getUser());
+                    usersWithFiles.add(new FileSharingUserResponse(
+                            userDiscipline.getUser().getId(),
+                            userDiscipline.getUser().getSurname() + ' ' + userDiscipline.getUser().getName() + ' ' + userDiscipline.getUser().getMiddleName()
+                    ));
                 }
             }
 
             model.addAttribute("folders", usersWithFiles);
-            model.addAttribute("files", fileSharings);
+            model.addAttribute("files", fileSharingResponses);
             model.addAttribute("content", "discipline-tabs/discipline-file-sharing/discipline-file-sharing-teacher");
         }
         else {
             List<FileSharing> fileSharings = fileSharingService.findFileSharingsByUserIdAndDisciplineId(user.getId(), disciplineId);
-
-            model.addAttribute("files", fileSharings);
+            List<FileSharingResponse> fileSharingResponses = fileSharings.stream()
+                            .map(fileSharing -> new FileSharingResponse(
+                                    fileSharing.getId(),
+                                    fileSharing.getFileName(),
+                                    fileSharing.getDateAdd()
+                            )).collect(Collectors.toList());
+            model.addAttribute("files", fileSharingResponses);
             model.addAttribute("content", "discipline-tabs/discipline-file-sharing/discipline-file-sharing-student");
         }
         return "index";
@@ -83,16 +102,11 @@ public class FileSharingController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userDetailsService.findUserByUsername(username);
 
-            String fileName = file.getOriginalFilename();
-            byte[] fileData = file.getBytes();
-            String fileType = file.getContentType();
-            long fileSize = file.getSize();
-
             FileSharing fileSharing = new FileSharing();
-            fileSharing.setFileName(fileName);
-            fileSharing.setFileData(fileData);
-            fileSharing.setFileType(fileType);
-            fileSharing.setFileSize(fileSize);
+            fileSharing.setFileName(file.getOriginalFilename());
+            fileSharing.setFileData(file.getBytes());
+            fileSharing.setFileType(file.getContentType());
+            fileSharing.setFileSize(file.getSize());
             fileSharing.setDateAdd(LocalDateTime.now().withSecond(0).withNano(0).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             fileSharing.setDiscipline(disciplineService.findDisciplineById(disciplineId));
             fileSharing.setUser(user);

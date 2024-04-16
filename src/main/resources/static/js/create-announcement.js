@@ -1,15 +1,15 @@
-function createAdvertisement(element) {
+function createAnnouncement(element) {
     const disciplineId = element.getAttribute('data-disciplineId');
 
-    const name = document.getElementById('name-advertisement').value;
-    const content = document.getElementById('text-advertisement').value;
+    const name = document.getElementById('name-announcement').value;
+    const content = document.getElementById('text-announcement').value;
 
     const AdvertisementRequest = {
         name: name,
         content: content
     };
 
-    fetch('/portal/discipline/' + disciplineId + '/advertisements/create-advertisement', {
+    fetch('/portal/discipline/' + disciplineId + '/announcements/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ function createAdvertisement(element) {
             }
         })
         .then(() => {
-            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/advertisements";
+            window.location.href = "http://localhost:8080/portal/discipline/" + disciplineId + "/announcements";
         })
         .catch(error => {
             console.error('Произошла ошибка:', error);

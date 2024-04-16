@@ -14,8 +14,12 @@ import java.util.List;
 
 @Service
 public class FolderDisciplineService {
+    private final FolderDisciplineRepository folderDisciplineRepository;
+
     @Autowired
-    private FolderDisciplineRepository folderDisciplineRepository;
+    public FolderDisciplineService(FolderDisciplineRepository folderDisciplineRepository) {
+        this.folderDisciplineRepository = folderDisciplineRepository;
+    }
 
     public void saveFolder(FolderDiscipline folder) {
         folderDisciplineRepository.save(folder);

@@ -12,8 +12,13 @@ import java.util.Optional;
 @Service
 @Transactional
 public class FileDisciplineService {
+    private final FileDisciplineRepository fileDisciplineRepository;
+
     @Autowired
-    private FileDisciplineRepository fileDisciplineRepository;
+    public FileDisciplineService(FileDisciplineRepository fileDisciplineRepository) {
+        this.fileDisciplineRepository = fileDisciplineRepository;
+    }
+
     public void saveFile(FileDiscipline file) {
         fileDisciplineRepository.save(file);
     }

@@ -10,8 +10,12 @@ import java.util.List;
 
 @Service
 public class UserNotificationService {
+    private final UserNotificationRepository notificationRepository;
+
     @Autowired
-    private UserNotificationRepository notificationRepository;
+    public UserNotificationService(UserNotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
 
     @Transactional
     public void deleteUserNotificationById (Long id) {

@@ -3,12 +3,9 @@ package com.web.usue_eer.controllers.DisciplineCategory;
 import com.web.usue_eer.entities.*;
 import com.web.usue_eer.entities.enums.AccessType;
 import com.web.usue_eer.payload.request.SendTaskTeacherRequest;
-import com.web.usue_eer.payload.request.TaskRequest;
-import com.web.usue_eer.payload.response.CompletedTaskResponse;
-import com.web.usue_eer.payload.response.TaskCheckResponse;
-import com.web.usue_eer.payload.response.TaskListResponse;
-import com.web.usue_eer.payload.response.TaskResponse;
+import com.web.usue_eer.payload.response.*;
 import com.web.usue_eer.security.services.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -135,14 +132,16 @@ public class TaskController {
         taskService.saveTask(task);
 
         try {
-            for (MultipartFile file : files) {
-                FilesTask filesTask = new FilesTask();
-                filesTask.setTask(task);
-                filesTask.setFileName(file.getOriginalFilename());
-                filesTask.setFileData(file.getBytes());
-                filesTask.setFileType(file.getContentType());
-                filesTask.setFileSize(file.getSize());
-                filesTaskService.saveFileTask(filesTask);
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    FilesTask filesTask = new FilesTask();
+                    filesTask.setTask(task);
+                    filesTask.setFileName(file.getOriginalFilename());
+                    filesTask.setFileData(file.getBytes());
+                    filesTask.setFileType(file.getContentType());
+                    filesTask.setFileSize(file.getSize());
+                    filesTaskService.saveFileTask(filesTask);
+                }
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Ошибка при сохранение файла", e);
@@ -168,7 +167,7 @@ public class TaskController {
                 )).sorted(Comparator.comparing(CompletedTaskResponse::getStatus)).collect(Collectors.toList());
 
         model.addAttribute("tasks", completedTaskResponses);
-        model.addAttribute("content", "discipline-tabs/discipline-tasks/completed-tasks");
+        model.addAttribute("content", "discipline-tabs/discipline-tasks/completed-task-list");
         return "index";
     }
 
@@ -176,7 +175,9 @@ public class TaskController {
     public String getSendTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId, @PathVariable String username) {
         User student = userDetailsService.findUserByUsername(username);
         Task task = taskService.findTaskById(taskId);
-        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(student.getId(), taskId).get();
+        UserTask userTask = userTaskService.findUserTaskByUserIdAndTaskId(student.getId(), taskId).orElseThrow(() -> new EntityNotFoundException("Ошибка: Задание пользователя с id " + taskId + " не найдено"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
         TaskCheckResponse taskCheckResponse = new TaskCheckResponse(
                 taskId,
@@ -186,9 +187,18 @@ public class TaskController {
                 userTask.getCommentStudent(),
                 userTask.getCommentTeacher(),
                 task.getInstruction(),
+                task.getDateTimeDelivery().format(formatter),
+                task.getDateTimeIssue().format(formatter),
+                userTask.getDateDelivery().format(formatter),
                 student
         );
 
+        //TODO: Использовать DTO для файлов. Получать файлы через task.getFilesTasks
+        List<FilesTask> filesTasks = filesTaskService.findFilesTasksByTaskId(taskId);
+        List<UserTaskFiles> userTaskFiles = userTaskFilesService.findUserTaskFilesByUserTaskId(userTask.getId());
+
+        model.addAttribute("filesTasks", filesTasks);
+        model.addAttribute("userTaskFiles", userTaskFiles);
         model.addAttribute("task", taskCheckResponse);
         model.addAttribute("content", "discipline-tabs/discipline-tasks/task-check");
         return "index";
@@ -258,14 +268,16 @@ public class TaskController {
         userTaskService.saveUserTask(userTask);
 
         try {
-            for (MultipartFile file : files) {
-                UserTaskFiles filesTask = new UserTaskFiles();
-                filesTask.setUserTask(userTask);
-                filesTask.setFileName(file.getOriginalFilename());
-                filesTask.setFileData(file.getBytes());
-                filesTask.setFileType(file.getContentType());
-                filesTask.setFileSize(file.getSize());
-                userTaskFilesService.saveUserTaskFile(filesTask);
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    UserTaskFiles filesTask = new UserTaskFiles();
+                    filesTask.setUserTask(userTask);
+                    filesTask.setFileName(file.getOriginalFilename());
+                    filesTask.setFileData(file.getBytes());
+                    filesTask.setFileType(file.getContentType());
+                    filesTask.setFileSize(file.getSize());
+                    userTaskFilesService.saveUserTaskFile(filesTask);
+                }
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Ошибка при сохранение файла", e);
@@ -290,10 +302,21 @@ public class TaskController {
         Date dateIssue = Date.from(localDateTimeIssue.atZone(ZoneId.systemDefault()).toInstant());
         model.addAttribute("formattedDateIssue", dateIssue);
 
-        LocalDateTime localDateTimeDelivery = task.getDateTimeIssue();
+        LocalDateTime localDateTimeDelivery = task.getDateTimeDelivery();
         Date dateDelivery = Date.from(localDateTimeDelivery.atZone(ZoneId.systemDefault()).toInstant());
-        model.addAttribute("formattedDateIssue", dateDelivery);
+        model.addAttribute("formattedDateDelivery", dateDelivery);
 
+        //TODO: Использовать DTO для файлов. Получать файлы через task.getFilesTasks
+        List<FilesTask> filesTasks = filesTaskService.findFilesTasksByTaskId(taskId);
+        List<FilesResponse> filesResponses = filesTasks.stream()
+                .map(file -> new FilesResponse(
+                        file.getFileName(),
+                        file.getFileData(),
+                        file.getFileType(),
+                        file.getFileSize()
+                ))
+                .collect(Collectors.toList());
+        model.addAttribute("filesTasks", filesResponses);
         model.addAttribute("task", task);
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("content", "discipline-tabs/discipline-tasks/edit-task");
@@ -302,11 +325,20 @@ public class TaskController {
 
     //Todo: Прописать валидацию, что нельзя делать дату выдачи позже даты сдачи
     @PostMapping("/{disciplineId}/task-list/{taskId}/edit")
-    public ResponseEntity<Void> postEditTask(@PathVariable Long disciplineId, @PathVariable Long taskId, @RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<Void> postEditTask(@PathVariable Long disciplineId,
+                                             @PathVariable Long taskId,
+                                             @RequestParam(name = "files", required = false) List<MultipartFile> files,
+                                             @RequestParam("name") String name,
+                                             @RequestParam("maxScore") Integer maxScore,
+                                             @RequestParam("dateIssue") LocalDate dateIssue,
+                                             @RequestParam("timeIssue") LocalTime timeIssue,
+                                             @RequestParam("dateDelivery") LocalDate dateDelivery,
+                                             @RequestParam("timeDelivery") LocalTime timeDelivery,
+                                             @RequestParam("instructionTask") String instructionTask) {
         LocalDateTime currentTime = LocalDateTime.now();
 
-        LocalDateTime dateTimeIssue = LocalDateTime.of(taskRequest.getDateIssue(), taskRequest.getTimeIssue());
-        LocalDateTime dateTimeDelivery = LocalDateTime.of(taskRequest.getDateDelivery(), taskRequest.getTimeDelivery());
+        LocalDateTime dateTimeIssue = LocalDateTime.of(dateIssue, timeIssue);
+        LocalDateTime dateTimeDelivery = LocalDateTime.of(dateDelivery, timeDelivery);
         Task task = taskService.findTaskById(taskId);
 
         if (dateTimeIssue.isBefore(currentTime)) {
@@ -316,13 +348,34 @@ public class TaskController {
             task.setStatus("Завершено");
         }
 
-        task.setName(taskRequest.getName());
-        task.setMaxScore(taskRequest.getMaxScore());
-        task.setInstruction(taskRequest.getInstructionTask());
+        task.setName(name);
+        task.setMaxScore(maxScore);
+        task.setInstruction(instructionTask);
         task.setDateTimeDelivery(dateTimeDelivery);
         task.setDateTimeIssue(dateTimeIssue);
 
         taskService.saveTask(task);
+
+        try {
+            List<FilesTask> filesTasks = filesTaskService.findFilesTasksByTaskId(taskId);
+            for (FilesTask oldFile : filesTasks) {
+                filesTaskService.deleteFilesTaskById(oldFile.getId());
+            }
+
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    FilesTask filesTask = new FilesTask();
+                    filesTask.setTask(task);
+                    filesTask.setFileName(file.getOriginalFilename());
+                    filesTask.setFileData(file.getBytes());
+                    filesTask.setFileType(file.getContentType());
+                    filesTask.setFileSize(file.getSize());
+                    filesTaskService.saveFileTask(filesTask);
+                }
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Ошибка при сохранение файла", e);
+        }
         return ResponseEntity.ok().build();
     }
 

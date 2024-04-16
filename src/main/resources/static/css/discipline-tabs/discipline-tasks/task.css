@@ -174,9 +174,17 @@
   margin: 0;
   font-size: 16px;
   line-height: 16px;
+  letter-spacing: 0.05em;
 }
 
 .task-instruction__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   margin: 16px 16px 0;
 }
 
@@ -234,6 +242,7 @@
 
 .student-response__header-text {
   font-size: 16px;
+  letter-spacing: 0.05em;
 }
 
 .student-response__student-info,
@@ -301,7 +310,6 @@
 }
 
 .student-response__action-block {
-  margin-top: 16px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -309,6 +317,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  margin-top: 16px;
 }
 
 .teacher-response__header {
@@ -324,6 +333,7 @@
   margin: 0;
   font-size: 16px;
   line-height: 16px;
+  letter-spacing: 0.05em;
 }
 
 .teacher-response__content {
@@ -409,12 +419,16 @@
 .file-attachment-container__file-attachment-area {
   position: relative;
   height: 32px;
-  border: 2px dashed #999;
+  border: 2px dashed;
+  border-color: #999;
   border-radius: 8px;
+  background-color: #f4f4f4;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
 }
 
 .file-attachment-container__file-attachment-area::after {
-  content: "+ Прикрепить файлы";
+  content: "Прикрепить файлы";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -427,6 +441,11 @@
   font-weight: 300;
   line-height: 16px;
   letter-spacing: 0.15em;
+}
+
+.file-attachment-container__file-attachment-area:hover {
+  border-color: #0075ff;
+  background-color: #cde1f8;
 }
 
 .file-attachment-container__input {
@@ -502,6 +521,12 @@
 
 .file-attachment-container__delete-button:hover::after {
   color: #f00;
+}
+
+.file-list__header {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .file-list__file {

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentFile = document.createElement('div');
             contentFile.classList.add('file');
             const aElement = document.createElement('a');
-            aElement.href = 'http://localhost:8080/portal/download-file/file-sharing/' + file.id;
+            aElement.href = 'http://localhost:8080/portal/download-file/file-sharing/' + file.fileId;
             aElement.classList.add('file__name');
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             divElementDelete.classList.add('file__action-list', 'action-list');
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
-            deleteButton.setAttribute("data-fileId", file.id);
+            deleteButton.setAttribute("data-fileId", file.fileId);
             deleteButton.onclick = function() {
                 openDeleteFileWindow(this.getAttribute("data-fileId"));
             };

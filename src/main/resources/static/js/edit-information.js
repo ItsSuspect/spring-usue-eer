@@ -14,7 +14,7 @@ function saveMainInformation(element) {
         contacts: contacts
     };
 
-    fetch('/portal/discipline/' + disciplineId + '/information/edit-information', {
+    fetch('/portal/discipline/' + disciplineId + '/information/edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

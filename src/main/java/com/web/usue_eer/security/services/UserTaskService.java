@@ -20,6 +20,9 @@ public class UserTaskService {
     public List<UserTask> findUserTasksByUserId (Long id) {
         return userTaskRepository.findUserTasksByUserId(id);
     }
+    public List<UserTask> findAllByDisciplineIdAndUserId (Long disciplineId, Long userId) {
+        return userTaskRepository.findAllByDisciplineIdAndUserId(disciplineId, userId);
+    }
 
     public List<UserTask> findUserTasksByTaskId (Long id) {
         return userTaskRepository.findUserTasksByTaskId(id);

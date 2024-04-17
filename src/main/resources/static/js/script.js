@@ -32,7 +32,7 @@ $(document).ready(function() {
       case currentPageUrl.includes("/portal/disciplines"):
         selectedNavigation("Дисциплины");
         break;
-      case currentPageUrl.includes("/portal/details"):
+      case currentPageUrl.includes("/portal/rating"):
         selectedNavigation("Сведения");
         break;
       default:

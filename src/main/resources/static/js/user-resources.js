@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderFiles(files) {
         files.forEach(file => {
-            const ulElement = document.querySelector('.resources__folder-container[data-folderId="' + file.folder.id + '"] > .folder-container__folder-content > .folder-content__nested-list');
+            const ulElement = document.querySelector('.resources__folder-container[data-folderId="' + file.folderId + '"] > .folder-container__folder-content > .folder-content__nested-list');
 
             const folderContentLi = document.createElement('li');
             folderContentLi.classList.add('folder-content__nested-item');
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentFile = document.createElement('div');
             contentFile.classList.add('file');
             const aElement = document.createElement('a');
-            aElement.href = 'http://localhost:8080/portal/download-file/user-file/' + file.id;
+            aElement.href = 'http://localhost:8080/portal/download-file/user-file/' + file.fileId;
             aElement.classList.add('file__name');
             aElement.textContent = file.fileName;
             contentFile.appendChild(aElement);
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             divElementDelete.classList.add('file__action-list', 'action-list');
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('action-list__button', 'action-list__button_purpose_delete');
-            deleteButton.setAttribute("data-fileId", file.id);
+            deleteButton.setAttribute("data-fileId", file.fileId);
             deleteButton.onclick = function() {
                 openDeleteFileWindow(this.getAttribute("data-fileId"));
             };

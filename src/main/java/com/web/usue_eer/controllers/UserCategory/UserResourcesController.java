@@ -4,6 +4,7 @@ import com.web.usue_eer.entities.FileUser;
 import com.web.usue_eer.entities.FolderUser;
 import com.web.usue_eer.entities.User;
 import com.web.usue_eer.payload.request.FolderRequest;
+import com.web.usue_eer.payload.response.UserResourcesResponse;
 import com.web.usue_eer.security.services.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/portal")
@@ -41,9 +43,17 @@ public class UserResourcesController {
 
         List<FolderUser> folderUsers = folderUserService.findFolderUsersByUserId(user.getId());
         List<FileUser> fileUsers = fileUserService.findFileUsersByUserId(user.getId());
+        List<UserResourcesResponse> responseFileList = fileUsers.stream()
+                        .map(fileUser -> new UserResourcesResponse(
+                                fileUser.getFolder().getId(),
+                                fileUser.getId(),
+                                fileUser.getFileName(),
+                                fileUser.getDateAdd()
+                        ))
+                        .collect(Collectors.toList());
 
         model.addAttribute("folders", folderUsers);
-        model.addAttribute("files", fileUsers);
+        model.addAttribute("files", responseFileList);
         model.addAttribute("content", "top-navigation/user-resources/user-resources");
         return "index";
     }

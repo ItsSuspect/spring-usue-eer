@@ -1,6 +1,7 @@
 package com.web.usue_eer.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

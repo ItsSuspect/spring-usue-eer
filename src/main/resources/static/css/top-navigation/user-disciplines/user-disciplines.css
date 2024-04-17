@@ -75,7 +75,8 @@
 }
 
 .discipline-block__toggle-list::after {
-  content: "▼";
+  font-family: "icomoon";
+  content: "\e91e";
   position: absolute;
   top: 50%;
   left: 50%;

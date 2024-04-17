@@ -1,0 +1,42 @@
+<!-- Успеваемость -->
+<link rel="stylesheet" th:href="@{/css/top-navigation/user-rating/user-rating.css}">
+
+<div class="content__header">
+  <h2 class="content__header-text">Успеваемость</h2>
+</div>
+
+<div class="content__content-block content-block">
+  <div class="content-block__user-rating user-rating">
+    <div class="user-rating__rating-container">
+      <div class="user-rating__header">
+        <p class="user-rating__column-name user-rating__column-name_content_discipline-name">Дисциплина</p>
+        <p class="user-rating__column-name user-rating__column-name_content_rating">Рейтинг</p>
+      </div>
+      <div class="user-rating__content">
+        <div class="discipline-rating user-rating__discipline-rating" th:each="rating : ${ratings}">
+          <div class="discipline-rating__main-info">
+            <p class="discipline-rating__discipline-name" th:text="${rating.nameDiscipline}">Алгоритмы и вычислительные методы оптимизации</p>
+            <span class="discipline-rating__rating-block">
+              <progress class="discipline-rating__progressbar" th:value="${rating.rating}" max="100"></progress>
+              <p class="discipline-rating__rating" th:text="${rating.rating} + '%'">67%</p>
+            </span>
+            <button class="discipline-rating__toggle-list" onclick="toggleTaskList(this)" th:unless="${#lists.isEmpty(rating.tasks)}"></button>
+          </div>
+          <ul class="discipline-rating__task-list">
+            <li class="discipline-rating__task" th:each="task : ${rating.tasks}">
+              <a th:href="'http://localhost:8080/portal/discipline/' + ${rating.disciplineId} + '/task-list/' + ${task.taskId}" class="discipline-rating__task-link">
+                <p class="discipline-rating__task-name" th:text="${task.taskName}">Контрольная работа №1</p>
+                <span class="task-mark discipline-rating__task-mark">
+                  <p class="task-mark__student-mark" th:text="${task.resultScore}">8</p>
+                  <p class="task-mark__separator"> / </p>
+                  <p class="task-mark__max-mark" th:text="${task.maxScore}">10</p>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/user-rating.js}"></script>

@@ -18,6 +18,12 @@ a {
     color: #444;
 }
 
+p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+}
+
 .main {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -198,9 +204,7 @@ a {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: start;
+    flex-direction: column;
     width: 100%;
     margin-top: 16px;
 }

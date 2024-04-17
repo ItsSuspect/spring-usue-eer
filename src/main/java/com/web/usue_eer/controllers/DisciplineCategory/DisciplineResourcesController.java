@@ -6,6 +6,7 @@ import com.web.usue_eer.entities.User;
 import com.web.usue_eer.entities.UserDiscipline;
 import com.web.usue_eer.entities.enums.AccessType;
 import com.web.usue_eer.payload.request.FolderRequest;
+import com.web.usue_eer.payload.response.DisciplineResourcesResponse;
 import com.web.usue_eer.security.services.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/portal/discipline")
@@ -44,6 +46,15 @@ public class DisciplineResourcesController {
     public String getDisciplineResources(Model model, @PathVariable Long disciplineId) {
         List<FolderDiscipline> folderDisciplines = folderDisciplineService.findFolderDisciplinesByDisciplineId(disciplineId);
         List<FileDiscipline> fileDisciplines = fileDisciplineService.findFileDisciplinesByDisciplineId(disciplineId);
+        List<DisciplineResourcesResponse> responseFileList = fileDisciplines.stream()
+                .map(fileDiscipline -> new DisciplineResourcesResponse(
+                        fileDiscipline.getId(),
+                        fileDiscipline.getFolder().getId(),
+                        fileDiscipline.getFileName(),
+                        fileDiscipline.getDateAdd(),
+                        fileDiscipline.getAuthor()
+                ))
+                .collect(Collectors.toList());
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
@@ -51,7 +62,7 @@ public class DisciplineResourcesController {
 
         model.addAttribute("authorities", getAuthorities(userDiscipline.getAccessType()));
         model.addAttribute("folders", folderDisciplines);
-        model.addAttribute("files", fileDisciplines);
+        model.addAttribute("files", responseFileList);
         model.addAttribute("content", "discipline-tabs/discipline-resources/discipline-resources");
         return "index";
     }

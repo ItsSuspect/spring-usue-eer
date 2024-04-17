@@ -6,6 +6,7 @@ import com.web.usue_eer.payload.request.SendTaskTeacherRequest;
 import com.web.usue_eer.payload.response.*;
 import com.web.usue_eer.security.services.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -205,6 +206,7 @@ public class TaskController {
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}")
+    @Transactional
     public String getTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
@@ -287,6 +289,7 @@ public class TaskController {
     }
 
     @GetMapping("/{disciplineId}/task-list/{taskId}/edit")
+    @Transactional
     public String getEditTask(Model model, @PathVariable Long disciplineId, @PathVariable Long taskId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.findUserByUsername(username);
@@ -306,8 +309,7 @@ public class TaskController {
         Date dateDelivery = Date.from(localDateTimeDelivery.atZone(ZoneId.systemDefault()).toInstant());
         model.addAttribute("formattedDateDelivery", dateDelivery);
 
-        //TODO: Использовать DTO для файлов. Получать файлы через task.getFilesTasks
-        List<FilesTask> filesTasks = filesTaskService.findFilesTasksByTaskId(taskId);
+        Set<FilesTask> filesTasks = task.getFilesTasks();
         List<FilesResponse> filesResponses = filesTasks.stream()
                 .map(file -> new FilesResponse(
                         file.getFileName(),

@@ -39,7 +39,7 @@
                 </div>
                 <div class="task-instruction__content">
                     <textarea class="task-instruction__text expand-textarea" readonly th:text="${task.instruction}">Инструкция к заданию</textarea>
-                    <div class="task-instruction__file-list file-list">
+                    <div class="task-instruction__file-list file-list" th:unless="${#lists.isEmpty(filesTasks)}">
                         <p class="file-list__header">Прикрепленные файлы:</p>
                         <a th:each="file : ${filesTasks}"
                            th:href="'http://localhost:8080/portal/download-file/task-file/' + ${file.id}"
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <!-- Блок студента для отправления работы -->
-            <div class="task-block__student-response student-response" th:if="${!task.sending and !authorities}">
+            <div class="task-block__student-response student-response" th:if="${!task.sending and !authorities and !task.status.equals('Завершено') and !task.status.equals('Не началось')}">
                 <div class="student-response__header">
                   <span class="student-response__header-container">
                     <p class="student-response__header-text">Ответ студента</p>
@@ -82,7 +82,7 @@
                 <div class="student-response__content student-response__content_submitted">
                     <textarea class="student-response__feedback expand-textarea" readonly
                               th:text="${task.commentStudent}">Ответ студента</textarea>
-                    <div class="student-response__file-list file-list">
+                    <div class="student-response__file-list file-list" th:unless="${#lists.isEmpty(userTaskFiles)}">
                         <p class="file-list__header">Прикрепленные файлы:</p>
                         <a th:each="file : ${userTaskFiles}"
                            th:href="'http://localhost:8080/portal/download-file/user-task-file/' + ${file.id}"
